@@ -9,3 +9,34 @@
     text-decoration: none;
     color: #000 !important;
 }
+
+.lines-main {
+
+  margin-top: 100px;
+}
+
+.container-explore {
+
+  background-color: #fff;
+}
+
+.join-us {
+
+  background-color: rgb(61, 112, 80);
+}
+
+.custom-btn {
+  background-color: #fff; /* Green background */
+  color: #fff; /* White text */
+  border: 2px solid #74a580; /* Green border */
+}
+
+.custom-btn:hover {
+  background-color: #74a580; /* Darker green on hover */
+  border-color: #218838; /* Darker border color */
+  color: #fff; /* Keep white text on hover */
+}
+
+.custom-btn:focus {
+  box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.5); /* Green outline on focus */
+}

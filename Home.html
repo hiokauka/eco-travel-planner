@@ -25,26 +25,25 @@
       </button>
 
       <div class="collapse navbar-collapse" id="myNavbar">
+
         <ul class="nav mx-auto">
-
           <li class="nav-item">
-            <a class="nav-link" href="#">Explore</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="#">Explore</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Itinerary</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="#">Itinerary</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Weather</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="#">Weather</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Carbon Footprint</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="#">Carbon Footprint</a>
           </li>
-
         </ul>
 
         <ul class="nav ">
           <li class="nav-item">
-            <button class="btn btn-primary" type="button">Join Us</button>
+            <button class="btn btn-primary join-us" type="button">Join Us</button>
           </li>
         </ul>
       </div>
@@ -52,15 +51,48 @@
   </nav>
 
 
-
-  <div class="container mt-5">
-    <h2 class="mb-4 text-center">Travel with care </h2>
-    <p class="text-center">Some content goes here. You can use rows and columns inside too.</p>
-    <button type="button" class="btn btn-light">sign up</button>
-    <button type="button" class="btn btn-light">sign in</button>
+  <div class="container mt-1">
+    <div class="row">
+      <div class="col text-start lines-main">
+        <h2 class="display-4">Your journey</h2>
+        <h3 class="display-5">The earth's future </h3>
+      </div>
+    </div>
   </div>
 
+  <div class="container mt-5 container-explore shadow p-4">
+    <form class="row g-3 align-items-end">
 
+      <div class="col-md-4">
+        <label for="place" class="form-label">Place</label>
+        <input type="text" class="form-control" id="place" placeholder="Enter destination">
+      </div>
+
+
+      <div class="col-md-4">
+        <label for="travelDate" class="form-label">Date</label>
+        <input type="date" class="form-control" id="travelDate">
+      </div>
+
+
+      <div class="col-md-3">
+        <label for="type" class="form-label">Categories</label>
+        <select class="form-select" id="type">
+          <option selected>Choose...</option>
+          <option value="nature">Nature</option>
+          <option value="historical">Historical</option>
+          <option value="beach">Beach</option>
+          <option value="city">City</option>
+          <option value="mountain">Mountain</option>
+        </select>
+      </div>
+
+
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-success w-100">Search</button>
+      </div>
+    </form>
+  </div>
 
 
 
