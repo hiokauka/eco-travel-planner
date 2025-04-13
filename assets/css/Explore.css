@@ -1,0 +1,26 @@
+.container-explore {
+    max-width: 60%; /* or 100% for full width */
+    margin: auto;
+  }
+
+  .d-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 2rem;
+  }
+
+  .left-sidebar {
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    height: fit-content;
+  }
+
+  .right-content {
+    background-color: #ffffff;
+    border-radius: 15px;
+  }
+
+  .place-image img {
+    max-height: 150px;
+    object-fit: cover;
+  }
