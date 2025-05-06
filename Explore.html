@@ -8,6 +8,8 @@
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/Explore.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
   <!-- Bootstrap JS (optional) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -16,20 +18,20 @@
 
  
 </head>
-<body>
+<body class="home">
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light shadow" style="background-color: #ffffff;">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff ;">
     <div class="container">
       <a href="Home.html">
-        <img src="assets/images/logo.png" alt="Logo" height="130">
+        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
         aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="myNavbar">
+      <div class="collapse navbar-collapse  justify-content-between" id="myNavbar">
 
         <ul class="nav mx-auto">
           <li class="nav-item">
@@ -48,110 +50,101 @@
 
         <ul class="nav ">
           <li class="nav-item">
-            <a href="Login.html" class="btn btn-primary join-us">Join Us</a>
+            <a href="Login.html" class="btn btn-success rounded-pill join-us">Join Us</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Search Bar -->
-  <div class="container-fluid mt-5 container-explore shadow p-4">
-    <form class="row g-3 align-items-end">
-      <div class="col-md-4">
-        <label for="place" class="form-label">Place</label>
-        <input type="text" class="form-control" id="place" placeholder="Enter destination">
-      </div>
-      <div class="col-md-4">
-        <label for="travelDate" class="form-label">Date</label>
-        <input type="date" class="form-control" id="travelDate">
-      </div>
-      <div class="col-md-3">
-        <label for="type" class="form-label">Categories</label>
-        <select class="form-select form-control" id="type">
-          <option selected>Choose...</option>
-          <option value="nature">Nature</option>
-          <option value="historical">Historical</option>
-          <option value="beach">Beach</option>
-          <option value="city">City</option>
-          <option value="mountain">Mountain</option>
-        </select>
-      </div>
-      <div class="col-md-1">
-        <button type="submit" class="btn btn-success w-100">Search</button>
-      </div>
-    </form>
+  <div class=" container-explore-v2 my-4">
+    <div class="card p-4 shadow-sm">
+      <form class="row g-3 align-items-end">
+       
+        <!-- Location Input -->
+        <div class="col-md-8">
+          <label for="locationInput" class="form-label">Location</label>
+          <input type="text" class="form-control" id="locationInput" placeholder="e.g. Kuala Lumpur">
+        </div>
+  
+        <!-- Search Button -->
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-success rounded-pill w-100">Search</button>
+        </div>
+
+        <div class="col-md-2">
+          <button type="button" class="btn custom-btn1 w-100">Go eco!</button>
+        </div>
+      </form>
+    </div>
+
+    
   </div>
 
-  <!-- Main Grid: Sidebar + Places -->
-  <div class="container mt-5">
-    <div class="d-grid-container">
-
-      <!-- Sidebar -->
-      <div class="left-sidebar p-4 shadow">
-        <h5 class="mb-3">Filter Options</h5>
-        <ul class="list-group">
-          <li class="list-group-item">Popular</li>
-          <li class="list-group-item">Nearby</li>
-          <li class="list-group-item">Budget</li>
-          <li class="list-group-item">Trending</li>
-        </ul>
-      </div>
-
-      <!-- Place Cards -->
-      <div class="right-content shadow p-4">
-        <div class="row">
-          <!-- Loop of 12 Places -->
-          <!-- You can generate these dynamically later -->
-          <!-- Row 1 to 3: 4 items per row using col-md-3 -->
-          <!-- Place 1 to 12 -->
-          <!-- Repeat this block with different names or images -->
-          <!-- Example for Place 1 -->
-          <!-- Copy this 12 times and change the names -->
-          <!-- Place 1 -->
-          <div class="col-md-3 mb-4">
-            <div class="shadow p-3 text-center h-100">
-              <div class="place-image">
-                <img src="assets/images/logo.png" alt="Place 1" class="img-fluid rounded">
-              </div>
-              <p class="place-name mt-2">Place 1</p>
-            </div>
+  <div class="container my-5">
+    <div class="row">
+  
+      <!-- Card 1 -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <img src="https://source.unsplash.com/400x250/?waterfall,nature" class="card-img-top" alt="Eco Waterfall">
+          <div class="card-body">
+            <h5 class="card-title">Serendah Waterfall</h5>
+            <p class="card-text">
+              A peaceful natural escape surrounded by lush forest, perfect for eco-travelers.
+            </p>
+            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> Hulu Selangor, Selangor</p>
+            <span class="badge badge-success">Eco-friendly</span>
+            <span class="badge badge-primary">Nature</span>
           </div>
-          <!-- Place 2 to 12 -->
-          <!-- Repeat the same block and change name accordingly -->
-          <!-- For simplicity, we'll clone with same content -->
-          <!-- Repeat 11 more -->
-          <!-- Copy-paste below block 11 more times -->
-          <!-- For demo, keeping only a few -->
-          <div class="col-md-3 mb-4">
-            <div class="shadow p-3 text-center h-100">
-              <div class="place-image">
-                <img src="assets/images/logo.png" alt="Place 2" class="img-fluid rounded">
-              </div>
-              <p class="place-name mt-2">Place 2</p>
-            </div>
+          <div class="card-footer text-right bg-white">
+            <button class="btn btn-outline-success btn-sm">Add to favourite</button>
           </div>
-          <div class="col-md-3 mb-4">
-            <div class="shadow p-3 text-center h-100">
-              <div class="place-image">
-                <img src="assets/images/logo.png" alt="Place 3" class="img-fluid rounded">
-              </div>
-              <p class="place-name mt-2">Place 3</p>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="shadow p-3 text-center h-100">
-              <div class="place-image">
-                <img src="assets/images/logo.png" alt="Place 4" class="img-fluid rounded">
-              </div>
-              <p class="place-name mt-2">Place 4</p>
-            </div>
-          </div>
-          <!-- Repeat for Place 5 to 12... -->
         </div>
       </div>
+  
+      <!-- Card 2 -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <img src="https://source.unsplash.com/400x250/?cafe,plants" class="card-img-top" alt="Green Café">
+          <div class="card-body">
+            <h5 class="card-title">Green Bean Café</h5>
+            <p class="card-text">
+              A sustainable café using biodegradable packaging and sourcing local organic ingredients.
+            </p>
+            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> Bangsar, Kuala Lumpur</p>
+            <span class="badge badge-success">Sustainable</span>
+            <span class="badge badge-warning">Vegan Options</span>
+          </div>
+          <div class="card-footer text-right bg-white">
+            <button class="btn btn-outline-success btn-sm">Add to favourite</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Card 3 -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <img src="https://source.unsplash.com/400x250/?forest,hiking" class="card-img-top" alt="Eco Hike">
+          <div class="card-body">
+            <h5 class="card-title">Bukit Gasing Forest Reserve</h5>
+            <p class="card-text">
+              A well-maintained urban forest with guided eco-hikes and nature preservation education.
+            </p>
+            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> Petaling Jaya, Selangor</p>
+            <span class="badge badge-success">Hiking</span>
+            <span class="badge badge-info">Educational</span>
+          </div>
+          <div class="card-footer text-right bg-white">
+            <button class="btn btn-outline-success btn-sm">Add to favourite</button>
+          </div>
+        </div>
+      </div>
+  
     </div>
   </div>
+  
+ 
 
 </body>
 </html>

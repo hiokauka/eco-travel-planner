@@ -1,0 +1,43 @@
+.navbar {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    background-color: #74a580;
+    border-bottom: 2px solid rgb(52, 129, 64); /* ✅ border width, style, and color */
+  }
+  
+  .nav-link {
+    font-size: 18px; /* or larger like 20px */
+    padding: 10px 20px; /* adjust spacing */
+  }
+  
+  .navbar-logo {
+    height: 160px;
+    /* Make it bigger */
+    margin-top: -30px;
+    /* Pull it upward to not stretch navbar */
+    margin-bottom: -30px;
+    /* Optional: prevent pushing nav links down */
+    margin-left: -50px;
+  }
+
+  .custom-btn {
+    background-color: #ffffff; /* Inside color = background */
+    color: rgb(0, 0, 0); /* Text color */
+    border: 2px solid rgb(52, 129, 64)
+  }
+  
+  /* Optional: when hover (when mouse over it) */
+  .custom-btn:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    color: white;
+  }
+
+  .container-carbon {
+  
+    background-color: #ffffff;
+    border: 2px solid rgb(52, 129, 64);
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+   
+  }

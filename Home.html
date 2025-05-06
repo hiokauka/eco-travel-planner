@@ -15,18 +15,20 @@
 
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light shadow" style="background-color: #ffffff;">
+
+
+<body class="home">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff ;">
     <div class="container">
       <a href="Home.html">
-        <img src="assets/images/logo.png" alt="Logo" height="130">
+        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
         aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="myNavbar">
+      <div class="collapse navbar-collapse  justify-content-between" id="myNavbar">
 
         <ul class="nav mx-auto">
           <li class="nav-item">
@@ -45,102 +47,54 @@
 
         <ul class="nav ">
           <li class="nav-item">
-            <a href="Login.html" class="btn btn-primary join-us">Join Us</a>
+            <a href="Login.html" class="btn btn-success rounded-pill join-us">Join Us</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="main-content">
-    <div class="container">
-      <div class="row">
-        <div class="col text-start lines-main">
-          <h2 class="display-4 fw-bold">Your journey , the earth's future</h2>
-          <h3 class="display-8">Travel isn’t just about the destination — it’s about the footprint we leave behind. Eco
-            travel invites you to explore the world in a way that respects nature, uplifts local communities, and
-            preserves beauty for future generations.
 
+  <div class="container">
+    <!-- First Row: Search form and Image side by side -->
+    <div class="row">
+      <!-- Left Side: Search Form -->
+      <div class="col-md-6">
+        <div class="lines-main text-start mb-3" >
+          <h2 class="display-4 fw-bold">Your journey, <br> the earth's future</h2>
+          <h3 class="display-8">
+            Travel isn’t just about the destination — it’s about the footprint we leave behind. Eco travel invites you
+            to explore the world in a way that respects nature, uplifts local communities, and preserves beauty for
+            future generations.
+            
             Whether it’s hiking through lush forests, supporting eco-friendly stays, or choosing low-impact transport,
             every step you take can be a step toward sustainability.
-
-            Join the movement. Travel greener. Wander wiser. Leave only memories. </h3>
+            <br><br>
+            Join the movement. Travel greener. Wander wiser. Leave only memories.
+          </h3>
         </div>
+        <div class="container-explore shadow p-4" >
+          <form class="row g-3 align-items-end">
+            <div class="col-md-12 mb-3">
+              <label for="place" class="form-label">Find attractive places</label>
+              <input type="text" class="form-control" id="place" placeholder="Enter destination">
+            </div>
+
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-success w-100">Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Side: Image -->
+      <div class="col-md-6">
+        <img src="assets/images/main.svg" alt="Right Side Image" class="main-shape">
       </div>
     </div>
 
-    <div class="container mt-5 container-explore shadow p-4">
-      <form class="row g-3 align-items-end">
-
-        <div class="col-md-4">
-          <label for="place" class="form-label">Place</label>
-          <input type="text" class="form-control" id="place" placeholder="Enter destination">
-        </div>
-
-
-        <div class="col-md-4">
-          <label for="travelDate" class="form-label">Date</label>
-          <input type="date" class="form-control" id="travelDate">
-        </div>
-
-
-        <div class="col-md-3">
-          <label for="type" class="form-label">Categories</label>
-          <select class="form-select" id="type">
-            <option selected>Choose...</option>
-            <option value="nature">Nature</option>
-            <option value="historical">Historical</option>
-            <option value="beach">Beach</option>
-            <option value="city">City</option>
-            <option value="mountain">Mountain</option>
-          </select>
-        </div>
-
-
-        <div class="col-md-1">
-          <button type="submit" class="btn btn-success w-100">Search</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="container favourite-place shadow p-4 mt-5">
-      <div class="row">
     
-        <div class="col-md-4">
-          <div class="shadow p-3 text-center">
-            <div class="place-image">
-              <img src="assets/images/logo.png" alt="Place 1" class="img-fluid rounded">
-            </div>
-            <p class="place-name mt-2">Place 1</p>
-          </div>
-        </div>
-    
-        <div class="col-md-4">
-          <div class="shadow p-3 text-center">
-            <div class="place-image">
-              <img src="assets/images/logo.png" alt="Place 2" class="img-fluid rounded">
-            </div>
-            <p class="place-name mt-2">Place 2</p>
-          </div>
-        </div>
-    
-        <div class="col-md-4">
-          <div class="shadow p-3 text-center">
-            <div class="place-image">
-              <img src="assets/images/logo.png" alt="Place 3" class="img-fluid rounded">
-            </div>
-            <p class="place-name mt-2">Place 3</p>
-          </div>
-        </div>
-    
-      </div>
-    </div>
-    
-
   </div>
-
-
-
 
 
 </body>

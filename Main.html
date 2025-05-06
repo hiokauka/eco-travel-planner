@@ -1,85 +1,120 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teroka</title>
-  
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  
-    <link rel="stylesheet" href="assets/css/home.css">
-  
-    <!-- Optional Bootstrap JavaScript (for interactive components like modals, dropdowns, etc.) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
-  </head>
-  
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light shadow" style="background-color: #ffffff;">
-      <div class="container">
-        <a href="Home.html">
-            <img src="assets/images/logo.png" alt="Logo" height="130">
-          </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
-          aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-  
-        <div class="collapse navbar-collapse" id="myNavbar">
-  
-            <ul class="nav mx-auto">
-                <li class="nav-item">
-                  <a class="nav-link btn custom-btn rounded-pill mx-4" href="Explore.html">Explore</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link btn custom-btn rounded-pill mx-4" href="Itinerary.html">Itinerary</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link btn custom-btn rounded-pill mx-4" href="Weather.html">Weather</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link btn custom-btn rounded-pill mx-4" href="Carbon.html">Carbon Footprint</a>
-                </li>
-              </ul>
-  
-              <ul class="nav ">
-                <li class="nav-item">
-                  <a href="Login.html" class="btn btn-primary join-us">Join Us</a>
-                </li>
-              </ul>
-        </div>
-      </div>
-    </nav>
-  
-    <div class="main-content">
-      <div class="container">
-        <div class="row">
-          <div class="col text-start lines-main">
-            <h2 class="display-4 fw-bold">Your journey , the earth's future</h2>
-            <h3 class="display-8">Travel isn’t just about the destination — it’s about the footprint we leave behind. Eco
-              travel invites you to explore the world in a way that respects nature, uplifts local communities, and
-              preserves beauty for future generations.
-  
-              Whether it’s hiking through lush forests, supporting eco-friendly stays, or choosing low-impact transport,
-              every step you take can be a step toward sustainability.
-  
-              Join the movement. Travel greener. Wander wiser. Leave only memories. </h3>
-          </div>
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
 
-      <div class="d-flex justify-content-center align-items-center mt-5">
-        <button class="btn btn-primary join-us mx-2" type="button">Log In</button>
-        <button class="btn btn-primary join-us mx-2" type="button">Sign Up</button>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teroka</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- Add in <head> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body class="home">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
+    <div class="container">
+      <a href="Home.html">
+        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
+        aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-between" id="myNavbar">
+
+        <ul class="nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Explore.html">Explore</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Itinerary.html">Itinerary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Weather.html">Weather</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Carbon.html">Carbon Footprint</a>
+          </li>
+        </ul>
+
+        <ul class="nav">
+          <li class="nav-item">
+            <i class="bi bi-person" style="font-size: 40px; cursor: pointer;" data-toggle="modal"
+              data-target="#profileModal"></i>
+          </li>
+        </ul>
       </div>
-  
-    
-  
     </div>
-  
-  
-  
-  
-  
-  </body>
+  </nav>
+
+  <!-- User Profile Modal -->
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Your profile info goes here -->
+          <p>Name: John Doe</p>
+          <p>Email: johndoe@example.com</p>
+        </div>
+        <div class="modal-footer">
+          <i class="bi bi-box-arrow-right logout-icon" data-toggle="modal" data-dismiss="modal" data-target="#logoutModal"></i>
+          <button type="button" class="btn btn-success" data-dismiss="modal">Update</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Delete Account</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to logout?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    
+
+    function logoutUser() {
+      // Optionally clear any session or data if needed
+      localStorage.clear(); // Example: Clear local storage (if you're using it)
+      window.location.href = "Home.html"; // Redirect to Home page
+    }
+  </script>
+
+</body>
+
+</html>

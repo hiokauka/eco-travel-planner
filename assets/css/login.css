@@ -1,0 +1,7 @@
+.bg-image-left {
+    background-image: url('../images/bg-login1.svg'); /* replace with your image path */
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+  }
