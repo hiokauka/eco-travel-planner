@@ -192,6 +192,11 @@
       $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').not(this).collapse('hide');
     });
 
+    $('#profileModal').on('hidden.bs.modal', function () {
+    // Hide all collapsible sections
+    $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
+});
+
     function logoutUser() {
       // Optionally clear any session or data if needed
       localStorage.clear(); // Example: Clear local storage (if you're using it)
