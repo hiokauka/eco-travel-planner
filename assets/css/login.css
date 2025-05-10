@@ -5,3 +5,96 @@
     height: 100%;
     width: 100%;
   }
+.bg-login{
+  background: #316b3a;
+}
+
+.container-logo {
+  background: #ffffff;
+  border-left: solid 2px #316b3a;
+
+  display: flex;                    /* make it a flex container */
+  justify-content: center;         /* center horizontally */
+  align-items: center;             /* center vertically */
+  height: 100%;                    /* or give it a fixed height */
+}
+
+.main-logo {
+  display: block;           /* makes it a block-level element */
+  margin-left: 250px;  
+  margin-top: 50px;      /* centers horizontally, adds vertical margin */
+}
+
+/* === Login Form Card Container === */
+.login-card {
+  width: 100%;
+  max-width: 400px;           /* Maximum width for the form */
+  background-color: #ffffff;
+  padding: 30px;              /* Internal spacing */
+  border-radius: 8px;         /* Rounded corners */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: auto;               /* Centers the card within its parent */
+}
+
+/* === Heading (Sign In) === */
+.login-card h3 {
+  text-align: center;
+  margin-bottom: 24px;        /* Space below the heading */
+  color: #316b3a;             /* Matching color */
+  font-weight: 600;
+}
+
+/* === Form Labels === */
+.login-card .form-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* === Form Input Fields === */
+.login-card .form-control {
+  border-radius: 6px;
+  box-shadow: none;
+  /* Optional: add a light border color, if needed */
+  border: 1px solid #ccc;
+}
+
+/* === Remember Me CheckBox and Label === */
+.login-card .form-check-label {
+  font-size: 0.9rem;
+}
+
+/* === "Forgot password?" Link === */
+.login-card a {
+  color: #316b3a;
+  text-decoration: none;      /* Remove underline by default */
+}
+
+.login-card a:hover {
+  text-decoration: underline;
+}
+
+/* === Primary Button (Sign In) === */
+.login-card .btn-primary {
+  background-color: #316b3a;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  padding: 10px;
+  color: white;
+}
+
+.login-card .btn-primary:hover {
+  background-color: #274e2c;
+}
+
+/* === Bottom Text (Register Link) === */
+.login-card .register-text {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+.login-card .register-text a {
+  color: #316b3a;
+  font-weight: 500;
+}

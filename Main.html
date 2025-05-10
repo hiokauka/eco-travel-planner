@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="assets/css/main.css">
   <!-- Add in <head> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <!-- Bootstrap JS (optional) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
@@ -62,26 +62,106 @@
   <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
+
         <div class="modal-header">
           <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+
         <div class="modal-body">
-          <!-- Your profile info goes here -->
-          <p>Name: John Doe</p>
-          <p>Email: johndoe@example.com</p>
+          <p><strong><i class="fas fa-user"></i> Name:</strong> Abdul Rauf Hazim</p> <!-- User icon -->
+          <p><strong><i class="fas fa-envelope"></i> Email:</strong> raufhazim@example.com</p> <!-- Envelope icon -->
+          <p><strong><i class="fas fa-lock"></i> Password:</strong> *****</p> <!-- Lock icon -->
+          <p><strong><i class="fas fa-phone"></i> Phone Number:</strong> 1234567</p> 
+
+
+
+          <button class="btn btn-outline-info btn-sm mr-3 mb-3" type="button" data-toggle="collapse"
+            data-target="#changePasswordSection">
+            Change Password
+          </button>
+
+          <button class="btn btn-outline-success btn-sm mr-3 mb-3" type="button" data-toggle="collapse"
+            data-target="#updateprofileSection">
+            Update Profile
+          </button>
+
+          <button class="btn btn-outline-danger btn-sm mb-3" type="button" data-toggle="collapse"
+            data-target="#deleteaccountSection">
+            Delete Account
+          </button>
+
+          <div class="collapse" id="changePasswordSection">
+            <form id="changePasswordForm">
+              <div class="form-group">
+                <label for="oldPassword">Old Password</label>
+                <input type="password" class="form-control" id="oldPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" class="form-control" id="newPassword" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input type="password" class="form-control" id="confirmPassword" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Update Password</button>
+            </form>
+          </div>
+
+          <div class="collapse" id="updateprofileSection">
+            <form id="updateProfileForm">
+              <!-- Name Field -->
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+              </div>
+
+              <!-- Email Field -->
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Enter your Phone number" required>
+              </div>
+
+
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-success btn-sm">Update Profile</button>
+            </form>
+          </div>
+
+          <div class="collapse" id="deleteaccountSection">
+            <div class="form-group">
+              <label for="confirmDelete">Are you sure you want to delete your account?</label>
+              <p class="text-danger">This action is irreversible.</p>
+            </div>
+
+            <!-- Yes/No Buttons -->
+            <div class="form-group">
+              <button type="button" class="btn btn-danger g-3" id="deleteYesButton">Yes, Delete My Account</button>
+
+            </div>
+          </div>
+
         </div>
+
         <div class="modal-footer">
-          <i class="bi bi-box-arrow-right logout-icon" data-toggle="modal" data-dismiss="modal" data-target="#logoutModal"></i>
-          <button type="button" class="btn btn-success" data-dismiss="modal">Update</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Delete Account</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          <i class="bi bi-box-arrow-right logout-icon" data-toggle="modal" data-dismiss="modal"
+            data-target="#logoutModal"></i>
         </div>
+
       </div>
     </div>
   </div>
+
 
   <!-- Logout Confirmation Modal -->
   <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -106,7 +186,11 @@
 
   <script>
 
-    
+    // Use JavaScript to control opening and closing of collapse sections
+    $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').on('show.bs.collapse', function () {
+      // Close all other collapses when one is shown
+      $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').not(this).collapse('hide');
+    });
 
     function logoutUser() {
       // Optionally clear any session or data if needed

@@ -41,3 +41,12 @@
     margin-right: auto;
    
   }
+  .join-us {
+
+    background-color: rgb(61, 112, 80);
+  }
+  
+.nav-link.active {
+  background-color: #28a745; /* Green background for the active link */
+  color: #fff; /* White text */
+}

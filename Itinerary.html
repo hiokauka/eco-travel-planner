@@ -306,6 +306,27 @@
             doc.save('itinerary.pdf');
         });
 
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all the nav links
+            const navLinks = document.querySelectorAll('.navbar .nav-link');
+
+            // Get the current URL
+            const currentUrl = window.location.href;
+
+            // Loop through each link to check if the href matches the current URL
+            navLinks.forEach(function (link) {
+                const linkUrl = link.getAttribute('href');
+
+                if (currentUrl.includes(linkUrl)) {
+                    // Add the 'active' class to the matching link
+                    link.classList.add('active');
+                } else {
+                    // Remove the 'active' class from others
+                    link.classList.remove('active');
+                }
+            });
+        });
+
     </script>
 </body>
 

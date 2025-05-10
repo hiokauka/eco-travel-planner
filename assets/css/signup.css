@@ -1,0 +1,72 @@
+.container-logo {
+    background: #ffffff;
+    border-left: solid 2px #316b3a;
+  
+    display: flex;                    /* make it a flex container */
+    justify-content: center;         /* center horizontally */
+    align-items: center;             /* center vertically */
+    height: 100%;                    /* or give it a fixed height */
+  }
+  
+  .main-logo {
+    display: block;           /* makes it a block-level element */
+    margin-left: 250px;  
+    margin-top: 50px;      /* centers horizontally, adds vertical margin */
+  }
+  
+  /* === Sign Up Card === */
+.signup-card {
+    width: 100%;
+    max-width: 450px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    margin: auto;
+  }
+  
+  /* === Heading === */
+  .signup-card h3 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #316b3a;
+    font-weight: 600;
+  }
+  
+  /* === Labels === */
+  .signup-card .form-label {
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  
+  /* === Inputs === */
+  .signup-card .form-control {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+  
+  /* === Primary Button === */
+  .signup-card .btn-primary {
+    background-color: #316b3a;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .signup-card .btn-primary:hover {
+    background-color: #274e2c;
+  }
+  
+  /* === Bottom Text === */
+  .signup-card .text-center a {
+    color: #316b3a;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .signup-card .text-center a:hover {
+    text-decoration: underline;
+  }
+  
