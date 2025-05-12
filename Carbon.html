@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teroka</title>
+  <title>Calculate your carbon emission</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/Carbon.css">
-
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <!-- Bootstrap JS (optional) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
- 
+
 </head>
+
 <body class="home">
 
   <!-- Navbar -->
@@ -58,7 +60,7 @@
   <div class="container-carbon my-5">
     <div class="card shadow p-4">
       <h3 class="mb-4">Carbon Footprint Calculator</h3>
-  
+
       <!-- Transport Type -->
       <div class="form-group">
         <label for="transportType">Transportation</label>
@@ -68,13 +70,46 @@
           <option value="train">Train</option>
         </select>
       </div>
-  
+
       <!-- Distance -->
-      <div class="form-group">
-        <label for="distance">Distance (km)</label>
-        <input type="number" class="form-control" id="distance" placeholder="e.g. 500">
+      <div>
+        <label for="country">Country</label>
+        <select class="form-control" id="country">
+          <option selected disabled>Select a country</option>
+          <option>Malaysia</option>
+          <option>Indonesia</option>
+          <option>Thailand</option>
+          <option>Singapore</option>
+         
+        </select>
+
+        <div class="form-row mt-3">
+          <div class="form-group col-md-6">
+            <label for="from">From</label>
+            <select class="form-control" id="from">
+              <option selected disabled>Select origin</option>
+              <option>Kuala Lumpur</option>
+              <option>Penang</option>
+              <option>Johor Bahru</option>
+              <option>Malacca</option>
+             
+            </select>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="to">To</label>
+            <select class="form-control" id="to">
+              <option selected disabled>Select destination</option>
+              <option>Kuala Lumpur</option>
+              <option>Penang</option>
+              <option>Johor Bahru</option>
+              <option>Malacca</option>
+              
+            </select>
+          </div>
+        </div>
       </div>
-  
+
       <!-- Accommodation -->
       <div class="form-group">
         <label for="accommodation">Accommodation Type</label>
@@ -84,45 +119,96 @@
           <option value="hostel">Hostel</option>
         </select>
       </div>
-  
+
       <!-- Nights -->
       <div class="form-group">
         <label for="nights">Number of Nights</label>
         <input type="number" class="form-control" id="nights" placeholder="e.g. 3">
       </div>
-  
+
       <!-- Buttons -->
-      <div class="d-flex justify-content-between mt-4">
-        <button class="btn btn-success" onclick="calculateCarbon()">Calculate</button>
-        <button class="btn btn-primary" onclick="suggestOffsets()">Offset Tips</button>
+      <div class="d-flex justify-content-start mt-4">
+        <button class="btn btn-success mr-3" onclick="calculateCarbon()">Calculate</button>
+        <button class="btn btn-success me-3" onclick="showHistory()">History</button>
+
+        <!-- Tips icon button pushed to far right -->
+        <button class="btn btn-outline-secondary ml-auto" onclick="showTips()" title="Tips">
+          <i class="fas fa-lightbulb"></i>
+        </button>
       </div>
-  
-      <!-- Results -->
-      <div class="mt-4" id="resultDisplay" style="display:none;">
-        <h5>Total Estimated CO₂ Emissions:</h5>
-        <p id="carbonOutput">0 kg CO₂</p>
+
+
+      <div class="modal fade" id="calculateModal" tabindex="-1" role="dialog" aria-labelledby="calculateModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="calculateModalLabel">Carbon Calculation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              This is where your carbon footprint result will appear.
+            </div>
+          </div>
+        </div>
       </div>
-  
-      <!-- Offset Suggestions -->
-      <div class="mt-4" id="offsetSuggestions" style="display:none;">
-        <h5>Offset Recommendations:</h5>
-        <ul id="suggestionList"></ul>
+
+      <!-- History Modal -->
+      <div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="historyModalLabel">Calculation History</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              This is where your history will be shown.
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- Tips Modal -->
+      <div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-labelledby="tipsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="tipsModalLabel">Green Travel Tips</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              - Walk or bike for short distances<br>
+              - Use public transportation<br>
+              - Offset your carbon footprint with tree planting
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
-  
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Get all the nav links
       const navLinks = document.querySelectorAll('.navbar .nav-link');
-      
+
       // Get the current URL
       const currentUrl = window.location.href;
-  
+
       // Loop through each link to check if the href matches the current URL
       navLinks.forEach(function (link) {
         const linkUrl = link.getAttribute('href');
-        
+
         if (currentUrl.includes(linkUrl)) {
           // Add the 'active' class to the matching link
           link.classList.add('active');
@@ -132,9 +218,52 @@
         }
       });
     });
-  </script>
-  
- 
 
+    function calculateCarbon() {
+      $('#calculateModal').modal('show');
+    }
+
+    function showHistory() {
+      $('#historyModal').modal('show');
+    }
+
+    function showTips() {
+      $('#tipsModal').modal('show');
+    }
+
+  </script>
+
+
+  <footer class=" py-4">
+    <div class="container">
+      <div class="row">
+        <!-- Contact Info -->
+        <div class="col-md-4">
+          <h5>Contact Information</h5>
+          <ul class="list-unstyled">
+            <li><strong>Email:</strong> <a href="mailto:info@example.com" class="text-white">info@example.com</a></li>
+            <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+123 456 7890</a></li>
+            <li><strong>Fax:</strong> +123 456 7891</li>
+          </ul>
+        </div>
+
+        <!-- Other Contact Sections (optional) -->
+        <div class="col-md-6">
+          <h5>Address</h5>
+          <p>123 Example Street, Example City, EX 12345</p>
+        </div>
+
+        <div class="col-md-2">
+          <h5>Social Media</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Facebook</a></li>
+            <li><a href="#" class="text-white">Twitter</a></li>
+            <li><a href="#" class="text-white">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
+
 </html>

@@ -58,6 +58,49 @@
     </div>
   </nav>
 
+<!-- main content -->
+  <div class="container-home">
+    <div class="container">
+      <!-- First Row: Search form and Image side by side -->
+      <div class="row">
+        <!-- Left Side: Search Form -->
+        <div class="col-md-6">
+          <div class="lines-main text-start mb-3">
+            <h2 class="display-4 fw-bold">Your journey, <br> the earth's future</h2>
+            <h3 class="display-8">
+              Travel isn’t just about the destination — it’s about the footprint we leave behind. Eco travel invites you
+              to explore the world in a way that respects nature, uplifts local communities, and preserves beauty for
+              future generations.
+
+              Whether it’s hiking through lush forests, supporting eco-friendly stays, or choosing low-impact transport,
+              every step you take can be a step toward sustainability.
+              <br><br>
+              Join the movement. Travel greener. Wander wiser. Leave only memories.
+            </h3>
+          </div>
+          <div class="container-explore shadow p-4">
+            <form class="row g-3 align-items-end">
+              <div class="col-md-12 mb-3">
+                <label for="place" class="form-label">Find attractive places</label>
+                <input type="text" class="form-control" id="place" placeholder="Enter destination">
+              </div>
+
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-success w-100">Search</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Side: Image -->
+        <div class="col-md-6">
+          <img src="assets/images/main.svg" alt="Right Side Image" class="main-shape">
+        </div>
+      </div>
+
+
+    </div>
+  </div>
   <!-- User Profile Modal -->
   <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -73,8 +116,9 @@
         <div class="modal-body">
           <p><strong><i class="fas fa-user"></i> Name:</strong> Abdul Rauf Hazim</p> <!-- User icon -->
           <p><strong><i class="fas fa-envelope"></i> Email:</strong> raufhazim@example.com</p> <!-- Envelope icon -->
+          <p><strong><i class="fas fa-phone"></i> Phone Number:</strong> 1234567</p>
           <p><strong><i class="fas fa-lock"></i> Password:</strong> *****</p> <!-- Lock icon -->
-          <p><strong><i class="fas fa-phone"></i> Phone Number:</strong> 1234567</p> 
+
 
 
 
@@ -193,9 +237,9 @@
     });
 
     $('#profileModal').on('hidden.bs.modal', function () {
-    // Hide all collapsible sections
-    $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
-});
+      // Hide all collapsible sections
+      $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
+    });
 
     function logoutUser() {
       // Optionally clear any session or data if needed
@@ -204,6 +248,36 @@
     }
   </script>
 
+  <footer class=" py-4">
+    <div class="container">
+      <div class="row">
+        <!-- Contact Info -->
+        <div class="col-md-4">
+          <h5>Contact Information</h5>
+          <ul class="list-unstyled">
+            <li><strong>Email:</strong> <a href="mailto:info@example.com" class="text-white">info@example.com</a></li>
+            <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+123 456 7890</a></li>
+            <li><strong>Fax:</strong> +123 456 7891</li>
+          </ul>
+        </div>
+
+        <!-- Other Contact Sections (optional) -->
+        <div class="col-md-6">
+          <h5>Address</h5>
+          <p>123 Example Street, Example City, EX 12345</p>
+        </div>
+
+        <div class="col-md-2">
+          <h5>Social Media</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Facebook</a></li>
+            <li><a href="#" class="text-white">Twitter</a></li>
+            <li><a href="#" class="text-white">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

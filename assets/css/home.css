@@ -2,12 +2,15 @@
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
   background-color: #74a580;
-  border-bottom: 2px solid rgb(52, 129, 64); /* ✅ border width, style, and color */
+  border-bottom: 2px solid rgb(52, 129, 64);
+  /* ✅ border width, style, and color */
 }
 
 .nav-link {
-  font-size: 18px; /* or larger like 20px */
-  padding: 10px 20px; /* adjust spacing */
+  font-size: 18px;
+  /* or larger like 20px */
+  padding: 10px 20px;
+  /* adjust spacing */
 }
 
 .navbar-logo {
@@ -20,8 +23,11 @@
   margin-left: -50px;
 }
 
-.home{
-  background-color: #ffffff ;
+.home {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the body takes up at least the full height of the viewport */
 }
 
 
@@ -78,22 +84,35 @@
 }
 
 .custom-btn {
-  background-color: #ffffff; /* Inside color = background */
-  color: rgb(0, 0, 0); /* Text color */
+  background-color: #ffffff;
+  /* Inside color = background */
+  color: rgb(0, 0, 0);
+  /* Text color */
   border: 2px solid rgb(52, 129, 64)
 }
 
 /* Optional: when hover (when mouse over it) */
 .custom-btn:hover {
-  background-color: #45a049; /* Slightly darker green on hover */
+  background-color: #45a049;
+  /* Slightly darker green on hover */
   color: white;
 }
 
-.form-label{
+.form-label {
   color: rgb(0, 0, 0);
 }
 
 .join-us {
 
   background-color: rgb(61, 112, 80);
+}
+
+footer {
+  background-color: #0a4919;
+  color: #ecf0f1;
+  padding: 20px 0;
+}
+
+.container-home{
+  margin-bottom: 100px;
 }

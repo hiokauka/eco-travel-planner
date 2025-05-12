@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teroka</title>
+  <title>Explore places around the world</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +18,7 @@
 
 </head>
 
-<body class="home">
+<body class="explore-page">
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff ;">
@@ -57,6 +57,9 @@
     </div>
   </nav>
 
+
+
+ <main class="explore-content">
   <div class="container-explore-v2 my-4">
     <div class="card p-4 shadow-sm">
       <form class="row g-3 align-items-end">
@@ -80,81 +83,22 @@
   </div>
 
 
-  <div class="container my-5">
-    <div class="row">
 
-      <!-- Card 1 -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm h-100" style="cursor:pointer;" data-toggle="modal" data-target="#placeDetailModal"
-          data-name="Serendah Waterfall" data-location="Hulu Selangor, Selangor"
-          data-desc="A peaceful natural escape surrounded by lush forest, perfect for eco-travelers."
-          data-tags="Eco-friendly, Nature" data-img="/assets/images/ecowaterfall.jpg">
-          <img src="/assets/images/ecowaterfall.jpg" class="card-img-top" alt="Green Café"
-            style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title">Serendah Waterfall</h5>
-            <p class="card-text">
-              A peaceful natural escape surrounded by lush forest, perfect for eco-travelers.
-            </p>
-            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> Hulu Selangor, Selangor</p>
-            <span class="badge badge-success">Eco-friendly</span>
-            <span class="badge badge-primary">Nature</span>
-          </div>
-          <div class="card-footer text-right bg-white">
-            <button class="btn btn-outline-success btn-sm">Add to favourite</button>
-          </div>
-        </div>
-      </div>
 
-      <!-- Card 2 -->
-      <div class="col-md-4 mb-4">
+  <!-- All Cards Section -->
+  <div  class=" container my-5">
+   <div id="cards-container" class="row">
 
-        <div class="card shadow-sm h-100" style="cursor:pointer;" data-toggle="modal" data-target="#placeDetailModal"
-          data-name="Green Bean Café" data-location="Bangsar, Kuala Lumpur"
-          data-desc="A sustainable café using biodegradable packaging and sourcing local organic ingredients."
-          data-tags="Sustainable, Vegan Options" data-img="/assets/images/cafe.jpeg">
-          <img src="/assets/images/cafe.jpeg" class="card-img-top" alt="Green Café"
-            style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title">Green Bean Café</h5>
-            <p class="card-text">
-              A sustainable café using biodegradable packaging and sourcing local organic ingredients.
-            </p>
-            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> Bangsar, Kuala Lumpur</p>
-            <span class="badge badge-success">Sustainable</span>
-            <span class="badge badge-warning">Vegan Options</span>
-          </div>
-          <div class="card-footer text-right bg-white">
-            <button class="btn btn-outline-success btn-sm">Add to favourite</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm h-100" style="cursor:pointer;" data-toggle="modal" data-target="#placeDetailModal"
-          data-name="Bukit Gasing Forest Reserve" data-location="Petaling Jaya, Selangor"
-          data-desc="A well-maintained urban forest with guided eco-hikes and nature preservation education."
-          data-tags="Hiking, Educational" data-img="/assets/images/bukit.jpg">
-          <img src="/assets/images/bukit.jpg" class="card-img-top" alt="Eco Hike"
-            style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title">Bukit Gasing Forest Reserve</h5>
-            <p class="card-text">
-              A well-maintained urban forest with guided eco-hikes and nature preservation education.
-            </p>
-            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> Petaling Jaya, Selangor</p>
-            <span class="badge badge-success">Hiking</span>
-            <span class="badge badge-info">Educational</span>
-          </div>
-          <div class="card-footer text-right bg-white">
-            <button class="btn btn-outline-success btn-sm">Add to favourite</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
+   </div>
   </div>
+
+  <!-- favourite section -->
+   <div  class=" container my-5">
+   <div id="favourite-card-container" class="row">
+
+   </div>
+  </div>
+</main> 
 
 
   <div class="modal fade" id="placeDetailModal" tabindex="-1" aria-labelledby="placeDetailModalLabel"
@@ -180,47 +124,41 @@
       </div>
     </div>
   </div>
+  
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Get all the nav links
-      const navLinks = document.querySelectorAll('.navbar .nav-link');
+  <script src="/assets/js/explore.js"></script>
 
-      // Get the current URL
-      const currentUrl = window.location.href;
+  <footer class=" py-4">
+    <div class="container">
+      <div class="row">
+        <!-- Contact Info -->
+        <div class="col-md-4">
+          <h5>Contact Information</h5>
+          <ul class="list-unstyled">
+            <li><strong>Email:</strong> <a href="mailto:info@example.com" class="text-white">info@example.com</a></li>
+            <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+123 456 7890</a></li>
+            <li><strong>Fax:</strong> +123 456 7891</li>
+          </ul>
+        </div>
 
-      // Loop through each link to check if the href matches the current URL
-      navLinks.forEach(function (link) {
-        const linkUrl = link.getAttribute('href');
+        <!-- Other Contact Sections (optional) -->
+        <div class="col-md-6">
+          <h5>Address</h5>
+          <p>123 Example Street, Example City, EX 12345</p>
+        </div>
 
-        if (currentUrl.includes(linkUrl)) {
-          // Add the 'active' class to the matching link
-          link.classList.add('active');
-        } else {
-          // Remove the 'active' class from others
-          link.classList.remove('active');
-        }
-      });
-    });
-
-    // Modal functionality for card click
-    $('#placeDetailModal').on('show.bs.modal', function (event) {
-      const card = $(event.relatedTarget); // Get the card that triggered the modal
-      const name = card.data('name');
-      const location = card.data('location');
-      const desc = card.data('desc');
-      const tags = card.data('tags');
-      const img = card.data('img');
-
-      $('#modalPlaceTitle').text(name);
-      $('#modalPlaceLocation').html('<i class="bi bi-geo-alt-fill"></i> ' + location);
-      $('#modalPlaceDesc').text(desc);
-      $('#modalPlaceTags').text(tags);
-      $('#modalPlaceImage').attr('src', img).attr('alt', name);
-    });
-  </script>
-
+        <div class="col-md-2">
+          <h5>Social Media</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Facebook</a></li>
+            <li><a href="#" class="text-white">Twitter</a></li>
+            <li><a href="#" class="text-white">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

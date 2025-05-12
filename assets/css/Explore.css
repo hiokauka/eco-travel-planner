@@ -76,18 +76,19 @@
 }
 
 .container-explore-v2 {
-  
+
   background-color: #ffffff;
   border: 2px solid rgb(52, 129, 64);
   width: 50%;
   margin-left: auto;
   margin-right: auto;
- 
+
 }
 
 .filter-btn {
   background-color: transparent;
-  color: #28a745; /* green text */
+  color: #28a745;
+  /* green text */
   border: 2px solid #28a745;
   padding: 10px 20px;
   border-radius: 10px;
@@ -103,7 +104,8 @@
 
 .fav-btn {
   background-color: transparent;
-  color: #28a745; /* green text */
+  color: #28a745;
+  /* green text */
   border: 2px solid #28a745;
   padding: 10px 20px;
   border-radius: 10px;
@@ -124,6 +126,61 @@
 }
 
 .nav-link.active {
-  background-color: #28a745; /* Green background for the active link */
-  color: #fff; /* White text */
+  background-color: #28a745;
+  /* Green background for the active link */
+  color: #fff;
+  /* White text */
+}
+
+.fav-btn.active {
+  background-color: #2b6c3a;
+  color: #fff;
+  /* White text */
+}
+
+footer {
+  background-color: #0a4919;
+  color: #ecf0f1;
+  padding: 20px 0;
+  width: 100%;
+  
+
+}
+
+.explore-content{
+  min-height: 100vh;
+}
+
+
+
+.card-body {
+  height: 200px;
+  /* Set this height according to your design */
+  overflow-y: auto;
+  /* Scrollable content */
+  padding-right: 15px;
+  /* Adds padding to avoid text touching the edge */
+}
+
+/* Styling the scrollbar */
+.card-body::-webkit-scrollbar {
+  width: 8px;
+  /* You can adjust the width */
+}
+
+.card-body::-webkit-scrollbar-track {
+  background: transparent;
+  /* Makes the track transparent */
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  /* Makes the thumb transparent */
+  border-radius: 10px;
+  /* Optional: rounds the scrollbar thumb */
+}
+
+.card-body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  /* Optional: changes thumb color on hover */
 }

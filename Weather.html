@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teroka</title>
+  <title>Check the weather before you explore</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -14,8 +15,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
- 
+
 </head>
+
 <body class="home">
 
   <!-- Navbar -->
@@ -58,7 +60,19 @@
   <div class="container-weather my-5">
     <div class="card p-4 shadow-sm">
       <h4 class="mb-3">Weather Forecast</h4>
-  
+
+
+      <!-- Countryy picker -->
+      <div class="form-group">
+        <label for="citySelect">Select a Country</label>
+        <select class="form-control" id="citySelect">
+          <option value="kuala_lumpur">Malaysia</option>
+          <option value="penang">Indonesia</option>
+          <option value="melaka">Singapore</option>
+         
+        </select>
+      </div>
+
       <!-- City/Place Picker -->
       <div class="form-group">
         <label for="citySelect">Select a City</label>
@@ -66,10 +80,10 @@
           <option value="kuala_lumpur">Kuala Lumpur</option>
           <option value="penang">Penang</option>
           <option value="melaka">Melaka</option>
-          <!-- Add more cities -->
+        
         </select>
       </div>
-  
+
       <!-- Real-Time Weather Display -->
       <div class="weather-info mt-4 p-3 border rounded bg-light">
         <h5 id="weatherCity">Kuala Lumpur</h5>
@@ -77,12 +91,12 @@
         <p><strong>Humidity:</strong> <span id="weatherHumidity">--%</span></p>
         <p><strong>Description:</strong> <span id="weatherDesc">--</span></p>
       </div>
-  
+
       <!-- Forecast -->
       <div class="forecast mt-4">
         <h6>3-Day Forecast</h6>
         <div class="row" id="forecastCards">
-          <!-- Forecast cards will go here -->
+          
           <div class="col-md-4">
             <div class="card text-center p-3">
               <p class="mb-1"><strong>Mon</strong></p>
@@ -105,31 +119,119 @@
       </div>
     </div>
   </div>
-  
- 
+
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Get all the nav links
       const navLinks = document.querySelectorAll('.navbar .nav-link');
-      
-      // Get the current URL
       const currentUrl = window.location.href;
-  
-      // Loop through each link to check if the href matches the current URL
+
       navLinks.forEach(function (link) {
         const linkUrl = link.getAttribute('href');
-        
         if (currentUrl.includes(linkUrl)) {
-          // Add the 'active' class to the matching link
           link.classList.add('active');
         } else {
-          // Remove the 'active' class from others
           link.classList.remove('active');
         }
       });
+
+      // Dummy weather data
+      const weatherData = {
+        kuala_lumpur: {
+          city: 'Kuala Lumpur',
+          temp: '31°C',
+          humidity: '70%',
+          description: 'Partly Cloudy',
+          forecast: ['🌧️ 30°C', '⛅ 31°C', '☀️ 32°C'],
+          days: ['Mon', 'Tue', 'Wed']
+        },
+        penang: {
+          city: 'Penang',
+          temp: '29°C',
+          humidity: '75%',
+          description: 'Showers',
+          forecast: ['🌧️ 28°C', '🌧️ 27°C', '⛅ 29°C'],
+          days: ['Mon', 'Tue', 'Wed']
+        },
+        melaka: {
+          city: 'Melaka',
+          temp: '32°C',
+          humidity: '68%',
+          description: 'Sunny',
+          forecast: ['☀️ 32°C', '☀️ 33°C', '⛅ 31°C'],
+          days: ['Mon', 'Tue', 'Wed']
+        }
+      };
+
+      const citySelect = document.getElementById('citySelect');
+      const weatherCity = document.getElementById('weatherCity');
+      const weatherTemp = document.getElementById('weatherTemp');
+      const weatherHumidity = document.getElementById('weatherHumidity');
+      const weatherDesc = document.getElementById('weatherDesc');
+      const forecastCards = document.getElementById('forecastCards');
+
+      citySelect.addEventListener('change', function () {
+        const selectedCity = citySelect.value;
+        const data = weatherData[selectedCity];
+
+        // Update current weather info
+        weatherCity.textContent = data.city;
+        weatherTemp.textContent = data.temp;
+        weatherHumidity.textContent = data.humidity;
+        weatherDesc.textContent = data.description;
+
+        // Update forecast
+        forecastCards.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+          const card = `
+          <div class="col-md-4">
+            <div class="card text-center p-3">
+              <p class="mb-1"><strong>${data.days[i]}</strong></p>
+              <p class="mb-0">${data.forecast[i]}</p>
+            </div>
+          </div>`;
+          forecastCards.innerHTML += card;
+        }
+      });
+
+      // Trigger change once to load initial data
+      citySelect.dispatchEvent(new Event('change'));
     });
   </script>
-  
+
+
+
+  <footer class=" py-4">
+    <div class="container">
+      <div class="row">
+        <!-- Contact Info -->
+        <div class="col-md-4">
+          <h5>Contact Information</h5>
+          <ul class="list-unstyled">
+            <li><strong>Email:</strong> <a href="mailto:info@example.com" class="text-white">info@example.com</a></li>
+            <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+123 456 7890</a></li>
+            <li><strong>Fax:</strong> +123 456 7891</li>
+          </ul>
+        </div>
+
+        <!-- Other Contact Sections (optional) -->
+        <div class="col-md-6">
+          <h5>Address</h5>
+          <p>123 Example Street, Example City, EX 12345</p>
+        </div>
+
+        <div class="col-md-2">
+          <h5>Social Media</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Facebook</a></li>
+            <li><a href="#" class="text-white">Twitter</a></li>
+            <li><a href="#" class="text-white">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 </body>
+
 </html>
