@@ -141,8 +141,9 @@ $(document).ready(function () {
     });
 
 
-
-
+    $('.filter-btn').on('click', function () {
+        $(this).toggleClass('active');
+    })
     // Handle Favourite Button Click
     $('.fav-btn').on('click', function () {
         $(this).toggleClass('active');

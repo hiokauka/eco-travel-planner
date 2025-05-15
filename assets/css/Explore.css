@@ -4,6 +4,7 @@
   background-color: #74a580;
   border-bottom: 2px solid rgb(52, 129, 64);
   /* ✅ border width, style, and color */
+ 
 }
 
 .nav-link {
@@ -183,4 +184,10 @@ footer {
 .card-body::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.2);
   /* Optional: changes thumb color on hover */
+}
+
+.filter-btn.active {
+  background-color: #2b6c3a;
+  color: #fff;
+  /* White text */
 }
