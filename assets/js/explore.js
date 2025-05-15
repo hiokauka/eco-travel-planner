@@ -220,3 +220,18 @@ $(document).ready(function () {
         }
     }
 });
+
+// Add active class to navbar links based on the current page URL
+document.addEventListener('DOMContentLoaded', function () {
+    const navLinks = document.querySelectorAll('.navbar .nav-link');
+    const currentUrl = window.location.href;
+
+    navLinks.forEach(function (link) {
+        const linkUrl = link.getAttribute('href');
+        if (currentUrl.includes(linkUrl)) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+});
