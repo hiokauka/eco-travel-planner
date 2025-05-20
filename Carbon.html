@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calculate your carbon emission</title>
 
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/Carbon.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/Carbon.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
   <!-- Bootstrap JS (optional) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
@@ -19,12 +20,11 @@
 </head>
 
 <body class="home">
-
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff ;">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
     <div class="container">
       <a href="Home.html">
-        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
+        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo" />
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
         aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,6 @@
       </button>
 
       <div class="collapse navbar-collapse  justify-content-between" id="myNavbar">
-
         <ul class="nav mx-auto">
           <li class="nav-item">
             <a class="nav-link btn custom-btn rounded-pill mx-4" href="Explore.html">Explore</a>
@@ -71,8 +70,8 @@
         </select>
       </div>
 
-      <!-- Distance -->
-      <div>
+      <!-- Country
+      <div class="form-group">
         <label for="country">Country</label>
         <select class="form-control" id="country">
           <option selected disabled>Select a country</option>
@@ -80,35 +79,25 @@
           <option>Indonesia</option>
           <option>Thailand</option>
           <option>Singapore</option>
-         
         </select>
+      </div> -->
 
-        <div class="form-row mt-3">
-          <div class="form-group col-md-6">
-            <label for="from">From</label>
-            <select class="form-control" id="from">
-              <option selected disabled>Select origin</option>
-              <option>Kuala Lumpur</option>
-              <option>Penang</option>
-              <option>Johor Bahru</option>
-              <option>Malacca</option>
-             
-            </select>
-          </div>
+      <div class="row">
+        <!-- From City (autocomplete) -->
+        <div class="col-md-6 form-group autocomplete">
+          <label for="fromInput">From</label>
+          <input type="text" class="form-control" id="fromInput" placeholder="Type origin city" autocomplete="off" />
+          <div id="fromSuggestions" class="autocomplete-suggestions"></div>
+        </div>
 
-          <div class="form-group col-md-6">
-            <label for="to">To</label>
-            <select class="form-control" id="to">
-              <option selected disabled>Select destination</option>
-              <option>Kuala Lumpur</option>
-              <option>Penang</option>
-              <option>Johor Bahru</option>
-              <option>Malacca</option>
-              
-            </select>
-          </div>
+        <!-- To City (autocomplete) -->
+        <div class="col-md-6 form-group autocomplete">
+          <label for="toInput">To</label>
+          <input type="text" class="form-control" id="toInput" placeholder="Type destination city" autocomplete="off" />
+          <div id="toSuggestions" class="autocomplete-suggestions"></div>
         </div>
       </div>
+
 
       <!-- Accommodation -->
       <div class="form-group">
@@ -123,7 +112,7 @@
       <!-- Nights -->
       <div class="form-group">
         <label for="nights">Number of Nights</label>
-        <input type="number" class="form-control" id="nights" placeholder="e.g. 3">
+        <input type="number" class="form-control" id="nights" placeholder="e.g. 3" />
       </div>
 
       <!-- Buttons -->
@@ -137,7 +126,7 @@
         </button>
       </div>
 
-
+      <!-- Modals (same as your original) -->
       <div class="modal fade" id="calculateModal" tabindex="-1" role="dialog" aria-labelledby="calculateModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -155,7 +144,6 @@
         </div>
       </div>
 
-      <!-- History Modal -->
       <div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -173,7 +161,6 @@
         </div>
       </div>
 
-      <!-- Tips Modal -->
       <div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-labelledby="tipsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -185,85 +172,19 @@
               </button>
             </div>
             <div class="modal-body">
-              - Walk or bike for short distances<br>
-              - Use public transportation<br>
+              - Walk or bike for short distances<br />
+              - Use public transportation<br />
               - Offset your carbon footprint with tree planting
             </div>
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Get all the nav links
-      const navLinks = document.querySelectorAll('.navbar .nav-link');
+ 
 
-      // Get the current URL
-      const currentUrl = window.location.href;
-
-      // Loop through each link to check if the href matches the current URL
-      navLinks.forEach(function (link) {
-        const linkUrl = link.getAttribute('href');
-
-        if (currentUrl.includes(linkUrl)) {
-          // Add the 'active' class to the matching link
-          link.classList.add('active');
-        } else {
-          // Remove the 'active' class from others
-          link.classList.remove('active');
-        }
-      });
-    });
-
-    function calculateCarbon() {
-      $('#calculateModal').modal('show');
-    }
-
-    function showHistory() {
-      $('#historyModal').modal('show');
-    }
-
-    function showTips() {
-      $('#tipsModal').modal('show');
-    }
-
-  </script>
-
-
-  <footer class=" py-4">
-    <div class="container">
-      <div class="row">
-        <!-- Contact Info -->
-        <div class="col-md-4">
-          <h5>Contact Information</h5>
-          <ul class="list-unstyled">
-            <li><strong>Email:</strong> <a href="mailto:info@example.com" class="text-white">info@example.com</a></li>
-            <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+123 456 7890</a></li>
-            <li><strong>Fax:</strong> +123 456 7891</li>
-          </ul>
-        </div>
-
-        <!-- Other Contact Sections (optional) -->
-        <div class="col-md-6">
-          <h5>Address</h5>
-          <p>123 Example Street, Example City, EX 12345</p>
-        </div>
-
-        <div class="col-md-2">
-          <h5>Social Media</h5>
-          <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Facebook</a></li>
-            <li><a href="#" class="text-white">Twitter</a></li>
-            <li><a href="#" class="text-white">Instagram</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <script src="/assets/js/carbon.js"></script>
 </body>
 
 </html>
