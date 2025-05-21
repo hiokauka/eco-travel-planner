@@ -62,31 +62,24 @@
       <h4 class="mb-3">Weather Forecast</h4>
 
 
-      <!-- Countryy picker -->
+      
       <div class="form-group">
-        <label for="citySelect">Select a Country</label>
-        <select class="form-control" id="citySelect">
-          <option value="kuala_lumpur">Malaysia</option>
-          <option value="penang">Indonesia</option>
-          <option value="melaka">Singapore</option>
-         
-        </select>
+        <label for="countryInput">Select a Country</label>
+        <input type="text" class="form-control" id="countryInput" autocomplete="off">
+        <div id="countrySuggestions" class="autocomplete-suggestions"></div>
       </div>
 
-      <!-- City/Place Picker -->
+      
       <div class="form-group">
-        <label for="citySelect">Select a City</label>
-        <select class="form-control" id="citySelect">
-          <option value="kuala_lumpur">Kuala Lumpur</option>
-          <option value="penang">Penang</option>
-          <option value="melaka">Melaka</option>
-        
-        </select>
+        <label for="cityInput">Select a City</label>
+        <input type="text" class="form-control" id="cityInput" autocomplete="off">
+        <div id="citySuggestions" class="autocomplete-suggestions"></div>
       </div>
+
 
       <!-- Real-Time Weather Display -->
       <div class="weather-info mt-4 p-3 border rounded bg-light">
-        <h5 id="weatherCity">Kuala Lumpur</h5>
+        <h5 id="weatherCity" style="font-weight: bold;"></h5>
         <p><strong>Temperature:</strong> <span id="weatherTemp">--°C</span></p>
         <p><strong>Humidity:</strong> <span id="weatherHumidity">--%</span></p>
         <p><strong>Description:</strong> <span id="weatherDesc">--</span></p>
@@ -96,7 +89,7 @@
       <div class="forecast mt-4">
         <h6>3-Day Forecast</h6>
         <div class="row" id="forecastCards">
-          
+
           <div class="col-md-4">
             <div class="card text-center p-3">
               <p class="mb-1"><strong>Mon</strong></p>
@@ -121,83 +114,7 @@
   </div>
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const navLinks = document.querySelectorAll('.navbar .nav-link');
-      const currentUrl = window.location.href;
-
-      navLinks.forEach(function (link) {
-        const linkUrl = link.getAttribute('href');
-        if (currentUrl.includes(linkUrl)) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-
-      // Dummy weather data
-      const weatherData = {
-        kuala_lumpur: {
-          city: 'Kuala Lumpur',
-          temp: '31°C',
-          humidity: '70%',
-          description: 'Partly Cloudy',
-          forecast: ['🌧️ 30°C', '⛅ 31°C', '☀️ 32°C'],
-          days: ['Mon', 'Tue', 'Wed']
-        },
-        penang: {
-          city: 'Penang',
-          temp: '29°C',
-          humidity: '75%',
-          description: 'Showers',
-          forecast: ['🌧️ 28°C', '🌧️ 27°C', '⛅ 29°C'],
-          days: ['Mon', 'Tue', 'Wed']
-        },
-        melaka: {
-          city: 'Melaka',
-          temp: '32°C',
-          humidity: '68%',
-          description: 'Sunny',
-          forecast: ['☀️ 32°C', '☀️ 33°C', '⛅ 31°C'],
-          days: ['Mon', 'Tue', 'Wed']
-        }
-      };
-
-      const citySelect = document.getElementById('citySelect');
-      const weatherCity = document.getElementById('weatherCity');
-      const weatherTemp = document.getElementById('weatherTemp');
-      const weatherHumidity = document.getElementById('weatherHumidity');
-      const weatherDesc = document.getElementById('weatherDesc');
-      const forecastCards = document.getElementById('forecastCards');
-
-      citySelect.addEventListener('change', function () {
-        const selectedCity = citySelect.value;
-        const data = weatherData[selectedCity];
-
-        // Update current weather info
-        weatherCity.textContent = data.city;
-        weatherTemp.textContent = data.temp;
-        weatherHumidity.textContent = data.humidity;
-        weatherDesc.textContent = data.description;
-
-        // Update forecast
-        forecastCards.innerHTML = '';
-        for (let i = 0; i < 3; i++) {
-          const card = `
-          <div class="col-md-4">
-            <div class="card text-center p-3">
-              <p class="mb-1"><strong>${data.days[i]}</strong></p>
-              <p class="mb-0">${data.forecast[i]}</p>
-            </div>
-          </div>`;
-          forecastCards.innerHTML += card;
-        }
-      });
-
-      // Trigger change once to load initial data
-      citySelect.dispatchEvent(new Event('change'));
-    });
-  </script>
+  <script src="/assets/js/weather.js"></script>
 
 
 

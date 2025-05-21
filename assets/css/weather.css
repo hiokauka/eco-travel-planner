@@ -1,58 +1,88 @@
 .navbar {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    background-color: #74a580;
-    border-bottom: 2px solid rgb(52, 129, 64); /* ✅ border width, style, and color */
-  }
-  
-  .nav-link {
-    font-size: 18px; /* or larger like 20px */
-    padding: 10px 20px; /* adjust spacing */
-  }
-  
-  .navbar-logo {
-    height: 160px;
-    /* Make it bigger */
-    margin-top: -30px;
-    /* Pull it upward to not stretch navbar */
-    margin-bottom: -30px;
-    /* Optional: prevent pushing nav links down */
-    margin-left: -50px;
-  }
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  background-color: #74a580;
+  border-bottom: 2px solid rgb(52, 129, 64);
+  /* ✅ border width, style, and color */
+}
 
-  .custom-btn {
-    background-color: #ffffff; /* Inside color = background */
-    color: rgb(0, 0, 0); /* Text color */
-    border: 2px solid rgb(52, 129, 64)
-  }
-  
-  /* Optional: when hover (when mouse over it) */
-  .custom-btn:hover {
-    background-color: #45a049; /* Slightly darker green on hover */
-    color: white;
-  }
+.nav-link {
+  font-size: 18px;
+  /* or larger like 20px */
+  padding: 10px 20px;
+  /* adjust spacing */
+}
 
-  .container-weather {
-  
-    background-color: #ffffff;
-    border: 2px solid rgb(52, 129, 64);
-    width: 70%;
-    margin-left: auto;
-    margin-right: auto;
-   
-  }
-  .join-us {
+.navbar-logo {
+  height: 160px;
+  /* Make it bigger */
+  margin-top: -30px;
+  /* Pull it upward to not stretch navbar */
+  margin-bottom: -30px;
+  /* Optional: prevent pushing nav links down */
+  margin-left: -50px;
+}
 
-    background-color: rgb(61, 112, 80);
-  }
-  
+.custom-btn {
+  background-color: #ffffff;
+  /* Inside color = background */
+  color: rgb(0, 0, 0);
+  /* Text color */
+  border: 2px solid rgb(52, 129, 64)
+}
+
+/* Optional: when hover (when mouse over it) */
+.custom-btn:hover {
+  background-color: #45a049;
+  /* Slightly darker green on hover */
+  color: white;
+}
+
+.container-weather {
+
+  background-color: #ffffff;
+  border: 2px solid rgb(52, 129, 64);
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.join-us {
+
+  background-color: rgb(61, 112, 80);
+}
+
 .nav-link.active {
-  background-color: #28a745; /* Green background for the active link */
-  color: #fff; /* White text */
+  background-color: #28a745;
+  /* Green background for the active link */
+  color: #fff;
+  /* White text */
 }
 
 footer {
-  background-color: #0a4919;;
+  background-color: #0a4919;
+  ;
   color: #ecf0f1;
 
+}
+
+.autocomplete-suggestions {
+
+  position: absolute;
+  background: white;
+  z-index: 1000;
+  width: 96%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-suggestion {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+  background-color: #f0f0f0;
 }
