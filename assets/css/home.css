@@ -28,6 +28,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Ensures the body takes up at least the full height of the viewport */
+  font-family: 'Montserrat', sans-serif;
 }
 
 
@@ -115,4 +116,25 @@ footer {
 
 .container-home{
   margin-bottom: 100px;
+}
+
+.logout-icon {
+  margin-left: 50px;
+  font-size: 40px;
+  /* Adjust the icon size */
+  cursor: pointer;
+  /* Makes the icon clickable */
+  color: #cb3434;
+  /* Icon color */
+  transition: color 0.3s ease;
+  /* Smooth color change on hover */
+}
+
+.logout-icon:hover {
+  color: #ff0000;
+  /* Red color on hover */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
 }

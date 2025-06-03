@@ -134,3 +134,7 @@ footer {
   color: #ff0000;
   /* Red color on hover */
 }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}

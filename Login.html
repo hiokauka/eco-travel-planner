@@ -1,54 +1,87 @@
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in</title>
-  
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  
-    <link rel="stylesheet" href="assets/css/login.css">
-  
-    <!-- Optional Bootstrap JavaScript (for interactive components like modals, dropdowns, etc.) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
-  </head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in</title>
 
-  <body>
-    <div class="container-fluid min-vh-100">
-      <div class="row h-100">
-        
-        <!-- Left Side: Background -->
-        <div class="col-md-7 d-none d-md-block p-0 bg-login container-logo">
-          
-           <img src="assets/images/logo.svg" alt="Logo" class="main-logo">
-         
-        </div>
-  
-        <div class="col-md-5 d-flex justify-content-center align-items-center p-4" style="border-left: 2px solid #316b3a;">
-          <div class="card login-card">
-            <h3 class="text-center mb-4">Sign In</h3>
-            <form>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-              </div>
-              <div class="mb-4">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-              </div>
-              
-              <a href="main.html" class="btn btn-primary">Sign In</a>
-            </form>
-            <div class="register-text">
-              <small>Don't have an account? <a href="Signup.html">Register</a></small>
+  <link rel="icon" type="image/png" href="assets/images/logo.svg">
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Optional Bootstrap JavaScript (for interactive components like modals, dropdowns, etc.) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container-fluid min-vh-100">
+    <div class="row h-100">
+
+      <!-- Left Side: Background -->
+      <div class="col-md-7 d-none d-md-block p-0 bg-login container-logo">
+
+        <img src="assets/images/logo.svg" alt="Logo" class="main-logo">
+
+      </div>
+
+      <div class="col-md-5 d-flex justify-content-center align-items-center p-4"
+        style="border-left: 2px solid #316b3a;">
+        <div class="card login-card">
+          <h3 class="text-center mb-4">Sign In</h3>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
             </div>
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign In</button>
+          </form>
+
+          <div class="register-text">
+            <small>Don't have an account? <a href="Signup.html">Register</a></small>
           </div>
         </div>
-        
-  
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- Stylish Login Status Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-lg border-0 rounded-lg">
+
+        <div class="modal-header bg-success text-white" id="loginModalHeader">
+          <h5 class="modal-title" id="loginModalLabel">
+            <i class="fas fa-sign-in-alt mr-2"></i>Login Status
+          </h5>
+          <button type="button" class="close text-white" id="loginModalCloseBtn"  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body text-center">
+          <div id="loginModalMessage" class="h5 text-dark"></div>
+        </div>
+
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-success px-4" id="loginModalOkBtn" data-dismiss="modal">
+            <i class="fas fa-check-circle mr-1"></i> OK
+          </button>
+        </div>
+
       </div>
     </div>
-  </body>
-  
+  </div>
+
+
+  <script src="assets/js/login.js"></script>
+</body>

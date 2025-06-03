@@ -45,6 +45,7 @@
   width: 70%;
   margin-left: auto;
   margin-right: auto;
+  
 
 }
 
@@ -115,4 +116,49 @@ footer {
   /* Green border on focus */
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
   /* Optional shadow effect */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+.autocomplete-suggestions {
+
+  position: absolute;
+  background: white;
+  z-index: 1000;
+  width: 96%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-suggestion {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+  background-color: #f0f0f0;
+}
+
+
+.logout-icon {
+  margin-left: 50px;
+  font-size: 40px;
+  /* Adjust the icon size */
+  cursor: pointer;
+  /* Makes the icon clickable */
+  color: #cb3434;
+  /* Icon color */
+  transition: color 0.3s ease;
+  /* Smooth color change on hover */
+}
+
+.logout-icon:hover {
+  color: #ff0000;
+  /* Red color on hover */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
 }

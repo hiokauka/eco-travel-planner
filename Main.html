@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teroka</title>
 
+  <link rel="icon" type="image/png" href="assets/images/logo.svg">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
@@ -49,7 +52,10 @@
         </ul>
 
         <ul class="nav">
-          <li class="nav-item">
+          <li class="nav-item" id="joinLi">
+            <a href="Login.html" class="btn btn-success rounded-pill join-us">Join Us</a>
+          </li>
+          <li class="nav-item" id="profileLi" style="display:none;">
             <i class="bi bi-person" style="font-size: 40px; cursor: pointer;" data-toggle="modal"
               data-target="#profileModal"></i>
           </li>
@@ -58,7 +64,7 @@
     </div>
   </nav>
 
-<!-- main content -->
+  <!-- main content -->
   <div class="container-home">
     <div class="container">
       <!-- First Row: Search form and Image side by side -->
@@ -66,16 +72,17 @@
         <!-- Left Side: Search Form -->
         <div class="col-md-6">
           <div class="lines-main text-start mb-3">
-            <h2 class="display-4 fw-bold">Your journey, <br> the earth's future</h2>
+            <h2 class="display-5 fw-bold">From the mountains to the sea, <br> roam with light-footed glee.</h2>
             <h3 class="display-8">
-              Travel isn’t just about the destination — it’s about the footprint we leave behind. Eco travel invites you
-              to explore the world in a way that respects nature, uplifts local communities, and preserves beauty for
-              future generations.
+              Travel is more than the sights you see — it’s the impact you make along the way.
+              Eco-conscious journeys invite you to experience the world with intention: to protect natural wonders,
+              empower local cultures, and ensure the planet thrives for generations to come. Whether you're kayaking
+              crystal-clear waters, staying with sustainable hosts, or embracing slow, low-carbon travel, your choices
+              matter.
 
-              Whether it’s hiking through lush forests, supporting eco-friendly stays, or choosing low-impact transport,
-              every step you take can be a step toward sustainability.
+              Make every journey count. Tread gently.
               <br><br>
-              Join the movement. Travel greener. Wander wiser. Leave only memories.
+              Explore consciously. Leave a legacy, not a trace.
             </h3>
           </div>
           <div class="container-explore shadow p-4">
@@ -101,6 +108,7 @@
 
     </div>
   </div>
+
   <!-- User Profile Modal -->
   <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -114,9 +122,11 @@
         </div>
 
         <div class="modal-body">
-          <p><strong><i class="fas fa-user"></i> Name:</strong> Abdul Rauf Hazim</p> <!-- User icon -->
-          <p><strong><i class="fas fa-envelope"></i> Email:</strong> raufhazim@example.com</p> <!-- Envelope icon -->
-          <p><strong><i class="fas fa-phone"></i> Phone Number:</strong> 1234567</p>
+          <!-- Replace hardcoded values with span tags -->
+          <p><strong><i class="fas fa-user"></i> Name:</strong> <span id="profileName"></span></p>
+          <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="profileEmail"></span></p>
+          <p><strong><i class="fas fa-phone"></i> Phone Number:</strong> <span id="profilePhone"></span></p>
+
           <p><strong><i class="fas fa-lock"></i> Password:</strong> *****</p> <!-- Lock icon -->
 
 
@@ -141,7 +151,7 @@
             <form id="changePasswordForm">
               <div class="form-group">
                 <label for="oldPassword">Old Password</label>
-                <input type="password" class="form-control" id="oldPassword" required>
+                <input type="password" class="form-control" id="currentPassword" required>
               </div>
               <div class="form-group">
                 <label for="newPassword">New Password</label>
@@ -149,7 +159,7 @@
               </div>
               <div class="form-group">
                 <label for="confirmPassword">Confirm New Password</label>
-                <input type="password" class="form-control" id="confirmPassword" required>
+                <input type="password" class="form-control" id="confirmNewPassword" required>
               </div>
               <button type="submit" class="btn btn-primary btn-sm">Update Password</button>
             </form>
@@ -170,13 +180,11 @@
               </div>
 
               <div class="form-group">
-                <label for="email">Phone Number</label>
+                <label for="phone">Phone Number</label>
                 <input type="tel" class="form-control" id="phone" placeholder="Enter your Phone number" required>
               </div>
 
-
-
-              <!-- Submit Button -->
+              <!-- Submit Button for updating profile -->
               <button type="submit" class="btn btn-success btn-sm">Update Profile</button>
             </form>
           </div>
@@ -228,25 +236,9 @@
     </div>
   </div>
 
-  <script>
 
-    // Use JavaScript to control opening and closing of collapse sections
-    $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').on('show.bs.collapse', function () {
-      // Close all other collapses when one is shown
-      $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').not(this).collapse('hide');
-    });
 
-    $('#profileModal').on('hidden.bs.modal', function () {
-      // Hide all collapsible sections
-      $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
-    });
-
-    function logoutUser() {
-      // Optionally clear any session or data if needed
-      localStorage.clear(); // Example: Clear local storage (if you're using it)
-      window.location.href = "Home.html"; // Redirect to Home page
-    }
-  </script>
+  <script src="/assets/js/main.js"></script>
 
   <footer class=" py-4">
     <div class="container">

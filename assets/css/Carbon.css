@@ -76,3 +76,28 @@ footer {
 .autocomplete {
   position: relative;
 }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.logout-icon {
+  margin-left: 50px;
+  font-size: 40px;
+  /* Adjust the icon size */
+  cursor: pointer;
+  /* Makes the icon clickable */
+  color: #cb3434;
+  /* Icon color */
+  transition: color 0.3s ease;
+  /* Smooth color change on hover */
+}
+
+.logout-icon:hover {
+  color: #ff0000;
+  /* Red color on hover */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}

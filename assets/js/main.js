@@ -159,125 +159,34 @@ document.addEventListener("DOMContentLoaded", () => {
  
 });
 
-
-// ==============================
-// Others Functions Section
-// ==============================
-
-document.addEventListener('DOMContentLoaded', function () {
-
-  
-
-  // Highlight active nav link (your existing code)
-  const navLinks = document.querySelectorAll('.navbar .nav-link');
-  const currentUrl = window.location.href;
-  navLinks.forEach(function (link) {
-    const linkUrl = link.getAttribute('href');
-    if (currentUrl.includes(linkUrl)) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
-
-  
-
-  // Use JavaScript to control opening and closing of collapse sections
+document.addEventListener("DOMContentLoaded", () => {
+// Collapse control
   $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').on('show.bs.collapse', function () {
-    // Close all other collapses when one is shown
     $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').not(this).collapse('hide');
   });
 
   $('#profileModal').on('hidden.bs.modal', function () {
-    // Hide all collapsible sections
     $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
   });
-});
+  // Show/hide nav items based on login
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const joinLi = document.getElementById("joinLi");
+  const profileLi = document.getElementById("profileLi");
 
-function calculateCarbon() {
-  $('#calculateModal').modal('show');
-}
-function showHistory() {
-  $('#historyModal').modal('show');
-}
-function showTips() {
-  $('#tipsModal').modal('show');
-}
-
-let cities = [];
-
-fetch('assets/data/cities_data.json')
-  .then(response => response.json())
-  .then(data => {
-    cities = data;
-    console.log('Loaded cities:', cities);
-  })
-  .catch(error => console.error('Error loading city data:', error));
-
-
-// Autocomplete handler - no filtering by country now
-function setupAutocomplete(inputId, suggestionsId) {
-  const input = document.getElementById(inputId);
-  const suggestionsBox = document.getElementById(suggestionsId);
-
-  input.addEventListener('input', function () {
-    const val = this.value.toLowerCase();
-    suggestionsBox.innerHTML = '';
-
-    if (!val) return;
-
-    const matches = cities.filter(city => city.city && city.city.toLowerCase().startsWith(val));
-
-    matches.forEach(city => {
-      const div = document.createElement('div');
-      div.textContent = city.city;
-      div.classList.add('autocomplete-suggestion');
-      div.addEventListener('click', () => {
-        input.value = city.city;
-        suggestionsBox.innerHTML = '';
-      });
-      suggestionsBox.appendChild(div);
-    });
+  if (isLoggedIn) {
+    joinLi.style.display = "none";
+    profileLi.style.display = "inline-block";
+  } else {
+    joinLi.style.display = "inline-block";
+    profileLi.style.display = "none";
+  }
   });
-
-
-  // Close suggestions if clicked outside
-  document.addEventListener('click', function (e) {
-    if (e.target !== input) {
-      suggestionsBox.innerHTML = '';
-    }
-  });
-}
-
-setupAutocomplete('fromInput', 'fromSuggestions');
-setupAutocomplete('toInput', 'toSuggestions');
-
-console.log(cities);
-
-const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-const joinLi = document.getElementById("joinLi");
-const profileLi = document.getElementById("profileLi");
-
-if (isLoggedIn) {
-  joinLi.style.display = "none";     // Hide Join Us li
-  profileLi.style.display = "inline-block"; // Show Profile li
-} else {
-  joinLi.style.display = "inline-block";
-  profileLi.style.display = "none";
-}
 
 function logoutUser() {
-  // Set login status to false
   localStorage.setItem("isLoggedIn", "false");
-
-  // Optionally clear any user info stored
   localStorage.removeItem("userName");
   localStorage.removeItem("userEmail");
-  // ... remove other user-related keys if you have any
 
-  // Reload page or redirect to homepage/login page
-  location.reload();  // reloads current page
-  // or: window.location.href = "Login.html";  // redirect to login page
+  location.reload();
+  // Optionally: window.location.href = "Login.html";
 }
-

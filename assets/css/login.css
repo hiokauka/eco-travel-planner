@@ -98,3 +98,22 @@
   color: #316b3a;
   font-weight: 500;
 }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.modal-content {
+  animation: fadeInUp 0.3s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

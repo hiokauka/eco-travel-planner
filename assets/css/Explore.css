@@ -4,7 +4,7 @@
   background-color: #74a580;
   border-bottom: 2px solid rgb(52, 129, 64);
   /* ✅ border width, style, and color */
- 
+
 }
 
 .nav-link {
@@ -86,38 +86,8 @@
 
 }
 
-.filter-btn {
-  background-color: transparent;
-  color: #28a745;
-  /* green text */
-  border: 2px solid #28a745;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-right: 10px;
-}
 
-.filter-btn:hover {
-  background-color: #2b6c3a;
-  color: white;
-}
 
-.fav-btn {
-  background-color: transparent;
-  color: #28a745;
-  /* green text */
-  border: 2px solid #28a745;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.fav-btn:hover {
-  background-color: #2b6c3a;
-  color: white;
-}
 
 .modal-img {
   width: 100%;
@@ -133,22 +103,17 @@
   /* White text */
 }
 
-.fav-btn.active {
-  background-color: #2b6c3a;
-  color: #fff;
-  /* White text */
-}
 
 footer {
   background-color: #0a4919;
   color: #ecf0f1;
   padding: 20px 0;
   width: 100%;
-  
+
 
 }
 
-.explore-content{
+.explore-content {
   min-height: 100vh;
 }
 
@@ -190,4 +155,71 @@ footer {
   background-color: #2b6c3a;
   color: #fff;
   /* White text */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.content-card {
+  border: 2px solid green !important;
+}
+
+.icon-btn {
+  background: none;
+  border: 2px solid green;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  color: green;
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
+}
+
+/* Active state */
+.icon-btn.active {
+  background-color: green;
+  color: white; 
+  border: 2px solid green !important;
+}
+
+
+.fav-btn {
+  background: none;
+  border: 2px solid green;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  color: green;
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
+}
+
+/* Active state */
+.fav-btn.active {
+  background-color: green;
+  color: white;
+  border: 2px solid green !important;
+}
+
+
+.logout-icon {
+  margin-left: 50px;
+  font-size: 40px;
+  /* Adjust the icon size */
+  cursor: pointer;
+  /* Makes the icon clickable */
+  color: #cb3434;
+  /* Icon color */
+  transition: color 0.3s ease;
+  /* Smooth color change on hover */
+}
+
+.logout-icon:hover {
+  color: #ff0000;
+  /* Red color on hover */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
 }
