@@ -5,158 +5,159 @@
 
 let originalEmail = "";
 console.log("Email in localStorage:", localStorage.getItem("userEmail"));
+
 document.addEventListener("DOMContentLoaded", () => {
-  const email = localStorage.getItem("userEmail");
-  console.log("Email in localStorage on main.html:", email);
-
-  if (email) {
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
-      .then(response => {
-        if (!response.ok) throw new Error('Network response not ok');
-        return response.json();
-      })
-      .then(userData => {
-        console.log("User data received:", userData);
-
-        // Update UI
-        document.getElementById('profileName').textContent = userData.name || "No name found";
-        document.getElementById('profileEmail').textContent = userData.email || "No email found";
-        document.getElementById('profilePhone').textContent = userData.phone || "No phone found";
-
-        // Pre-fill form
-        document.getElementById("name").value = userData.name || "";
-        document.getElementById("email").value = userData.email || "";
-        document.getElementById("phone").value = userData.phone || "";
-
-        originalEmail = userData.email;
-      })
-      .catch(error => console.error('Error fetching user data:', error));
-  } else {
-    console.log("User not logged in");
-  }
-
-
-  // change password
-  document.getElementById("changePasswordForm").addEventListener("submit", e => {
-    e.preventDefault();
-
     const email = localStorage.getItem("userEmail");
-    if (!email) {
-      alert("User not logged in.");
-      return;
+    console.log("Email in localStorage on main.html:", email);
+
+    if (email) {
+        fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response not ok');
+                return response.json();
+            })
+            .then(userData => {
+                console.log("User data received:", userData);
+
+                // Update UI
+                document.getElementById('profileName').textContent = userData.name || "No name found";
+                document.getElementById('profileEmail').textContent = userData.email || "No email found";
+                document.getElementById('profilePhone').textContent = userData.phone || "No phone found";
+
+                // Pre-fill form
+                document.getElementById("name").value = userData.name || "";
+                document.getElementById("email").value = userData.email || "";
+                document.getElementById("phone").value = userData.phone || "";
+
+                originalEmail = userData.email;
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+    } else {
+        console.log("User not logged in");
     }
 
-    const currentPassword = document.getElementById("currentPassword").value.trim();
-    const newPassword = document.getElementById("newPassword").value.trim();
-    const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
-    if (!currentPassword || !newPassword || !confirmNewPassword) {
-      alert("Please fill in all password fields.");
-      return;
-    }
+    // change password
+    document.getElementById("changePasswordForm").addEventListener("submit", e => {
+        e.preventDefault();
 
-    if (newPassword !== confirmNewPassword) {
-      alert("New password and confirmation do not match.");
-      return;
-    }
-
-    fetch("http://localhost:3000/users/update-password", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
-    })
-      .then(res => {
-        if (!res.ok) {
-          return res.json().then(errData => {
-            throw new Error(errData.message || 'Failed to change password');
-          });
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            alert("User not logged in.");
+            return;
         }
-        return res.json();
-      })
-      .then(data => {
-        alert(data.message || "Password changed successfully.");
-        document.getElementById("currentPassword").value = "";
-        document.getElementById("newPassword").value = "";
-        document.getElementById("confirmNewPassword").value = "";
-        $("#changePasswordSection").collapse('hide');
-      })
-      .catch(err => {
-        console.error("Error changing password:", err);
-        alert(err.message || "An error occurred while changing password.");
-      });
 
-  });
+        const currentPassword = document.getElementById("currentPassword").value.trim();
+        const newPassword = document.getElementById("newPassword").value.trim();
+        const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
+
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            alert("Please fill in all password fields.");
+            return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            alert("New password and confirmation do not match.");
+            return;
+        }
+
+        fetch("http://localhost:3000/users/update-password", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
+        })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(errData => {
+                        throw new Error(errData.message || 'Failed to change password');
+                    });
+                }
+                return res.json();
+            })
+            .then(data => {
+                alert(data.message || "Password changed successfully.");
+                document.getElementById("currentPassword").value = "";
+                document.getElementById("newPassword").value = "";
+                document.getElementById("confirmNewPassword").value = "";
+                $("#changePasswordSection").collapse('hide');
+            })
+            .catch(err => {
+                console.error("Error changing password:", err);
+                alert(err.message || "An error occurred while changing password.");
+            });
+
+    });
 
 
 
-  // Update profile
-  document.getElementById("updateProfileForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+    // Update profile
+    document.getElementById("updateProfileForm").addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
 
-    if (!name || !email || !phone) {
-      alert("Please fill in all fields.");
-      return;
-    }
+        if (!name || !email || !phone) {
+            alert("Please fill in all fields.");
+            return;
+        }
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone })
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || "Profile updated successfully.");
+        fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, phone })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || "Profile updated successfully.");
 
-        document.getElementById("profileName").textContent = name;
-        document.getElementById("profileEmail").textContent = email;
-        document.getElementById("profilePhone").textContent = phone;
+                document.getElementById("profileName").textContent = name;
+                document.getElementById("profileEmail").textContent = email;
+                document.getElementById("profilePhone").textContent = phone;
 
-        localStorage.setItem("userEmail", email);
-        originalEmail = email;
+                localStorage.setItem("userEmail", email);
+                originalEmail = email;
 
-        $("#updateprofileSection").collapse('hide');
-      })
-      .catch(err => {
-        console.error("Error updating profile:", err);
-        alert("An error occurred while updating your profile.");
-      });
-  });
+                $("#updateprofileSection").collapse('hide');
+            })
+            .catch(err => {
+                console.error("Error updating profile:", err);
+                alert("An error occurred while updating your profile.");
+            });
+    });
 
-   // Delete account
-  document.getElementById("deleteYesButton").addEventListener("click", function () {
-    const email = localStorage.getItem("userEmail");
-    if (!email) {
-      alert("No user email found.");
-      return;
-    }
+    // Delete account
+    document.getElementById("deleteYesButton").addEventListener("click", function () {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            alert("No user email found.");
+            return;
+        }
 
-    if (!confirm("This will permanently delete your account. Are you sure?")) return;
+        if (!confirm("This will permanently delete your account. Are you sure?")) return;
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || "Account deleted.");
+        fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || "Account deleted.");
 
-        localStorage.clear();
-        window.location.href = "home.html";
-      })
-      .catch(err => {
-        console.error("Error deleting account:", err);
-        alert("An error occurred while deleting your account.");
-      });
-  });
+                localStorage.clear();
+                window.location.href = "home.html";
+            })
+            .catch(err => {
+                console.error("Error deleting account:", err);
+                alert("An error occurred while deleting your account.");
+            });
+    });
 
-  
 
- 
+
+
 });
 
 
@@ -180,6 +181,9 @@ $(document).ready(function () {
 
 
 
+    //===============
+    //add to fav part
+    //===============
 
     const favArray = [];
     let currentQueryType = 'tourist attractions'; // default fallback
@@ -221,6 +225,22 @@ $(document).ready(function () {
                 cardsContainer.insertAdjacentHTML('beforeend', cardHTML);
             });
 
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const favRes = await fetch(`http://localhost:3000/favorites?email=${userEmail}`);
+                const favorites = await favRes.json();
+                const favNames = favorites.map(f => f.place_name);
+
+                document.querySelectorAll('#cards-container .card').forEach(card => {
+                    const name = card.dataset.name;
+                    if (favNames.includes(name)) {
+                        const btn = card.querySelector('.add-to-favourite');
+                        btn.disabled = true;
+                        btn.textContent = 'Added ✓';
+                    }
+                });
+            }
+
         } catch (error) {
             cardsContainer.innerHTML = `<p>Error fetching data</p>`;
             console.error('Fetch failed:', error);
@@ -246,12 +266,12 @@ $(document).ready(function () {
     function createCard(place) {
         return `
         <div class="col-md-4 mb-4">
-            <div class="card border-success" data-name="${place.name}" data-location="${place.location}" data-desc="${place.desc}" data-tags="${place.tags.join(', ')}" data-img="${place.img}" data-toggle="modal" data-target="#placeDetailModal">
-                <img src="${place.img}" class="card-img-top" alt="${place.name}" style="height: 200px; object-fit: cover;">
+            <div class="card border-success" data-name="${place.name}" data-location="${place.location}" data-desc="${place.desc}" data-tags="${place.tags.join(', ')}" data-img="${place.img}" >
+                <img src="${place.img}" class=" card-img-top modal-trigger" alt="${place.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">${place.name}</h5>
-                    <p class="card-text">${place.desc}</p>
-                    <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> ${place.location}</p>
+                    <h5 class="card-title modal-trigger">${place.name}</h5>
+                    <p class="card-text modal-trigger">${place.desc}</p>
+                    <p class="text-muted modal-trigger"><i class="bi bi-geo-alt-fill"></i> ${place.location}</p>
                     ${place.tags.map(tag => `<span class="badge badge-success">${tag}</span>`).join(' ')}
                 </div>
                 <div class="card-footer text-right bg-white">
@@ -261,6 +281,39 @@ $(document).ready(function () {
         </div>
         `;
     }
+
+    document.getElementById('cards-container').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-trigger')) {
+            const card = e.target.closest('.card');
+            console.log('Clicked modal-trigger element:', e.target);
+            console.log('Closest card element:', card);
+            console.log('Card dataset:', card ? card.dataset : 'No card found');
+
+            // Populate modal fields with data from the clicked card
+            const name = card.dataset.name || 'No title';
+            const location = card.dataset.location || 'No location';
+            const desc = card.dataset.desc || 'No description available.';
+            const tags = card.dataset.tags || '';
+            const img = card.dataset.img || 'https://dummyimage.com/600x400/cccccc/000000&text=No+Image';
+
+            $('#modalPlaceTitle').text(name);
+            $('#modalPlaceImage').attr('src', img).attr('alt', name);
+            $('#modalPlaceLocation').html('<i class="bi bi-geo-alt-fill"></i> ' + location);
+            $('#modalPlaceDesc').text(desc);
+
+            if (tags) {
+                const tagArray = tags.split(',').map(tag => `<span class="badge badge-success mr-1">${tag.trim()}</span>`).join('');
+                $('#modalPlaceTags').html(tagArray);
+            } else {
+                $('#modalPlaceTags').html('No tags available.');
+            }
+
+            // Show the modal (jQuery way in BS4)
+            $('#placeDetailModal').modal('show');
+        }
+    });
+
+
 
     // Function to generate a favourite card
     function createFavCard(place) {
@@ -286,74 +339,148 @@ $(document).ready(function () {
     }
 
 
-    // Modal functionality for card click
-    $('#placeDetailModal').on('show.bs.modal', function (event) {
-        console.log('Modal show event triggered!');
-        var card = $(event.relatedTarget); // card that triggered modal
-        console.log(card.data()); // to check all data attributes
+    console.log('cards-container element:', document.getElementById('cards-container'));
 
-        // Get data attributes
-        var name = card.data('name');
-        var location = card.data('location');
-        var desc = card.data('desc');
-        var tags = card.data('tags');
-        var img = card.data('img');
+    document.getElementById('cards-container').addEventListener('click', (e) => {
+        console.log('Clicked element:', e.target);
+    });
 
-        // Set modal content
-        var modal = $(this);
-        modal.find('#modalPlaceTitle').text(name || 'No title');
-        modal.find('#modalPlaceImage').attr('src', img || 'https://via.placeholder.com/600x400?text=No+Image').attr('alt', name || '');
-        modal.find('#modalPlaceDesc').text(desc || 'No description available.');
-        modal.find('#modalPlaceLocation').html('<i class="bi bi-geo-alt-fill"></i> ' + (location || 'No location'));
+    $('#cards-container').on('click', '.add-to-favourite', async function (e) {
+        e.preventDefault();
+        console.log('Add to favourite button clicked');
 
-        if (tags) {
-            var tagArray = tags.split(',').map(function (tag) {
-                return `<span class="badge badge-success mr-1">${tag.trim()}</span>`;
-            }).join('');
-            modal.find('#modalPlaceTags').html(tagArray);
-        } else {
-            modal.find('#modalPlaceTags').html('No tags available.');
+        const card = $(this).closest('.card')[0];
+        if (!card) {
+            console.log('No card found for this button');
+            return;
+        }
+
+        // Define placeData from the card's dataset
+        const placeData = {
+            name: card.dataset.name,
+            location: card.dataset.location,
+            desc: card.dataset.desc,
+            tags: card.dataset.tags ? card.dataset.tags.split(',').map(t => t.trim()) : [],
+            img: card.dataset.img
+        };
+
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+            alert('Please login first to add favourites.');
+            return;
+        }
+
+        const payload = {
+            place_name: placeData.name,
+            place_address: placeData.location,
+            place_type: placeData.tags.join(', '),
+            place_rating: parseFloat(placeData.desc?.match(/[\d.]+/)?.[0]) || null,
+            place_photo: placeData.img,
+            email: userEmail
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/favorites/addtofav', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add favourite');
+            }
+
+            alert('Added to favourites!');
+            $(this).prop('disabled', true).text('Added ✓');
+
+        } catch (err) {
+            console.error(err);
+            alert('Error adding favourite, try again later.');
         }
     });
 
+
+    
 
 
     // Add/Remove from favourites logic
-    $(document).on('click', '.add-to-favourite', function (event) {
-        event.stopPropagation();
+    // $(document).on('click', '.add-to-favourite', async function (event) {
+    //     event.stopPropagation();
 
-        const card = $(this).closest('.card');
-        const name = card.data('name');
-        const location = card.data('location');
-        const desc = card.data('desc');
-        const tags = card.data('tags');
-        const img = card.data('img');
+    //     const card = $(this).closest('.card');
+    //     const name = card.data('name');
+    //     const location = card.data('location');
+    //     const desc = card.data('desc');
+    //     const tags = card.data('tags');
+    //     const img = card.data('img');
 
-        const index = favArray.findIndex(item => item.name === name);
+    //     const index = favArray.findIndex(item => item.name === name);
 
-        if (index === -1) {
-            // Not in favourites – add it
-            favArray.push({ name, location, desc, tags, img });
-            console.log(`${name} added to favourites.`);
+    //     if (index === -1) {
+    //         // Not in favourites – add it to the favArray
+    //         favArray.push({ name, location, desc, tags, img });
+    //         console.log(`${name} added to favourites.`);
 
-            // Change button to filled heart
-            $(this).html('<i class="bi bi-heart-fill text-danger"></i>');
-        } else {
-            // Already in favourites – remove it
-            favArray.splice(index, 1);
-            console.log(`${name} removed from favourites.`);
+    //         // --- SAVE TO DATABASE ---
+    //         try {
+    //             const response = await fetch('http://localhost:3000/favourites', {
+    //                 method: 'POST',
+    //                 headers: { 'Content-Type': 'application/json' },
+    //                 body: JSON.stringify({
+    //                     place_name: name,
+    //                     place_address: location,
+    //                     place_type: tags,
+    //                     place_rating: parseFloat(desc.replace('Rating: ⭐', '').trim()) || null,
+    //                     place_photo: img,
+    //                     userid: 'USER_ID_HERE' // Replace this with real user ID
+    //                 })
+    //             });
 
-            // Change button to "Add to favourite" text
-            $(this).html('Add to favourite');
+    //             if (!response.ok) {
+    //                 console.error('Failed to save to DB:', response.statusText);
+    //             } else {
+    //                 console.log('Saved to DB!');
+    //             }
+    //         } catch (err) {
+    //             console.error('Fetch error:', err);
+    //         }
+
+    //         $(this).html('<i class="bi bi-heart-fill text-danger"></i>');
+    //     } else {
+    //         // Already in favourites – remove from favArray
+    //         favArray.splice(index, 1);
+    //         console.log(`${name} removed from favourites.`);
+
+    //         // Optional: Also delete from DB (if you build a DELETE route)
+    //         $(this).html('Add to favourite');
+    //     }
+
+    //     console.log(favArray); // Debug
+    // });
+
+    async function loadFavoritesFromDB(userid) {
+        try {
+            const res = await fetch(`http://localhost:3000/favourites/user/${userid}`); // You'll need a GET route for this
+            const favorites = await res.json();
+
+            favArray.length = 0; // Clear
+            favArray.push(...favorites.map(fav => ({
+                name: fav.place_name,
+                location: fav.place_address,
+                desc: `Rating: ⭐ ${fav.place_rating}`,
+                tags: fav.place_type.split(','),
+                img: fav.place_photo
+            })));
+
+            console.log("Loaded favorites:", favArray);
+        } catch (err) {
+            console.error("Error loading favorites:", err);
         }
-
-        console.log(favArray); // Debug
-    });
+    }
 
 
-    $('.filter-btn').on('click', function () {
-        $(this).toggleClass('active');
-    })
+
+
     // Handle Favourite Button Click
     $('.fav-btn').on('click', function () {
         $(this).toggleClass('active');
@@ -379,62 +506,62 @@ $(document).ready(function () {
 
 
 
-    // Remove from favourites functionality (for "Remove from favourite" button)
-    $(document).on('click', '.remove-from-favourite', function () {
-        const card = $(this).closest('.card');
-        const name = card.find('.card-title').text(); // Get the name directly from the card
-        const location = card.find('.text-muted').text().trim(); // Get the location from the card
-        const desc = card.find('.card-text').text(); // Get the description from the card
-        const tags = card.data('tags'); // Get the tags directly from the card's data
-        const img = card.find('img').attr('src'); // Get the image from the card
+    // // Remove from favourites functionality (for "Remove from favourite" button)
+    // $(document).on('click', '.remove-from-favourite', function () {
+    //     const card = $(this).closest('.card');
+    //     const name = card.find('.card-title').text(); // Get the name directly from the card
+    //     const location = card.find('.text-muted').text().trim(); // Get the location from the card
+    //     const desc = card.find('.card-text').text(); // Get the description from the card
+    //     const tags = card.data('tags'); // Get the tags directly from the card's data
+    //     const img = card.find('img').attr('src'); // Get the image from the card
 
-        const index = favArray.findIndex(item => item.name === name);
+    //     const index = favArray.findIndex(item => item.name === name);
 
-        if (index !== -1) {
-            // If it's in favourites – remove it
-            favArray.splice(index, 1);
-            console.log(`${name} removed from favourites.`);
+    //     if (index !== -1) {
+    //         // If it's in favourites – remove it
+    //         favArray.splice(index, 1);
+    //         console.log(`${name} removed from favourites.`);
 
-            // Change the button back to "Add to favourite"
-            $(this).closest('.card').find('.add-to-favourite').html('Add to favourite');
-            updateAddToFavouriteButton(name, 'empty');
-        }
+    //         // Change the button back to "Add to favourite"
+    //         $(this).closest('.card').find('.add-to-favourite').html('Add to favourite');
+    //         updateAddToFavouriteButton(name, 'empty');
+    //     }
 
-        console.log(favArray); // Debug
-        updateFavContainer();
+    //     console.log(favArray); // Debug
+    //     updateFavContainer();
 
-    });
+    // });
 
-    // Function to update the favourite container
-    function updateFavContainer() {
-        // Clear the fav card container
-        favCardContainer.empty();
+    // // Function to update the favourite container
+    // function updateFavContainer() {
+    //     // Clear the fav card container
+    //     favCardContainer.empty();
 
-        // Check if favArray is empty
-        if (favArray.length === 0) {
-            // Append a "No favourites" message if favArray is empty
-            favCardContainer.append('<p>No favourites yet. Add some places to your favourites!</p>');
-        } else {
-            // Otherwise, append the fav cards
-            favArray.forEach(favPlace => {
-                const favCardHtml = createFavCard(favPlace);
-                favCardContainer.append(favCardHtml);
-            });
-        }
-    }
+    //     // Check if favArray is empty
+    //     if (favArray.length === 0) {
+    //         // Append a "No favourites" message if favArray is empty
+    //         favCardContainer.append('<p>No favourites yet. Add some places to your favourites!</p>');
+    //     } else {
+    //         // Otherwise, append the fav cards
+    //         favArray.forEach(favPlace => {
+    //             const favCardHtml = createFavCard(favPlace);
+    //             favCardContainer.append(favCardHtml);
+    //         });
+    //     }
+    // }
 
 
-    function updateAddToFavouriteButton(name, status) {
-        // Find the card in the main container
-        const card = cardContainer.find(`.card[data-name="${name}"]`);
-        const button = card.find('.add-to-favourite');
+    // function updateAddToFavouriteButton(name, status) {
+    //     // Find the card in the main container
+    //     const card = cardContainer.find(`.card[data-name="${name}"]`);
+    //     const button = card.find('.add-to-favourite');
 
-        if (status === 'filled') {
-            button.html('<i class="bi bi-heart-fill text-danger"></i>');
-        } else {
-            button.html('Add to favourite');
-        }
-    }
+    //     if (status === 'filled') {
+    //         button.html('<i class="bi bi-heart-fill text-danger"></i>');
+    //     } else {
+    //         button.html('Add to favourite');
+    //     }
+    // }
 
 
     document.querySelectorAll('.icon-btn:not(.fav-btn)').forEach(btn => {
@@ -469,6 +596,10 @@ $(document).ready(function () {
 
 
 });
+
+//==========
+//others
+//==========
 
 // Add active class to navbar links based on the current page URL
 document.addEventListener('DOMContentLoaded', function () {
