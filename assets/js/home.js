@@ -205,3 +205,12 @@ function logoutUser() {
     // or: window.location.href = "Login.html";  // redirect to login page
 }
 
+document.getElementById('search-btn').addEventListener('click', (event) => {
+  event.preventDefault();
+    const query = document.getElementById('place').value.trim();
+    console.log(query)
+      if (query !== '') {
+        // Redirect to explore.html and pass the query as a URL parameter
+        window.location.href = `explore.html?query=${encodeURIComponent(query)}`;
+      }
+  });

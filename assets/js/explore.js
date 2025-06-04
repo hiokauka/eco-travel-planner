@@ -1,7 +1,8 @@
 
 // ==============================
 // API Functions Section
-// ==============================
+// ==============================   
+let currentQueryType = 'tourist attractions'; // default fallback
 
 let originalEmail = "";
 console.log("Email in localStorage:", localStorage.getItem("userEmail"));
@@ -185,16 +186,23 @@ $(document).ready(function () {
     //add to fav part
     //===============
 
-    const favArray = [];
-    let currentQueryType = 'tourist attractions'; // default fallback
+
+
 
     // Containers where the cards will be added
     const cardContainer = $('#cards-container');
     const favCardContainer = $('#favourite-card-container');
 
-    async function searchPlaces(query) {
+    window.searchPlaces = async function (query) {
+
         const cardsContainer = document.getElementById('cards-container');
-        cardsContainer.innerHTML = ''; // Clear old results
+        cardsContainer.innerHTML = `
+  <div class="d-flex justify-content-center align-items-center" style="height: 200px; width: 100%;">
+    <div class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+`;
 
         try {
             const res = await fetch(`http://localhost:3000/places?query=${encodeURIComponent(query)}`);
@@ -207,6 +215,7 @@ $(document).ready(function () {
 
             const data = await res.json();
             console.log('API response:', data);
+            cardsContainer.innerHTML = ''; // clear before adding new cards
 
             if (!data.places || !Array.isArray(data.places) || data.places.length === 0) {
                 cardsContainer.innerHTML = '<p>No results found.</p>';
@@ -248,11 +257,31 @@ $(document).ready(function () {
     }
 
 
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    const rawQuery = getQueryParam('query');
+
+    if (rawQuery) {
+        $('#locationInput').val(rawQuery);
+        console.log('Set location input to:', $('#locationInput').val());
+        setTimeout(() => {
+            $('#searchForm').submit();
+        }, 50);
+    }
+    // } else {
+    //     // searchPlaces(`${currentQueryType} in Kuala Lumpur`);
+    // }
 
     $('#searchForm').on('submit', function (e) {
         e.preventDefault();
 
         const location = $('#locationInput').val().trim();
+        $('#locationInput').val(location);
+        console.log('Submitting search for:', location);
+
         if (location) {
             const query = `${currentQueryType} in ${location}`;
             $('#cards-container').empty();
@@ -285,9 +314,35 @@ $(document).ready(function () {
     document.getElementById('cards-container').addEventListener('click', (e) => {
         if (e.target.classList.contains('modal-trigger')) {
             const card = e.target.closest('.card');
-            console.log('Clicked modal-trigger element:', e.target);
-            console.log('Closest card element:', card);
-            console.log('Card dataset:', card ? card.dataset : 'No card found');
+
+            // Populate modal fields with data from the clicked card
+            const name = card.dataset.name || 'No title';
+            const location = card.dataset.location || 'No location';
+            const desc = card.dataset.desc || 'No description available.';
+            const tags = card.dataset.tags || '';
+            const img = card.dataset.img || 'https://dummyimage.com/600x400/cccccc/000000&text=No+Image';
+
+            $('#modalPlaceTitle').text(name);
+            $('#modalPlaceImage').attr('src', img).attr('alt', name);
+            $('#modalPlaceLocation').html('<i class="bi bi-geo-alt-fill"></i> ' + location);
+            $('#modalPlaceDesc').text(desc);
+
+            if (tags) {
+                const tagArray = tags.split(',').map(tag => `<span class="badge badge-success mr-1">${tag.trim()}</span>`).join('');
+                $('#modalPlaceTags').html(tagArray);
+            } else {
+                $('#modalPlaceTags').html('No tags available.');
+            }
+
+            // Show the modal (jQuery way in BS4)
+            $('#placeDetailModal').modal('show');
+        }
+    });
+
+
+    document.getElementById('favourite-card-container').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-trigger')) {
+            const card = e.target.closest('.card');
 
             // Populate modal fields with data from the clicked card
             const name = card.dataset.name || 'No title';
@@ -317,37 +372,46 @@ $(document).ready(function () {
 
     // Function to generate a favourite card
     function createFavCard(place) {
-        // Ensure tags is always an array
-        const tags = Array.isArray(place.tags) ? place.tags : []; // Default to empty array if tags isn't an array
+        // Create mapped favPlace object from raw place
+        const favPlace = {
+            name: place.place_name,
+            location: place.place_address,
+            desc: `Rating: ⭐ ${place.place_rating || 'No rating'}`,
+            tags: place.place_type ? place.place_type.split(',').map(t => t.trim()) : [],
+            img: place.place_photo || 'https://via.placeholder.com/300x200?text=No+Image'
+        };
 
+        // Use favPlace in the template
         return `
-        <div class="col-md-4 mb-4">
-            <div class="card content-card">
-                <img src="${place.img}" class="card-img-top" alt="${place.name}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">${place.name}</h5>
-                    <p class="card-text">${place.desc}</p>
-                    <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> ${place.location}</p>
-                    ${tags.map(tag => `<span class="badge badge-success">${tag}</span>`).join(' ')}
-                </div>
-                <div class="card-footer text-right bg-white">
-                    <button class="btn btn-outline-danger btn-sm remove-from-favourite">Remove from favourite</button>
-                </div>
+    <div class="col-md-4 mb-4">
+        <div class="card content-card"    data-favid="${place.favid}"   data-name="${favPlace.name}"
+             data-location="${favPlace.location}"
+             data-desc="${favPlace.desc}"
+             data-tags="${favPlace.tags.join(', ')}"
+             data-img="${favPlace.img}">
+            <img src="${favPlace.img}" class=" modal-trigger card-img-top" alt="${favPlace.name}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title modal-trigger">${favPlace.name}</h5>
+                <p class="card-text modal-trigger">${favPlace.desc}</p>
+                <p class="text-muted modal-trigger"><i class="bi bi-geo-alt-fill"></i> ${favPlace.location}</p>
+                ${favPlace.tags.map(tag => `<span class="badge badge-success">${tag}</span>`).join(' ')}
+            </div>
+            <div class="card-footer text-right bg-white">
+                <button class="btn btn-outline-danger btn-sm remove-from-favourite">Remove from favourite</button>
             </div>
         </div>
+    </div>
     `;
     }
 
 
-    console.log('cards-container element:', document.getElementById('cards-container'));
 
-    document.getElementById('cards-container').addEventListener('click', (e) => {
-        console.log('Clicked element:', e.target);
-    });
+
+
 
     $('#cards-container').on('click', '.add-to-favourite', async function (e) {
         e.preventDefault();
-        console.log('Add to favourite button clicked');
+
 
         const card = $(this).closest('.card')[0];
         if (!card) {
@@ -366,7 +430,7 @@ $(document).ready(function () {
 
         const userEmail = localStorage.getItem('userEmail');
         if (!userEmail) {
-            alert('Please login first to add favourites.');
+            showMessageModal('Please Log in first!');
             return;
         }
 
@@ -390,93 +454,17 @@ $(document).ready(function () {
                 throw new Error('Failed to add favourite');
             }
 
-            alert('Added to favourites!');
+            showMessageModal('Added to favourites successfully!');
             $(this).prop('disabled', true).text('Added ✓');
 
         } catch (err) {
             console.error(err);
-            alert('Error adding favourite, try again later.');
+            showMessageModal('Error adding to favourites!');
         }
     });
 
 
-    
 
-
-    // Add/Remove from favourites logic
-    // $(document).on('click', '.add-to-favourite', async function (event) {
-    //     event.stopPropagation();
-
-    //     const card = $(this).closest('.card');
-    //     const name = card.data('name');
-    //     const location = card.data('location');
-    //     const desc = card.data('desc');
-    //     const tags = card.data('tags');
-    //     const img = card.data('img');
-
-    //     const index = favArray.findIndex(item => item.name === name);
-
-    //     if (index === -1) {
-    //         // Not in favourites – add it to the favArray
-    //         favArray.push({ name, location, desc, tags, img });
-    //         console.log(`${name} added to favourites.`);
-
-    //         // --- SAVE TO DATABASE ---
-    //         try {
-    //             const response = await fetch('http://localhost:3000/favourites', {
-    //                 method: 'POST',
-    //                 headers: { 'Content-Type': 'application/json' },
-    //                 body: JSON.stringify({
-    //                     place_name: name,
-    //                     place_address: location,
-    //                     place_type: tags,
-    //                     place_rating: parseFloat(desc.replace('Rating: ⭐', '').trim()) || null,
-    //                     place_photo: img,
-    //                     userid: 'USER_ID_HERE' // Replace this with real user ID
-    //                 })
-    //             });
-
-    //             if (!response.ok) {
-    //                 console.error('Failed to save to DB:', response.statusText);
-    //             } else {
-    //                 console.log('Saved to DB!');
-    //             }
-    //         } catch (err) {
-    //             console.error('Fetch error:', err);
-    //         }
-
-    //         $(this).html('<i class="bi bi-heart-fill text-danger"></i>');
-    //     } else {
-    //         // Already in favourites – remove from favArray
-    //         favArray.splice(index, 1);
-    //         console.log(`${name} removed from favourites.`);
-
-    //         // Optional: Also delete from DB (if you build a DELETE route)
-    //         $(this).html('Add to favourite');
-    //     }
-
-    //     console.log(favArray); // Debug
-    // });
-
-    async function loadFavoritesFromDB(userid) {
-        try {
-            const res = await fetch(`http://localhost:3000/favourites/user/${userid}`); // You'll need a GET route for this
-            const favorites = await res.json();
-
-            favArray.length = 0; // Clear
-            favArray.push(...favorites.map(fav => ({
-                name: fav.place_name,
-                location: fav.place_address,
-                desc: `Rating: ⭐ ${fav.place_rating}`,
-                tags: fav.place_type.split(','),
-                img: fav.place_photo
-            })));
-
-            console.log("Loaded favorites:", favArray);
-        } catch (err) {
-            console.error("Error loading favorites:", err);
-        }
-    }
 
 
 
@@ -499,69 +487,81 @@ $(document).ready(function () {
             updateFavContainer();
         } else {
             // If button is not active, show all cards
-            cardContainer.show(); // Show the main card container
-            favCardContainer.hide(); // Hide the favourite card container
+            favCardContainer.hide(); // Hide favourites 
+            // $('#cards-container').empty(); // Clear previous cards
+            console.log(currentQueryType)
+            // Resubmit search based on current location and query type
+            $('#searchForm').submit();
+            $('#cards-container').show();
         }
     });
 
 
+    async function updateFavContainer() {
+        const favCardContainer = $('#favourite-card-container');
+        favCardContainer.empty(); // Clear old favorites
 
-    // // Remove from favourites functionality (for "Remove from favourite" button)
-    // $(document).on('click', '.remove-from-favourite', function () {
-    //     const card = $(this).closest('.card');
-    //     const name = card.find('.card-title').text(); // Get the name directly from the card
-    //     const location = card.find('.text-muted').text().trim(); // Get the location from the card
-    //     const desc = card.find('.card-text').text(); // Get the description from the card
-    //     const tags = card.data('tags'); // Get the tags directly from the card's data
-    //     const img = card.find('img').attr('src'); // Get the image from the card
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) return;
 
-    //     const index = favArray.findIndex(item => item.name === name);
+        try {
+            const res = await fetch(`http://localhost:3000/favorites?email=${userEmail}`);
+            const favorites = await res.json();
 
-    //     if (index !== -1) {
-    //         // If it's in favourites – remove it
-    //         favArray.splice(index, 1);
-    //         console.log(`${name} removed from favourites.`);
+            if (favorites.length === 0) {
+                favCardContainer.html('<p class="text-center w-100">No favorites yet.</p>');
+                return;
+            }
 
-    //         // Change the button back to "Add to favourite"
-    //         $(this).closest('.card').find('.add-to-favourite').html('Add to favourite');
-    //         updateAddToFavouriteButton(name, 'empty');
-    //     }
+            favorites.forEach(place => {
+                const favCardHTML = createFavCard(place);
+                favCardContainer.append(favCardHTML); // Add each card to container
+            });
 
-    //     console.log(favArray); // Debug
-    //     updateFavContainer();
-
-    // });
-
-    // // Function to update the favourite container
-    // function updateFavContainer() {
-    //     // Clear the fav card container
-    //     favCardContainer.empty();
-
-    //     // Check if favArray is empty
-    //     if (favArray.length === 0) {
-    //         // Append a "No favourites" message if favArray is empty
-    //         favCardContainer.append('<p>No favourites yet. Add some places to your favourites!</p>');
-    //     } else {
-    //         // Otherwise, append the fav cards
-    //         favArray.forEach(favPlace => {
-    //             const favCardHtml = createFavCard(favPlace);
-    //             favCardContainer.append(favCardHtml);
-    //         });
-    //     }
-    // }
+        } catch (error) {
+            console.error('Failed to load favorites:', error);
+            favCardContainer.html('<p class="text-danger">Failed to load favorites.</p>');
+        }
+    }
 
 
-    // function updateAddToFavouriteButton(name, status) {
-    //     // Find the card in the main container
-    //     const card = cardContainer.find(`.card[data-name="${name}"]`);
-    //     const button = card.find('.add-to-favourite');
 
-    //     if (status === 'filled') {
-    //         button.html('<i class="bi bi-heart-fill text-danger"></i>');
-    //     } else {
-    //         button.html('Add to favourite');
-    //     }
-    // }
+    // Remove from favourites functionality (for "Remove from favourite" button)
+    $(document).on('click', '.remove-from-favourite', function () {
+        const card = $(this).closest('.card');
+        const favid = card.data('favid');
+
+        if (!favid) {
+            showMessageModal('Please Log in!');
+            return;
+        }
+
+        // Call backend to delete favourite
+        fetch(`http://localhost:3000/favorites/${favid}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Remove card from UI
+                    card.closest('.col-md-4').remove();
+
+                    // Optional: update any buttons or UI states here
+                    console.log(`Favourite with ID ${favid} removed.`);
+
+                    // You may want to update other UI parts like "Add to favourite" buttons if needed
+                    // Example: updateAddToFavouriteButton(name, 'empty');
+                } else {
+                    showMessageModal('Fail to remove from favourite!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error removing favourite');
+            });
+    });
+
+
+
 
 
     document.querySelectorAll('.icon-btn:not(.fav-btn)').forEach(btn => {
@@ -580,7 +580,10 @@ $(document).ready(function () {
             } else {
                 // If clicked again (toggle off)
                 currentQueryType = 'tourist attractions';
+
             }
+
+            console.log('Current query type:', currentQueryType);
 
             // Exit fav mode
             $('.fav-btn').removeClass('active');
@@ -644,4 +647,8 @@ function logoutUser() {
     // or: window.location.href = "Login.html";  // redirect to login page
 }
 
+function showMessageModal(message) {
+    $('#messageModalBody').text(message);
+    $('#messageModal').modal('show');
+}
 

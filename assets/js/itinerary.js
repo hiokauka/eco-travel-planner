@@ -1,12 +1,12 @@
 // Store itinerary as an array
-let itineraryList = [];
+let globalDaysDiff = 0;
 
 // Search toggle functionality
 const searchToggleBtn = document.getElementById('searchToggleBtn');
 const searchContainer = document.getElementById('searchContainer');
 
 searchToggleBtn.addEventListener('click', function () {
-    searchContainer.style.display = (searchContainer.style.display === 'none' || searchContainer.style.display === '') ? 'block' : 'none';
+  searchContainer.style.display = (searchContainer.style.display === 'none' || searchContainer.style.display === '') ? 'block' : 'none';
 });
 
 // Calculate trip days
@@ -15,330 +15,303 @@ const endDateInput = document.getElementById("end-date");
 const dayCountDiv = document.getElementById("day-count");
 
 function calculateDays() {
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
+  const startDate = new Date(startDateInput.value);
+  const endDate = new Date(endDateInput.value);
 
-    if (startDate && endDate && endDate >= startDate) {
-        const timeDiff = endDate - startDate;
-        const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
-        dayCountDiv.textContent = `Trip duration: ${daysDiff} day(s)`;
+  if (startDate && endDate && endDate >= startDate) {
+    const timeDiff = endDate - startDate;
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+    dayCountDiv.textContent = `Trip duration: ${daysDiff} day(s)`;
 
-        // Enable day options when dates are valid
-        generateDayOptions(daysDiff);
-    } else {
-        dayCountDiv.textContent = '';
-    }
+    globalDaysDiff = daysDiff; // 
+
+    // Also update day selects here in case cards are already present
+    generateDayOptions(daysDiff);
+  } else {
+    dayCountDiv.textContent = '';
+    globalDaysDiff = 0;
+  }
 }
 
 startDateInput.addEventListener("change", calculateDays);
 endDateInput.addEventListener("change", calculateDays);
 
-// Generate day options dynamically
+
 function generateDayOptions(daysDiff) {
-    const dayOptions = document.querySelectorAll('.day-options');
+  const selectElements = document.querySelectorAll('.day-select');
 
-    dayOptions.forEach(optionContainer => {
-        const selectElement = optionContainer.querySelector('select');
-        selectElement.innerHTML = ''; // Clear previous options
+  selectElements.forEach(selectElement => {
+    selectElement.innerHTML = '';
 
-        // Create the default "Select a day" option
-        const defaultOption = document.createElement('option');
-        defaultOption.value = "";
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        defaultOption.textContent = "Select a day";
-        selectElement.appendChild(defaultOption);
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    defaultOption.textContent = "Select a day";
+    selectElement.appendChild(defaultOption);
 
-        // Create and append day options
-        for (let i = 1; i <= daysDiff; i++) {
-            const option = document.createElement('option');
-            option.value = `Day ${i}`;
-            option.textContent = `Day ${i}`;
-            selectElement.appendChild(option);
-        }
-
-        // Reset to default when regenerating
-        selectElement.value = "";
-    });
+    for (let i = 1; i <= daysDiff; i++) {
+      const option = document.createElement('option');
+      option.value = `Day ${i}`;
+      option.textContent = `Day ${i}`;
+      selectElement.appendChild(option);
+    }
+  });
 }
 
-document.querySelectorAll('.day-select').forEach(daySelect => {
-    daySelect.addEventListener('change', function () {
-        const card = daySelect.closest('.card');
-        const title = card.querySelector('.card-title').textContent.trim();
-        const selectedDay = daySelect.value;
 
-        // Check if the destination has already been added for the selected day
-        const alreadyAdded = itineraryList.some(item => item.title === title && item.day === selectedDay);
 
-        const button = card.querySelector('.add-to-fave');
 
-        if (alreadyAdded) {
-            // If already added, update button text and disable it
-            button.textContent = "Added";
-            button.disabled = true; // Disable the button for that day
-        } else {
-            // If not added, reset button to "Add to Itinerary" and enable it
-            button.textContent = "Add to Itinerary";
-            button.disabled = false; // Enable the button
-        }
+
+const placeTypeSelect = document.getElementById("placeTypeSelect");
+const seeButton = document.querySelector('[data-target="#availableModal"]');
+
+
+function validateInputs() {
+  const placeType = placeTypeSelect.value.trim();
+  const startDate = startDateInput.value;
+  const endDate = endDateInput.value;
+
+  if (placeType && startDate && endDate) {
+    seeButton.disabled = false;
+  } else {
+    seeButton.disabled = true;
+  }
+}
+
+// Disable button on load
+seeButton.disabled = true;
+
+// Listen to input changes
+placeTypeSelect.addEventListener("change", validateInputs);
+startDateInput.addEventListener("input", validateInputs);
+endDateInput.addEventListener("input", validateInputs);
+
+document.getElementById("see-places-btn").addEventListener("click", () => {
+  const placeType = document.getElementById("placeTypeSelect").value;
+  const location = document.getElementById("countryInput").value;
+
+ 
+  const combinedQuery = `${placeType} in ${location}`; // ✨ Combine both
+
+  searchPlaces(combinedQuery); // ✅ just use 1 param
+});
+
+searchPlaces = async function (query) {
+
+  const cardsContainer = document.getElementById('cards-container');
+  cardsContainer.innerHTML = `
+  <div class="d-flex justify-content-center align-items-center" style="height: 200px; width: 100%;">
+    <div class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+`;
+  try {
+    const res = await fetch(`http://localhost:3000/places?query=${encodeURIComponent(query)}`);
+
+    if (!res.ok) {
+      cardsContainer.innerHTML = `<p>Error fetching places: ${res.status}</p>`;
+      console.error('Fetch error:', res.statusText);
+      return;
+    }
+
+    const data = await res.json();
+    console.log('API response:', data);
+    cardsContainer.innerHTML = ''; // clear before adding new cards
+
+
+    if (!data.places || !Array.isArray(data.places) || data.places.length === 0) {
+      cardsContainer.innerHTML = '<p>No results found.</p>';
+      return;
+    }
+
+    data.places.forEach(place => {
+      const cardHTML = createCard({
+        name: place.name,
+        location: place.address || 'N/A',
+        desc: `Rating: ⭐ ${place.rating || 'No rating'}`, // or a custom desc
+        tags: place.types || [],
+        img: place.photo || 'https://via.placeholder.com/300x200?text=No+Image'
+      });
+
+      cardsContainer.insertAdjacentHTML('beforeend', cardHTML);
     });
+    generateDayOptions(globalDaysDiff);
+
+
+
+  } catch (error) {
+    cardsContainer.innerHTML = `<p>Error fetching data</p>`;
+    console.error('Fetch failed:', error);
+  }
+}
+
+
+
+
+function createCard({ name, location, desc, tags, img }) {
+  const tagBadges = tags.map(tag => `<span class="badge badge-info mr-1">${tag}</span>`).join('');
+
+  return `
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100" data-name="${name}">
+        <img src="${img}" class="card-img-top" alt="${name}" style="height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">${name}</h5>
+          <p class="card-text">${desc}</p>
+          <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> ${location}</p>
+          ${tagBadges}
+        </div>
+        <div class="card-footer text-right bg-white">
+          <button class="btn btn-outline-success btn-sm add-to-itinerary">Add to Itinerary</button>
+          <div class="day-options mt-3">
+            <select class="form-control day-select">
+             
+           
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+const container = document.getElementById('cards-container');
+
+container.addEventListener('click', async (e) => {
+  if (e.target.classList.contains('add-to-itinerary')) {
+    const card = e.target.closest('.card');
+    const placeName = card.getAttribute('data-name');
+    const daySelect = card.querySelector('.day-select');
+    const selectedDay = parseInt(daySelect.value);
+
+    // Make sure start and end date are selected
+    const startDateInput = document.getElementById('start-date').value;
+    const endDateInput = document.getElementById('end-date').value;
+
+    if (!startDateInput || !endDateInput) {
+      alert("Please select start and end date first.");
+      return;
+    }
+
+    const userEmail = localStorage.getItem('userEmail');
+    if (!userEmail) {
+      alert('Please Log in first!');
+      return;
+    }
+
+    const dayValue = daySelect.value; // e.g. "day 1"
+    const selectedDayNum = parseInt(dayValue.replace(/\D/g, ''), 10); // remove non-digit chars
+
+    if (isNaN(selectedDayNum )) {
+      alert("Invalid day selected");
+      return;
+    }
+
+    const tagElements = card.querySelectorAll('.tags .badge'); // adjust selector as per your actual HTML
+    const placeTags = Array.from(tagElements).map(tagEl => tagEl.textContent.trim());
+
+    // POST to backend
+    try {
+      const response = await fetch('http://localhost:3000/itineraries/add-place', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userEmail,
+          startDate: startDateInput,
+          endDate: endDateInput,
+          dayNumber: selectedDayNum ,
+          place: { name: placeName, tags: placeTags }
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        showMessageModal("Place added to itinerary");
+        
+      } else {
+        const error = await response.json();
+        showMessageModal(error.message, true);
+      }
+    } catch (err) {
+      showMessageModal("Network error: " + err.message, true);
+    }
+  }
 });
 
 
-// Listen for all "Add to Itinerary" buttons
-document.querySelectorAll('.add-to-fave').forEach(button => {
-    button.addEventListener('click', function () {
-        const card = button.closest('.card');
-        const title = card.querySelector('.card-title').textContent.trim();
-        const daySelect = card.querySelector('.day-select');
-        const selectedDay = daySelect ? daySelect.value : "";
 
-        if (!selectedDay) {
-            alert('Please select a day before adding to itinerary.');
-            return;
-        }
-
-        // Check if the destination has already been added
-        const alreadyAdded = itineraryList.some(item => item.title === title && item.day === selectedDay);
-        if (alreadyAdded) {
-            // If already added, remove it from itinerary
-
-            button.textContent = "Added";
-            button.disabled = true; // Enable the button after removal
-        } else {
-            // Add to itinerary
-            itineraryList.push({ title, day: selectedDay });
-            button.textContent = "Added";
-            button.disabled = true; // Disable the button for that day
-        }
-
-        updateItineraryModal();
-    });
-});
 
 // Reset modal contents when it opens
 $('#availableModal').on('show.bs.modal', function () {
-    // Reset each day-select dropdown in the modal to default (Select a day)
-    $('.day-select').each(function () {
-        $(this).val(''); // Reset to default (empty value, "Select a day")
-    });
+  // Reset each day-select dropdown in the modal to default (Select a day)
+  $('.day-select').each(function () {
+    $(this).val(''); // Reset to default (empty value, "Select a day")
+  });
 
-    // Reset all "Add to Itinerary" buttons to default state (text and enabled)
-    $('.add-to-fave').each(function () {
-        $(this).text('Add to Itinerary'); // Reset button text
-        $(this).prop('disabled', false); // Enable button if it was disabled
-    });
+  // Reset all "Add to Itinerary" buttons to default state (text and enabled)
+  $('.add-to-fave').each(function () {
+    $(this).text('Add to Itinerary'); // Reset button text
+    $(this).prop('disabled', false); // Enable button if it was disabled
+  });
 });
 
 
-// Update itinerary modal to group destinations by day and include remove button
-function updateItineraryModal() {
-    const container = document.getElementById('itineraryList');
-    container.innerHTML = '';
 
-    
-    if (itineraryList.length === 0) {
-        container.innerHTML = '<p class="text-muted">No destinations added yet.</p>';
-        return;
-    }
-
-    // Group by day and display them in the modal
-    const groupedByDay = itineraryList.reduce((acc, item) => {
-        if (!acc[item.day]) {
-            acc[item.day] = [];
-        }
-        acc[item.day].push(item);
-        return acc;
-    }, {});
-
-    Object.keys(groupedByDay).forEach(day => {
-        const daySection = document.createElement('div');
-        daySection.classList.add('day-section');
-        daySection.innerHTML = `<h6 class="font-weight-bold"> ${day}</h6>`;
-
-        groupedByDay[day].forEach((item, index) => {
-            const entry = document.createElement('div');
-            entry.className = 'mb-2 d-flex justify-content-between align-items-center';
-            entry.innerHTML = `
-                <strong>${item.title}</strong>
-                <button class="btn btn-sm btn-danger" onclick="removeItinerary(${index}, '${item.day}')">Remove</button>
-            `;
-            daySection.appendChild(entry);
-        });
-
-        container.appendChild(daySection);
-    });
-}
-
-// Remove item from itinerary
-function removeItinerary(index, day) {
-    const removedItem = itineraryList.splice(index, 1)[0];  // Get the removed item
-    updateItineraryModal();
-
-    // Reset the button back to "Add to Itinerary" after removal
-    document.querySelectorAll('.add-to-fave').forEach(button => {
-        const card = button.closest('.card');
-        const titleInCard = card.querySelector('.card-title').textContent.trim();
-        const daySelect = card.querySelector('.day-select');
-        const selectedDay = daySelect ? daySelect.value : "";
-
-        if (titleInCard === removedItem.title && selectedDay === removedItem.day) {
-            button.textContent = "Add to Itinerary";
-            button.disabled = false; // Enable the button after removal
-        }
-    });
-}
-
-// Download itinerary as PDF
-document.getElementById("downloadItineraryBtn").addEventListener("click", function () {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const cloned = document.getElementById("itineraryList").cloneNode(true);
-    cloned.querySelectorAll("button").forEach(btn => btn.remove());
-    const itineraryContent = cloned.innerText;
-
-    doc.text("Green Itinerary", 10, 10);
-    doc.text(itineraryContent, 10, 20);
-    doc.save("green-itinerary.pdf");
-});
 
 // Add active class to navbar links based on the current page URL
 document.addEventListener('DOMContentLoaded', function () {
-    const navLinks = document.querySelectorAll('.navbar .nav-link');
-    const currentUrl = window.location.href;
+  const navLinks = document.querySelectorAll('.navbar .nav-link');
+  const currentUrl = window.location.href;
 
-    navLinks.forEach(function (link) {
-        const linkUrl = link.getAttribute('href');
-        if (currentUrl.includes(linkUrl)) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
+  navLinks.forEach(function (link) {
+    const linkUrl = link.getAttribute('href');
+    if (currentUrl.includes(linkUrl)) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
 });
 
 // search function
 document.getElementById('searchInput').addEventListener('input', function () {
-    const query = this.value.toLowerCase();
-    const cards = document.querySelectorAll('#availableModal .card');
+  const query = this.value.toLowerCase();
+  const cards = document.querySelectorAll('#availableModal .card');
 
-    cards.forEach(card => {
-        const title = card.querySelector('.card-title').textContent.toLowerCase();
-        if (title.includes(query)) {
-            card.parentElement.style.display = ''; // .col-md-4
-        } else {
-            card.parentElement.style.display = 'none'; // Hide the whole column
-        }
-    });
+  cards.forEach(card => {
+    const title = card.querySelector('.card-title').textContent.toLowerCase();
+    if (title.includes(query)) {
+      card.parentElement.style.display = ''; // .col-md-4
+    } else {
+      card.parentElement.style.display = 'none'; // Hide the whole column
+    }
+  });
 });
 
-let cities = [];
-
-fetch('assets/data/cities_data.json')
-    .then(response => response.json())
-    .then(data => {
-        cities = data;
-
-        const countries = [...new Set(cities.map(item => item.country))];
-
-        // Setup country autocomplete
-        setupAutocomplete('countryInput', 'countrySuggestions', countries);
-
-        // Setup city autocomplete, filtered by selected country
-        setupCityAutocomplete('cityInput', 'citySuggestions');
-    })
-    .catch(error => console.error('Error loading city data:', error));
 
 
-function setupAutocomplete(inputId, suggestionsId, list) {
-    const input = document.getElementById(inputId);
-    const suggestionsBox = document.getElementById(suggestionsId);
+//=================
+// General Function
+//=================
 
-    input.addEventListener('input', function () {
-        const val = this.value.toLowerCase();
-        suggestionsBox.innerHTML = '';
 
-        if (!val) return;
+const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-        const matches = list.filter(item => item.toLowerCase().startsWith(val));
+const joinLi = document.getElementById("joinLi");
+const profileLi = document.getElementById("profileLi");
 
-        matches.forEach(match => {
-            const div = document.createElement('div');
-            div.textContent = match;
-            div.classList.add('autocomplete-suggestion');
-            div.addEventListener('click', () => {
-                input.value = match;
-                suggestionsBox.innerHTML = '';
-            });
-            suggestionsBox.appendChild(div);
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (e.target !== input) {
-            suggestionsBox.innerHTML = '';
-        }
-    });
+if (isLoggedIn) {
+  joinLi.style.display = "none";     // Hide Join Us li
+  profileLi.style.display = "inline-block"; // Show Profile li
+} else {
+  joinLi.style.display = "inline-block";
+  profileLi.style.display = "none";
 }
 
-function setupCityAutocomplete(inputId, suggestionsId) {
-    const input = document.getElementById(inputId);
-    const suggestionsBox = document.getElementById(suggestionsId);
-    const countryInput = document.getElementById('countryInput');
-    const weatherCity = document.getElementById('weatherCity');
 
-    input.addEventListener('input', function () {
-        const val = this.value.toLowerCase();
-        suggestionsBox.innerHTML = '';
-
-        const selectedCountry = countryInput.value;
-
-        if (!val || !selectedCountry) return;
-
-        const filteredCities = cities
-            .filter(item => item.country.toLowerCase() === selectedCountry.toLowerCase())
-            .map(item => item.city);
-
-        const matches = filteredCities.filter(city => city.toLowerCase().startsWith(val));
-
-        matches.forEach(match => {
-            const div = document.createElement('div');
-            div.textContent = match;
-            div.classList.add('autocomplete-suggestion');
-            div.addEventListener('click', () => {
-                input.value = match;
-                suggestionsBox.innerHTML = '';
-                weatherCity.textContent = match;
-
-                input.dispatchEvent(new Event('change'));
-            });
-            suggestionsBox.appendChild(div);
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (e.target !== input) {
-            suggestionsBox.innerHTML = '';
-        }
-    });
-}
-
- const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-  const joinLi = document.getElementById("joinLi");
-  const profileLi = document.getElementById("profileLi");
-
-  if (isLoggedIn) {
-    joinLi.style.display = "none";     // Hide Join Us li
-    profileLi.style.display = "inline-block"; // Show Profile li
-  } else {
-    joinLi.style.display = "inline-block";
-    profileLi.style.display = "none";
-  }
-
-  function logoutUser() {
+function logoutUser() {
   // Set login status to false
   localStorage.setItem("isLoggedIn", "false");
 
@@ -351,6 +324,28 @@ function setupCityAutocomplete(inputId, suggestionsId) {
   location.reload();  // reloads current page
   // or: window.location.href = "Login.html";  // redirect to login page
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ==============================
+// PROFILE Functions Section
+// ==============================
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -366,12 +361,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 
-  });
+});
 
-  
-// ==============================
-// API Functions Section
-// ==============================
+
 
 let originalEmail = "";
 console.log("Email in localStorage:", localStorage.getItem("userEmail"));
@@ -496,7 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-   // Delete account
+  // Delete account
   document.getElementById("deleteYesButton").addEventListener("click", function () {
     const email = localStorage.getItem("userEmail");
     if (!email) {
@@ -524,7 +516,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  
 
- 
+
+
 });
+
+
+function showMessageModal(message, isError = false) {
+  // Set the message text
+  $('#messageModalBody').text(message);
+
+  // Get the modal header
+  const header = $('#messageModal .modal-header');
+
+  // Remove both bg-success and bg-danger first
+  header.removeClass('bg-success bg-danger');
+
+  // Apply the correct class based on the isError flag
+  if (isError) {
+    header.addClass('bg-danger');
+  } else {
+    header.addClass('bg-success');
+  }
+
+  // Show the modal
+  $('#messageModal').modal('show');
+}

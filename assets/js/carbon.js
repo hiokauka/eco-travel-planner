@@ -294,15 +294,15 @@ async function calculateCarbon() {
   // **Get user email from somewhere, e.g. a hidden input, or your auth system**
   const email = localStorage.getItem('userEmail');
   if (!email) {
-    showModalMessage('Please Log in.');
+    showMessageModal('Please Log in.', true);
     return;
   }
   if (!origin || !destination) {
-    showModalMessage("Please enter both origin and destination cities.");
+    showMessageModal("Please enter both origin and destination cities.", true);
     return;
   }
   if (!email) {
-    showModalMessage('Please try to log in again.');
+    showMessageModal('Please try to log in again.', true);
     return;
   }
 
@@ -310,6 +310,7 @@ async function calculateCarbon() {
     // Call backend API to get real distance
     const response = await fetch(`http://localhost:3000/api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
     if (!response.ok) {
+      showMessageModal('Failed to fetch distance', true);
       throw new Error('Failed to fetch distance');
     }
     const data = await response.json();
@@ -373,6 +374,7 @@ async function calculateCarbon() {
     });
 
     if (!saveResponse.ok) {
+      showMessageModal('Failed to save carbon data',true);
       throw new Error('Failed to save carbon data');
     }
 
@@ -380,7 +382,7 @@ async function calculateCarbon() {
     console.log('Saved carbon history:', savedData);
 
   } catch (error) {
-    alert('Error calculating or saving carbon data: ' + error.message);
+    showMessageModal('Error calculating or saving carbon data: ' + error.message, true);
     console.error(error);
   }
 }
@@ -388,7 +390,7 @@ async function calculateCarbon() {
 
 async function showCarbonHistory() {
   console.log('Button clicked - showCarbonHistory called');
-  
+
   const email = localStorage.getItem('userEmail');
   console.log('Email from localStorage:', email);
   if (!email) {
@@ -406,7 +408,7 @@ async function showCarbonHistory() {
     console.log('History data:', history);
 
     const modalBody = document.querySelector('#historyModal .modal-body');
-    
+
     if (history.length === 0) {
       modalBody.innerHTML = '<p>No history found.</p>';
     } else {
@@ -446,12 +448,27 @@ async function showCarbonHistory() {
   }
 }
 
-function showModalMessage(message) {
-  const modalBody = document.getElementById('messageModalBody');
-  modalBody.textContent = message;
 
-  // Use Bootstrap’s JS API to show modal
-  const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
-  messageModal.show();
+
+function showMessageModal(message, isError = false) {
+  // Set the message text
+  $('#messageModalBody').text(message);
+
+  // Get the modal header
+  const header = $('#messageModal .modal-header');
+
+  // Remove both bg-success and bg-danger first
+  header.removeClass('bg-success bg-danger');
+
+  // Apply the correct class based on the isError flag
+  if (isError) {
+    header.addClass('bg-danger');
+  } else {
+    header.addClass('bg-success');
+  }
+
+  // Show the modal
+  $('#messageModal').modal('show');
 }
+
 
