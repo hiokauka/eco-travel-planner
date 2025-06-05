@@ -1,58 +1,68 @@
 .navbar {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    background-color: #74a580;
-    border-bottom: 2px solid rgb(52, 129, 64); /* ✅ border width, style, and color */
-  }
-  
-  .nav-link {
-    font-size: 18px; /* or larger like 20px */
-    padding: 10px 20px; /* adjust spacing */
-  }
-  
-  .navbar-logo {
-    height: 160px;
-    /* Make it bigger */
-    margin-top: -30px;
-    /* Pull it upward to not stretch navbar */
-    margin-bottom: -30px;
-    /* Optional: prevent pushing nav links down */
-    margin-left: -50px;
-  }
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  background-color: #74a580;
+  border-bottom: 2px solid rgb(52, 129, 64);
+  /* ✅ border width, style, and color */
+}
 
-  .custom-btn {
-    background-color: #ffffff; /* Inside color = background */
-    color: rgb(0, 0, 0); /* Text color */
-    border: 2px solid rgb(52, 129, 64)
-  }
-  
-  /* Optional: when hover (when mouse over it) */
-  .custom-btn:hover {
-    background-color: #45a049; /* Slightly darker green on hover */
-    color: white;
-  }
+.nav-link {
+  font-size: 18px;
+  /* or larger like 20px */
+  padding: 10px 20px;
+  /* adjust spacing */
+}
 
-  .container-carbon {
-  
-    background-color: #ffffff;
-    border: 2px solid rgb(52, 129, 64);
-    width: 70%;
-    margin-left: auto;
-    margin-right: auto;
-   
-  }
-  .join-us {
-    
-    background-color: rgb(61, 112, 80);
-  }
-  
+.navbar-logo {
+  height: 160px;
+  /* Make it bigger */
+  margin-top: -30px;
+  /* Pull it upward to not stretch navbar */
+  margin-bottom: -30px;
+  /* Optional: prevent pushing nav links down */
+  margin-left: -50px;
+}
+
+.custom-btn {
+  background-color: #ffffff;
+  /* Inside color = background */
+  color: rgb(0, 0, 0);
+  /* Text color */
+  border: 2px solid rgb(52, 129, 64)
+}
+
+/* Optional: when hover (when mouse over it) */
+.custom-btn:hover {
+  background-color: #45a049;
+  /* Slightly darker green on hover */
+  color: white;
+}
+
+.container-carbon {
+
+  background-color: #ffffff;
+  border: 2px solid rgb(52, 129, 64);
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.join-us {
+
+  background-color: rgb(61, 112, 80);
+}
+
 .nav-link.active {
-  background-color: #28a745; /* Green background for the active link */
-  color: #fff; /* White text */
+  background-color: #28a745;
+  /* Green background for the active link */
+  color: #fff;
+  /* White text */
 }
 
 footer {
-  background-color: #0a4919;;
+  background-color: #0a4919;
+  ;
   color: #ecf0f1;
 }
 
@@ -60,19 +70,21 @@ footer {
   position: absolute;
   top: 100%;
   left: 10px;
-  width: 96%;        /* full width of the .autocomplete container */
+  width: 96%;
+  /* full width of the .autocomplete container */
   z-index: 1000;
- 
+
   background-color: #fff;
   max-height: 200px;
   overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
 .autocomplete-suggestion:hover {
   background-color: #f0f0f0;
 }
+
 .autocomplete {
   position: relative;
 }
@@ -100,4 +112,42 @@ body {
 
 body {
   font-family: 'Montserrat', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .container-carbon {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .container-carbon .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: 10px !important;
+    /* optional for some breathing room */
+    padding-right: 10px !important;
+    /* optional */
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-logo {
+    height: 100px;      /* smaller height */
+    margin-top: 0;      /* remove negative margins */
+    margin-bottom: 0;
+    margin-left: 0;
+    max-width: 90vw;    /* max width 90% viewport width */
+  }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+  .navbar-logo {
+    height: 70px;       /* even smaller */
+  }
 }
