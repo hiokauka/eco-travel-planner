@@ -464,7 +464,7 @@ $(document).ready(function () {
 
 
 
-
+currentQueryType = "tourist attraction";
 
 
     // Handle Favourite Button Click
