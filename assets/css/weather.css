@@ -128,3 +128,25 @@ body {
     height: 70px;       /* even smaller */
   }
 }
+
+
+@media (max-width: 768px) {
+  .container-weather {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .container-weather .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: 10px !important;
+    /* optional for some breathing room */
+    padding-right: 10px !important;
+    /* optional */
+  }
+}
