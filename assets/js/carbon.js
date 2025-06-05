@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("User not logged in.");
+      showMessageModal("User not logged in.",true);
       return;
     }
 
@@ -51,12 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
     if (!currentPassword || !newPassword || !confirmNewPassword) {
-      alert("Please fill in all password fields.");
+      showMessageModal("Please fill in all password fields.",true);
       return;
     }
 
     if (newPassword !== confirmNewPassword) {
-      alert("New password and confirmation do not match.");
+      showMessageModal("New password and confirmation do not match.",true);
       return;
     }
 
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(data => {
-        alert(data.message || "Password changed successfully.");
+        showMessageModal(data.message || "Password changed successfully.");
         document.getElementById("currentPassword").value = "";
         document.getElementById("newPassword").value = "";
         document.getElementById("confirmNewPassword").value = "";
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error changing password:", err);
-        alert(err.message || "An error occurred while changing password.");
+        showMessageModal(err.message || "An error occurred while changing password.",true);
       });
 
   });
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
 
     if (!name || !email || !phone) {
-      alert("Please fill in all fields.");
+    showMessageModal("Please fill in all fields.",true);
       return;
     }
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message || "Profile updated successfully.");
+        showMessageModal(data.message || "Profile updated successfully.");
 
         document.getElementById("profileName").textContent = name;
         document.getElementById("profileEmail").textContent = email;
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error updating profile:", err);
-        alert("An error occurred while updating your profile.");
+        showMessageModal("An error occurred while updating your profile.",true);
       });
   });
 
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("deleteYesButton").addEventListener("click", function () {
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("No user email found.");
+      showMessageModal("No user email found.",true);
       return;
     }
 
@@ -143,14 +143,14 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message || "Account deleted.");
+        showMessageModal(data.message || "Account deleted.");
 
         localStorage.clear();
         window.location.href = "home.html";
       })
       .catch(err => {
         console.error("Error deleting account:", err);
-        alert("An error occurred while deleting your account.");
+        showMessageModal("An error occurred while deleting your account.",true);
       });
   });
 
@@ -163,6 +163,19 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 // Others Functions Section
 // ==============================
+
+ // Emission factors in kg CO2e per km or per night
+    const transportEmissionFactors = {
+      flight: 0.15,
+      car: 0.12,
+      train: 0.05
+    };
+
+    const accommodationEmissionFactors = {
+      hotel: 20,
+      "eco-lodge": 8,
+      hostel: 12
+    };
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -374,7 +387,7 @@ async function calculateCarbon() {
     });
 
     if (!saveResponse.ok) {
-      showMessageModal('Failed to save carbon data',true);
+      showMessageModal('Failed to save carbon data', true);
       throw new Error('Failed to save carbon data');
     }
 
@@ -412,10 +425,20 @@ async function showCarbonHistory() {
     if (history.length === 0) {
       modalBody.innerHTML = '<p>No history found.</p>';
     } else {
-      let html = '<table class="table table-striped"><thead><tr><th>Date</th><th>Origin → Destination</th><th>Transport</th><th>Distance (km)</th><th>Accommodation</th><th>Nights</th><th>Total CO2e (kg)</th></tr></thead><tbody>';
-
-      const transportEmissionFactors = { flight: 0.15, car: 0.12, train: 0.05 };
-      const accommodationEmissionFactors = { hotel: 20, "eco-lodge": 8, hostel: 12 };
+      let html = `<div class="table-responsive"  style="max-height: 60vh; overflow-y: auto;">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Origin → Destination</th>
+          <th>Transport</th>
+          <th>Distance (km)</th>
+          <th>Accommodation</th>
+          <th>Nights</th>
+          <th>Total CO2e (kg)</th>
+        </tr>
+      </thead>
+      <tbody>`;
 
       history.forEach(entry => {
         const transportEmission = entry.distance * (transportEmissionFactors[entry.transportation] || 0);
@@ -423,19 +446,20 @@ async function showCarbonHistory() {
         const totalEmission = transportEmission + accommodationEmission;
 
         html += `<tr>
-          <td>${new Date(entry.date).toLocaleDateString()}</td>
-          <td>${entry.origin} → ${entry.destination}</td>
-          <td>${entry.transportation}</td>
-          <td>${entry.distance.toFixed(2)}</td>
-          <td>${entry.accommodation || '-'}</td>
-          <td>${entry.night || 0}</td>
-          <td>${totalEmission.toFixed(2)}</td>
-        </tr>`;
+      <td>${new Date(entry.date).toLocaleDateString()}</td>
+      <td>${entry.origin} → ${entry.destination}</td>
+      <td>${entry.transportation}</td>
+      <td>${entry.distance.toFixed(2)}</td>
+      <td>${entry.accommodation || '-'}</td>
+      <td>${entry.night || 0}</td>
+      <td>${totalEmission.toFixed(2)}</td>
+    </tr>`;
       });
 
-      html += '</tbody></table>';
+      html += '</tbody></table></div>';  // close div.table-responsive
       modalBody.innerHTML = html;
     }
+
 
     // Show the modal AFTER updating content
     $('#historyModal').modal('show');
@@ -472,3 +496,24 @@ function showMessageModal(message, isError = false) {
 }
 
 
+
+const tipsSets = [
+  `- Walk or bike for short distances<br />
+   - Use public transportation<br />
+   - Offset your carbon footprint with tree planting`,
+
+  `- Choose eco-friendly accommodations<br />
+   - Bring a reusable water bottle<br />
+   - Avoid single-use plastics`,
+
+  `- Pack light to reduce flight emissions<br />
+   - Support local businesses<br />
+   - Turn off lights and unplug devices when not in use`
+];
+
+// On modal show event
+$('#tipsModal').on('show.bs.modal', function () {
+  const randomIndex = Math.floor(Math.random() * tipsSets.length);
+  const tipsHtml = tipsSets[randomIndex];
+  $(this).find('.modal-body').html(tipsHtml);
+});

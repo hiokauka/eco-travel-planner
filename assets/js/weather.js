@@ -1,34 +1,34 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const navLinks = document.querySelectorAll('.navbar .nav-link');
-    const currentUrl = window.location.href;
+  const navLinks = document.querySelectorAll('.navbar .nav-link');
+  const currentUrl = window.location.href;
 
-    navLinks.forEach(function (link) {
-        const linkUrl = link.getAttribute('href');
-        if (currentUrl.includes(linkUrl)) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
+  navLinks.forEach(function (link) {
+    const linkUrl = link.getAttribute('href');
+    if (currentUrl.includes(linkUrl)) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
 
 
 
-    const citySelect = document.getElementById('cityInput'); // assuming user types here
-    const weatherCity = document.getElementById('weatherCity');
-    const weatherTemp = document.getElementById('weatherTemp');
-    const weatherHumidity = document.getElementById('weatherHumidity');
-    const weatherDesc = document.getElementById('weatherDesc');
+  const citySelect = document.getElementById('cityInput'); // assuming user types here
+  const weatherCity = document.getElementById('weatherCity');
+  const weatherTemp = document.getElementById('weatherTemp');
+  const weatherHumidity = document.getElementById('weatherHumidity');
+  const weatherDesc = document.getElementById('weatherDesc');
 
-    async function fetchForecast(city) {
-        try {
-            const res = await fetch(`http://localhost:3000/api/weather-forecast?city=${encodeURIComponent(city)}`);
-            const data = await res.json();
+  async function fetchForecast(city) {
+    try {
+      const res = await fetch(`http://localhost:3000/api/weather-forecast?city=${encodeURIComponent(city)}`);
+      const data = await res.json();
 
-            const forecastCards = document.getElementById('forecastCards');
-            forecastCards.innerHTML = ''; // Clear old forecast
+      const forecastCards = document.getElementById('forecastCards');
+      forecastCards.innerHTML = ''; // Clear old forecast
 
-            data.forecast.forEach(day => {
-                const card = `
+      data.forecast.forEach(day => {
+        const card = `
           <div class="col-md-4">
             <div class="card text-center p-3">
               <p class="mb-1">
@@ -47,180 +47,157 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
           </div>
         `;
-                forecastCards.innerHTML += card;
-            });
+        forecastCards.innerHTML += card;
+      });
 
-        } catch (err) {
-            console.error('Error fetching forecast:', err);
-            document.getElementById('forecastCards').innerHTML = `<p class="text-danger">Unable to fetch forecast data.</p>`;
-        }
+    } catch (err) {
+      console.error('Error fetching forecast:', err);
+      document.getElementById('forecastCards').innerHTML = `<p class="text-danger">Unable to fetch forecast data.</p>`;
     }
+  }
 
-    // Example usage when city is selected from autocomplete
-    document.getElementById('cityInput').addEventListener('change', (e) => {
-        const city = e.target.value.trim();
-        if (city.length > 2) {  // Only fetch when input has 3+ chars
-            fetchWeather(city);
-            fetchForecast(city);
-        }
-    });
-
-
-    // Example function to call when a city is selected
-    function fetchWeather(city) {
-        fetch(`http://localhost:3000/api/weather?city=${encodeURIComponent(city)}`)
-            .then(response => response.json())
-            .then(data => {
-                weatherCity.textContent = data.city;
-                weatherTemp.textContent = `${data.temperature}°C`;
-                weatherHumidity.textContent = `${data.humidity}%`;
-                weatherDesc.textContent = data.description;
-
-                // Set weather icon
-                const iconUrl = `https://openweathermap.org/img/wn/${data.icon}@2x.png`;
-                document.getElementById('weatherIcon').src = iconUrl;
-                document.getElementById('weatherIcon').alt = data.description;
-
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Failed to load weather data:', error);
-            });
+  // Example usage when city is selected from autocomplete
+  document.getElementById('cityInput').addEventListener('change', (e) => {
+    const city = e.target.value.trim();
+    if (city.length > 2) {  // Only fetch when input has 3+ chars
+      fetchWeather(city);
+      fetchForecast(city);
     }
+  });
+
+
+  // Example function to call when a city is selected
+  function fetchWeather(city) {
+
+    
+    fetch(`http://localhost:3000/api/weather?city=${encodeURIComponent(city)}`)
+      .then(response => response.json())
+      .then(data => {
+        weatherCity.textContent = data.city;
+        weatherTemp.textContent = `${data.temperature}°C`;  
+        weatherHumidity.textContent = `${data.humidity}%`;
+        weatherDesc.textContent = data.description;
+
+        // Set weather icon
+        const iconUrl = `https://openweathermap.org/img/wn/${data.icon}@2x.png`;
+        document.getElementById('weatherIcon').src = iconUrl;
+        document.getElementById('weatherIcon').alt = data.description;
+
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Failed to load weather data:', error);
+      });
+  }
 
 
 
 
 
-    // Trigger change once to load initial data
-    citySelect.dispatchEvent(new Event('change'));
+  // Trigger change once to load initial data
+  citySelect.dispatchEvent(new Event('change'));
 });
 
 let cities = [];
 
 fetch('assets/data/cities_data.json')
-    .then(response => response.json())
-    .then(data => {
-        cities = data;
+  .then(response => response.json())
+  .then(data => {
+    cities = data;
 
-        const countries = [...new Set(cities.map(item => item.country))];
+    const countries = [...new Set(cities.map(item => item.country))];
 
-        // Setup country autocomplete
-        setupAutocomplete('countryInput', 'countrySuggestions', countries);
+    // Setup country autocomplete
+    setupAutocomplete('countryInput', 'countrySuggestions', countries);
 
-        // Setup city autocomplete, filtered by selected country
-        setupCityAutocomplete('cityInput', 'citySuggestions');
-    })
-    .catch(error => console.error('Error loading city data:', error));
+    // Setup city autocomplete, filtered by selected country
+    setupCityAutocomplete('cityInput', 'citySuggestions');
+  })
+  .catch(error => console.error('Error loading city data:', error));
 
 
 function setupAutocomplete(inputId, suggestionsId, list) {
-    const input = document.getElementById(inputId);
-    const suggestionsBox = document.getElementById(suggestionsId);
+  const input = document.getElementById(inputId);
+  const suggestionsBox = document.getElementById(suggestionsId);
 
-    input.addEventListener('input', function () {
-        const val = this.value.toLowerCase();
+  input.addEventListener('input', function () {
+    const val = this.value.toLowerCase();
+    suggestionsBox.innerHTML = '';
+
+    if (!val) return;
+
+    const matches = list.filter(item => item.toLowerCase().startsWith(val));
+
+    matches.forEach(match => {
+      const div = document.createElement('div');
+      div.textContent = match;
+      div.classList.add('autocomplete-suggestion');
+      div.addEventListener('click', () => {
+        input.value = match;
         suggestionsBox.innerHTML = '';
-
-        if (!val) return;
-
-        const matches = list.filter(item => item.toLowerCase().startsWith(val));
-
-        matches.forEach(match => {
-            const div = document.createElement('div');
-            div.textContent = match;
-            div.classList.add('autocomplete-suggestion');
-            div.addEventListener('click', () => {
-                input.value = match;
-                suggestionsBox.innerHTML = '';
-            });
-            suggestionsBox.appendChild(div);
-        });
+      });
+      suggestionsBox.appendChild(div);
     });
+  });
 
-    document.addEventListener('click', function (e) {
-        if (e.target !== input) {
-            suggestionsBox.innerHTML = '';
-        }
-    });
+  document.addEventListener('click', function (e) {
+    if (e.target !== input) {
+      suggestionsBox.innerHTML = '';
+    }
+  });
 }
 
 function setupCityAutocomplete(inputId, suggestionsId) {
-    const input = document.getElementById(inputId);
-    const suggestionsBox = document.getElementById(suggestionsId);
-    const countryInput = document.getElementById('countryInput');
-    const weatherCity = document.getElementById('weatherCity');
+  const input = document.getElementById(inputId);
+  const suggestionsBox = document.getElementById(suggestionsId);
+  const countryInput = document.getElementById('countryInput');
+  const weatherCity = document.getElementById('weatherCity');
 
-    input.addEventListener('input', function () {
-        const val = this.value.toLowerCase();
+  input.addEventListener('input', function () {
+    const val = this.value.toLowerCase();
+    suggestionsBox.innerHTML = '';
+
+    const selectedCountry = countryInput.value;
+
+    if (!val || !selectedCountry) return;
+
+    const filteredCities = cities
+      .filter(item => item.country.toLowerCase() === selectedCountry.toLowerCase())
+      .map(item => item.city);
+
+    const matches = filteredCities.filter(city => city.toLowerCase().startsWith(val));
+
+    matches.forEach(match => {
+      const div = document.createElement('div');
+      div.textContent = match;
+      div.classList.add('autocomplete-suggestion');
+      div.addEventListener('click', () => {
+        input.value = match;
         suggestionsBox.innerHTML = '';
+        weatherCity.textContent = match;
 
-        const selectedCountry = countryInput.value;
-
-        if (!val || !selectedCountry) return;
-
-        const filteredCities = cities
-            .filter(item => item.country.toLowerCase() === selectedCountry.toLowerCase())
-            .map(item => item.city);
-
-        const matches = filteredCities.filter(city => city.toLowerCase().startsWith(val));
-
-        matches.forEach(match => {
-            const div = document.createElement('div');
-            div.textContent = match;
-            div.classList.add('autocomplete-suggestion');
-            div.addEventListener('click', () => {
-                input.value = match;
-                suggestionsBox.innerHTML = '';
-                weatherCity.textContent = match;
-
-                input.dispatchEvent(new Event('change'));
-            });
-            suggestionsBox.appendChild(div);
-        });
+        input.dispatchEvent(new Event('change'));
+      });
+      suggestionsBox.appendChild(div);
     });
+  });
 
-    document.addEventListener('click', function (e) {
-        if (e.target !== input) {
-            suggestionsBox.innerHTML = '';
-        }
-    });
-}
-
-async function fetchForecast(city) {
-    try {
-        const res = await fetch(`http://localhost:3000/api/weather-forecast?city=${encodeURIComponent(city)}`);
-        const data = await res.json();
-
-        const forecastCards = document.getElementById('forecastCards');
-        forecastCards.innerHTML = ''; // Clear old forecast
-
-        data.forecast.forEach(day => {
-            const card = `
-          <div class="col-md-4">
-            <div class="card text-center p-3">
-              <p class="mb-1"><strong>${new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}</strong></p>
-              <img src="https://openweathermap.org/img/wn/${day.icon}@2x.png" alt="${day.description}" style="width:50px; height:50px;">
-              <p class="mb-0">${day.description} ${day.temp_max}°C</p>
-            </div>
-          </div>
-        `;
-            forecastCards.innerHTML += card;
-        });
-
-    } catch (err) {
-        console.error('Error fetching forecast:', err);
-        document.getElementById('forecastCards').innerHTML = `<p class="text-danger">Unable to fetch forecast data.</p>`;
+  document.addEventListener('click', function (e) {
+    if (e.target !== input) {
+      suggestionsBox.innerHTML = '';
     }
+  });
 }
+
+
 
 // Example usage when city is selected from autocomplete
 document.getElementById('cityInput').addEventListener('change', (e) => {
-    const city = e.target.value.trim();
-    if (city.length > 2) {  // Only fetch when input has 3+ chars
-        fetchWeather(city);
-        fetchForecast(city);
-    }
+  const city = e.target.value.trim();
+  if (city.length > 2) {  // Only fetch when input has 3+ chars
+    fetchWeather(city);
+    fetchForecast(city);
+  }
 });
 
 const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -229,39 +206,39 @@ const joinLi = document.getElementById("joinLi");
 const profileLi = document.getElementById("profileLi");
 
 if (isLoggedIn) {
-    joinLi.style.display = "none";     // Hide Join Us li
-    profileLi.style.display = "inline-block"; // Show Profile li
+  joinLi.style.display = "none";     // Hide Join Us li
+  profileLi.style.display = "inline-block"; // Show Profile li
 } else {
-    joinLi.style.display = "inline-block";
-    profileLi.style.display = "none";
+  joinLi.style.display = "inline-block";
+  profileLi.style.display = "none";
 }
 
 function logoutUser() {
-    // Set login status to false
-    localStorage.setItem("isLoggedIn", "false");
+  // Set login status to false
+  localStorage.setItem("isLoggedIn", "false");
 
-    // Optionally clear any user info stored
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userEmail");
-    // ... remove other user-related keys if you have any
+  // Optionally clear any user info stored
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userEmail");
+  // ... remove other user-related keys if you have any
 
-    // Reload page or redirect to homepage/login page
-    location.reload();  // reloads current page
-    // or: window.location.href = "Login.html";  // redirect to login page
+  // Reload page or redirect to homepage/login page
+  location.reload();  // reloads current page
+  // or: window.location.href = "Login.html";  // redirect to login page
 }
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Use JavaScript to control opening and closing of collapse sections
-    $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').on('show.bs.collapse', function () {
-        // Close all other collapses when one is shown
-        $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').not(this).collapse('hide');
-    });
+  // Use JavaScript to control opening and closing of collapse sections
+  $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').on('show.bs.collapse', function () {
+    // Close all other collapses when one is shown
+    $('#changePasswordSection,#updateprofileSection, #deleteaccountSection').not(this).collapse('hide');
+  });
 
-    $('#profileModal').on('hidden.bs.modal', function () {
-        // Hide all collapsible sections
-        $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
-    });
+  $('#profileModal').on('hidden.bs.modal', function () {
+    // Hide all collapsible sections
+    $('#changePasswordSection, #updateprofileSection, #deleteaccountSection').collapse('hide');
+  });
 
 
 });
@@ -310,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("User not logged in.");
+      showMessageModal("User not logged in.",true);
       return;
     }
 
@@ -319,12 +296,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
     if (!currentPassword || !newPassword || !confirmNewPassword) {
-      alert("Please fill in all password fields.");
+      showMessageModal("Please fill in all password fields.",true);
       return;
     }
 
     if (newPassword !== confirmNewPassword) {
-      alert("New password and confirmation do not match.");
+      showMessageModal("New password and confirmation do not match.",true);
       return;
     }
 
@@ -342,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(data => {
-        alert(data.message || "Password changed successfully.");
+          showMessageModal(data.message || "Password changed successfully.");
         document.getElementById("currentPassword").value = "";
         document.getElementById("newPassword").value = "";
         document.getElementById("confirmNewPassword").value = "";
@@ -350,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error changing password:", err);
-        alert(err.message || "An error occurred while changing password.");
+        showMessageModal(err.message || "An error occurred while changing password.",true);
       });
 
   });
@@ -366,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
 
     if (!name || !email || !phone) {
-      alert("Please fill in all fields.");
+    showMessageModal("Please fill in all fields.",true);
       return;
     }
 
@@ -377,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message || "Profile updated successfully.");
+        showMessageModal(data.message || "Profile updated successfully.");
 
         document.getElementById("profileName").textContent = name;
         document.getElementById("profileEmail").textContent = email;
@@ -390,15 +367,15 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error updating profile:", err);
-        alert("An error occurred while updating your profile.");
+        showMessageModal("An error occurred while updating your profile.",true);
       });
   });
 
-   // Delete account
+  // Delete account
   document.getElementById("deleteYesButton").addEventListener("click", function () {
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("No user email found.");
+      showMessageModal("No user email found.",true);
       return;
     }
 
@@ -411,18 +388,39 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message || "Account deleted.");
+        showMessageModal(data.message || "Account deleted.");
 
         localStorage.clear();
         window.location.href = "home.html";
       })
       .catch(err => {
         console.error("Error deleting account:", err);
-        alert("An error occurred while deleting your account.");
+        showMessageModal("An error occurred while deleting your account.",true);
       });
   });
 
-  
 
- 
+
+
 });
+
+function showMessageModal(message, isError = false) {
+  // Set the message text
+  $('#messageModalBody').text(message);
+
+  // Get the modal header
+  const header = $('#messageModal .modal-header');
+
+  // Remove both bg-success and bg-danger first
+  header.removeClass('bg-success bg-danger');
+
+  // Apply the correct class based on the isError flag
+  if (isError) {
+    header.addClass('bg-danger');
+  } else {
+    header.addClass('bg-success');
+  }
+
+  // Show the modal
+  $('#messageModal').modal('show');
+}

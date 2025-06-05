@@ -26,7 +26,7 @@
 <body class="explore-page">
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff ;">
+ <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
     <div class="container">
       <a href="Home.html">
         <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
@@ -36,33 +36,32 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse  justify-content-between" id="myNavbar">
+      <div class="collapse navbar-collapse justify-content-between" id="myNavbar">
 
-        <ul class="nav mx-auto">
+        <ul class="nav flex-column flex-lg-row text-center w-100 justify-content-center">
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Explore.html">Explore</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Explore.html">Explore</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Itinerary.html">Itinerary</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Itinerary.html">Itinerary</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Weather.html">Weather</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Weather.html">Weather</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Carbon.html">Carbon Footprint</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Carbon.html">Carbon Footprint</a>
           </li>
         </ul>
 
-        <ul class="nav">
-          <li class="nav-item" id="joinLi">
-            <a href="Login.html" class="btn btn-success rounded-pill join-us">Join Us</a>
+        <ul class="nav flex-column flex-lg-row text-center my-lg-0">
+          <li class="nav-item my-1" id="joinLi">
+            <a href="Login.html" class="btn btn-success rounded-pill">Join Us</a>
           </li>
-          <li class="nav-item" id="profileLi" style="display:none;">
+          <li class="nav-item my-1" id="profileLi" style="display:none;">
             <i class="bi bi-person" style="font-size: 40px; cursor: pointer;" data-toggle="modal"
               data-target="#profileModal"></i>
           </li>
         </ul>
-
       </div>
     </div>
   </nav>
@@ -121,7 +120,7 @@
 
     <!-- favourite section -->
     <div class=" container my-5">
-      <div id="favourite-card-container" class="row">
+      <div id="favourite-card-container" class="row"  style="display: none;">
 
       </div>
     </div>
@@ -254,7 +253,7 @@
               <!-- Email Field -->
               <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required readonly>
               </div>
 
               <div class="form-group">

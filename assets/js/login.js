@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Saved userEmail:", localStorage.getItem("userEmail"));
 
         setTimeout(() => {
-          window.location.href = "main.html";  // redirect after 1.5s
+          window.location.href = "index.html";  // redirect after 1.5s
         }, 1500);
       }
       else {

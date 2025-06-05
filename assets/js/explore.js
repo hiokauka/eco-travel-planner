@@ -1,160 +1,158 @@
 
 // ==============================
 // API Functions Section
-// ==============================   
-let currentQueryType = 'tourist attractions'; // default fallback
+// ==============================
 
 let originalEmail = "";
 console.log("Email in localStorage:", localStorage.getItem("userEmail"));
-
 document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail");
+  console.log("Email in localStorage on main.html:", email);
+
+  if (email) {
+    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Network response not ok');
+        return response.json();
+      })
+      .then(userData => {
+        console.log("User data received:", userData);
+
+        // Update UI
+        document.getElementById('profileName').textContent = userData.name || "No name found";
+        document.getElementById('profileEmail').textContent = userData.email || "No email found";
+        document.getElementById('profilePhone').textContent = userData.phone || "No phone found";
+
+        // Pre-fill form
+        document.getElementById("name").value = userData.name || "";
+        document.getElementById("email").value = userData.email || "";
+        document.getElementById("phone").value = userData.phone || "";
+
+        originalEmail = userData.email;
+      })
+      .catch(error => console.error('Error fetching user data:', error));
+  } else {
+    console.log("User not logged in");
+  }
+
+
+  // change password
+  document.getElementById("changePasswordForm").addEventListener("submit", e => {
+    e.preventDefault();
+
     const email = localStorage.getItem("userEmail");
-    console.log("Email in localStorage on main.html:", email);
-
-    if (email) {
-        fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
-            .then(response => {
-                if (!response.ok) throw new Error('Network response not ok');
-                return response.json();
-            })
-            .then(userData => {
-                console.log("User data received:", userData);
-
-                // Update UI
-                document.getElementById('profileName').textContent = userData.name || "No name found";
-                document.getElementById('profileEmail').textContent = userData.email || "No email found";
-                document.getElementById('profilePhone').textContent = userData.phone || "No phone found";
-
-                // Pre-fill form
-                document.getElementById("name").value = userData.name || "";
-                document.getElementById("email").value = userData.email || "";
-                document.getElementById("phone").value = userData.phone || "";
-
-                originalEmail = userData.email;
-            })
-            .catch(error => console.error('Error fetching user data:', error));
-    } else {
-        console.log("User not logged in");
+    if (!email) {
+      showMessageModal("User not logged in.",true);
+      return;
     }
 
+    const currentPassword = document.getElementById("currentPassword").value.trim();
+    const newPassword = document.getElementById("newPassword").value.trim();
+    const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
-    // change password
-    document.getElementById("changePasswordForm").addEventListener("submit", e => {
-        e.preventDefault();
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      showMessageModal("Please fill in all password fields.",true);
+      return;
+    }
 
-        const email = localStorage.getItem("userEmail");
-        if (!email) {
-            alert("User not logged in.");
-            return;
+    if (newPassword !== confirmNewPassword) {
+      showMessageModal("New password and confirmation do not match.",true);
+      return;
+    }
+
+    fetch("http://localhost:3000/users/update-password", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
+    })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(errData => {
+            throw new Error(errData.message || 'Failed to change password');
+          });
         }
+        return res.json();
+      })
+      .then(data => {
+          showMessageModal(data.message || "Password changed successfully.");
+        document.getElementById("currentPassword").value = "";
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmNewPassword").value = "";
+        $("#changePasswordSection").collapse('hide');
+      })
+      .catch(err => {
+        console.error("Error changing password:", err);
+        showMessageModal(err.message || "An error occurred while changing password.",true);
+      });
 
-        const currentPassword = document.getElementById("currentPassword").value.trim();
-        const newPassword = document.getElementById("newPassword").value.trim();
-        const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
-
-        if (!currentPassword || !newPassword || !confirmNewPassword) {
-            alert("Please fill in all password fields.");
-            return;
-        }
-
-        if (newPassword !== confirmNewPassword) {
-            alert("New password and confirmation do not match.");
-            return;
-        }
-
-        fetch("http://localhost:3000/users/update-password", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
-        })
-            .then(res => {
-                if (!res.ok) {
-                    return res.json().then(errData => {
-                        throw new Error(errData.message || 'Failed to change password');
-                    });
-                }
-                return res.json();
-            })
-            .then(data => {
-                alert(data.message || "Password changed successfully.");
-                document.getElementById("currentPassword").value = "";
-                document.getElementById("newPassword").value = "";
-                document.getElementById("confirmNewPassword").value = "";
-                $("#changePasswordSection").collapse('hide');
-            })
-            .catch(err => {
-                console.error("Error changing password:", err);
-                alert(err.message || "An error occurred while changing password.");
-            });
-
-    });
+  });
 
 
 
-    // Update profile
-    document.getElementById("updateProfileForm").addEventListener("submit", function (e) {
-        e.preventDefault();
+  // Update profile
+  document.getElementById("updateProfileForm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const phone = document.getElementById("phone").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
 
-        if (!name || !email || !phone) {
-            alert("Please fill in all fields.");
-            return;
-        }
+    if (!name || !email || !phone) {
+    showMessageModal("Please fill in all fields.",true);
+      return;
+    }
 
-        fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, phone })
-        })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message || "Profile updated successfully.");
+    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone })
+    })
+      .then(res => res.json())
+      .then(data => {
+        showMessageModal(data.message || "Profile updated successfully.");
 
-                document.getElementById("profileName").textContent = name;
-                document.getElementById("profileEmail").textContent = email;
-                document.getElementById("profilePhone").textContent = phone;
+        document.getElementById("profileName").textContent = name;
+        document.getElementById("profileEmail").textContent = email;
+        document.getElementById("profilePhone").textContent = phone;
 
-                localStorage.setItem("userEmail", email);
-                originalEmail = email;
+        localStorage.setItem("userEmail", email);
+        originalEmail = email;
 
-                $("#updateprofileSection").collapse('hide');
-            })
-            .catch(err => {
-                console.error("Error updating profile:", err);
-                alert("An error occurred while updating your profile.");
-            });
-    });
+        $("#updateprofileSection").collapse('hide');
+      })
+      .catch(err => {
+        console.error("Error updating profile:", err);
+        showMessageModal("An error occurred while updating your profile.",true);
+      });
+  });
 
-    // Delete account
-    document.getElementById("deleteYesButton").addEventListener("click", function () {
-        const email = localStorage.getItem("userEmail");
-        if (!email) {
-            alert("No user email found.");
-            return;
-        }
+  // Delete account
+  document.getElementById("deleteYesButton").addEventListener("click", function () {
+    const email = localStorage.getItem("userEmail");
+    if (!email) {
+      showMessageModal("No user email found.",true);
+      return;
+    }
 
-        if (!confirm("This will permanently delete your account. Are you sure?")) return;
+    if (!confirm("This will permanently delete your account. Are you sure?")) return;
 
-        fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
-        })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message || "Account deleted.");
+    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    })
+      .then(res => res.json())
+      .then(data => {
+        showMessageModal(data.message || "Account deleted.");
 
-                localStorage.clear();
-                window.location.href = "home.html";
-            })
-            .catch(err => {
-                console.error("Error deleting account:", err);
-                alert("An error occurred while deleting your account.");
-            });
-    });
+        localStorage.clear();
+        window.location.href = "home.html";
+      })
+      .catch(err => {
+        console.error("Error deleting account:", err);
+        showMessageModal("An error occurred while deleting your account.",true);
+      });
+  });
 
 
 
@@ -245,7 +243,7 @@ $(document).ready(function () {
                     if (favNames.includes(name)) {
                         const btn = card.querySelector('.add-to-favourite');
                         btn.disabled = true;
-                        btn.textContent = 'Added ✓';
+                        btn.textContent = '❤️';
                     }
                 });
             }
@@ -430,7 +428,7 @@ $(document).ready(function () {
 
         const userEmail = localStorage.getItem('userEmail');
         if (!userEmail) {
-            showMessageModal('Please Log in first!');
+            showMessageModal('Please Log in first!', true);
             return;
         }
 
@@ -455,7 +453,7 @@ $(document).ready(function () {
             }
 
             showMessageModal('Added to favourites successfully!');
-            $(this).prop('disabled', true).text('Added ✓');
+            $(this).prop('disabled', true).text('❤️');
 
         } catch (err) {
             console.error(err);
@@ -488,7 +486,7 @@ $(document).ready(function () {
         } else {
             // If button is not active, show all cards
             favCardContainer.hide(); // Hide favourites 
-            // $('#cards-container').empty(); // Clear previous cards
+            favCardContainer.empty();   
             console.log(currentQueryType)
             // Resubmit search based on current location and query type
             $('#searchForm').submit();
@@ -502,11 +500,15 @@ $(document).ready(function () {
         favCardContainer.empty(); // Clear old favorites
 
         const userEmail = localStorage.getItem('userEmail');
-        if (!userEmail) return;
+        if (!userEmail) {
+            favCardContainer.html('<p class="text-center w-100">Log in to save your favourite places.</p>');
+            return; // stop here if not logged in
+        }
 
         try {
             const res = await fetch(`http://localhost:3000/favorites?email=${userEmail}`);
             const favorites = await res.json();
+
 
             if (favorites.length === 0) {
                 favCardContainer.html('<p class="text-center w-100">No favorites yet.</p>');
@@ -588,7 +590,7 @@ $(document).ready(function () {
             // Exit fav mode
             $('.fav-btn').removeClass('active');
             $('#cards-container').show();
-            $('#fav-cards-container').hide();
+            $('#favourite-card-container').hide();
 
             // Trigger search
             $('#searchForm').submit();
@@ -647,8 +649,24 @@ function logoutUser() {
     // or: window.location.href = "Login.html";  // redirect to login page
 }
 
-function showMessageModal(message) {
+
+function showMessageModal(message, isError = false) {
+    // Set the message text
     $('#messageModalBody').text(message);
+
+    // Get the modal header
+    const header = $('#messageModal .modal-header');
+
+    // Remove both bg-success and bg-danger first
+    header.removeClass('bg-success bg-danger');
+
+    // Apply the correct class based on the isError flag
+    if (isError) {
+        header.addClass('bg-danger');
+    } else {
+        header.addClass('bg-success');
+    }
+
+    // Show the modal
     $('#messageModal').modal('show');
 }
-

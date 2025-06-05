@@ -28,39 +28,39 @@
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
     <div class="container">
       <a href="Home.html">
-        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo" />
+        <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
         aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse  justify-content-between" id="myNavbar">
-        <ul class="nav mx-auto">
+      <div class="collapse navbar-collapse justify-content-between" id="myNavbar">
+
+        <ul class="nav flex-column flex-lg-row text-center w-100 justify-content-center">
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Explore.html">Explore</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Explore.html">Explore</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Itinerary.html">Itinerary</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Itinerary.html">Itinerary</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Weather.html">Weather</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Weather.html">Weather</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn custom-btn rounded-pill mx-4" href="Carbon.html">Carbon Footprint</a>
+            <a class="nav-link btn custom-btn rounded-pill mx-4 my-1" href="Carbon.html">Carbon Footprint</a>
           </li>
         </ul>
 
-        <ul class="nav">
-          <li class="nav-item" id="joinLi">
-            <a href="Login.html" class="btn btn-success rounded-pill join-us">Join Us</a>
+        <ul class="nav flex-column flex-lg-row text-center my-lg-0">
+          <li class="nav-item my-1" id="joinLi">
+            <a href="Login.html" class="btn btn-success rounded-pill">Join Us</a>
           </li>
-          <li class="nav-item" id="profileLi" style="display:none;">
+          <li class="nav-item my-1" id="profileLi" style="display:none;">
             <i class="bi bi-person" style="font-size: 40px; cursor: pointer;" data-toggle="modal"
               data-target="#profileModal"></i>
           </li>
         </ul>
-
       </div>
     </div>
   </nav>
@@ -129,7 +129,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header bg-success">
+            <div class="modal-header bg-success text-white">
               <h5 class="modal-title" id="calculateModalLabel">Carbon Calculation</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -146,7 +146,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header bg-success">
+            <div class="modal-header bg-success text-white">
               <h5 class="modal-title" id="historyModalLabel">Calculation History</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -162,21 +162,21 @@
       <div class="modal fade" id="tipsModal" tabindex="-1" role="dialog" aria-labelledby="tipsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="tipsModalLabel">Green Travel Tips</h5>
+          <div class="modal-content p-3" style="border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);">
+            <div class="modal-header border-0">
+              <h5 class="modal-title text-success fw-bold" id="tipsModalLabel">Green Travel Tips</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              - Walk or bike for short distances<br />
-              - Use public transportation<br />
-              - Offset your carbon footprint with tree planting
+              
             </div>
           </div>
         </div>
       </div>
+
+
     </div>
   </div>
 
@@ -281,7 +281,7 @@
               <!-- Email Field -->
               <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required readonly>
               </div>
 
               <div class="form-group">

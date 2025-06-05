@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("User not logged in.");
+      showMessageModal("User not logged in.",true);
       return;
     }
 
@@ -51,12 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
     if (!currentPassword || !newPassword || !confirmNewPassword) {
-      alert("Please fill in all password fields.");
+      showMessageModal("Please fill in all password fields.",true);
       return;
     }
 
     if (newPassword !== confirmNewPassword) {
-      alert("New password and confirmation do not match.");
+      showMessageModal("New password and confirmation do not match.",true);
       return;
     }
 
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(data => {
-        alert(data.message || "Password changed successfully.");
+          showMessageModal(data.message || "Password changed successfully.");
         document.getElementById("currentPassword").value = "";
         document.getElementById("newPassword").value = "";
         document.getElementById("confirmNewPassword").value = "";
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error changing password:", err);
-        alert(err.message || "An error occurred while changing password.");
+        showMessageModal(err.message || "An error occurred while changing password.",true);
       });
 
   });
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
 
     if (!name || !email || !phone) {
-      alert("Please fill in all fields.");
+    showMessageModal("Please fill in all fields.",true);
       return;
     }
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message || "Profile updated successfully.");
+        showMessageModal(data.message || "Profile updated successfully.");
 
         document.getElementById("profileName").textContent = name;
         document.getElementById("profileEmail").textContent = email;
@@ -122,15 +122,15 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error updating profile:", err);
-        alert("An error occurred while updating your profile.");
+        showMessageModal("An error occurred while updating your profile.",true);
       });
   });
 
-   // Delete account
+  // Delete account
   document.getElementById("deleteYesButton").addEventListener("click", function () {
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("No user email found.");
+      showMessageModal("No user email found.",true);
       return;
     }
 
@@ -143,20 +143,20 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message || "Account deleted.");
+        showMessageModal(data.message || "Account deleted.");
 
         localStorage.clear();
         window.location.href = "home.html";
       })
       .catch(err => {
         console.error("Error deleting account:", err);
-        alert("An error occurred while deleting your account.");
+        showMessageModal("An error occurred while deleting your account.",true);
       });
   });
 
-  
 
- 
+
+
 });
 
 //-----------------
@@ -214,3 +214,24 @@ document.getElementById('search-btn').addEventListener('click', (event) => {
         window.location.href = `explore.html?query=${encodeURIComponent(query)}`;
       }
   });
+
+  function showMessageModal(message, isError = false) {
+  // Set the message text
+  $('#messageModalBody').text(message);
+
+  // Get the modal header
+  const header = $('#messageModal .modal-header');
+
+  // Remove both bg-success and bg-danger first
+  header.removeClass('bg-success bg-danger');
+
+  // Apply the correct class based on the isError flag
+  if (isError) {
+    header.addClass('bg-danger');
+  } else {
+    header.addClass('bg-success');
+  }
+
+  // Show the modal
+  $('#messageModal').modal('show');
+}
