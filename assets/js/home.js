@@ -211,7 +211,7 @@ document.getElementById('search-btn').addEventListener('click', (event) => {
     console.log(query)
       if (query !== '') {
         // Redirect to explore.html and pass the query as a URL parameter
-        window.location.href = `explore.html?query=${encodeURIComponent(query)}`;
+        window.location.href = `Explore.html?query=${encodeURIComponent(query)}`;
       }
   });
 
