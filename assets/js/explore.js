@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Email in localStorage on main.html:", email);
 
   if (email) {
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`)
       .then(response => {
         if (!response.ok) throw new Error('Network response not ok');
         return response.json();
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch("http://localhost:3000/users/update-password", {
+    fetch("https://teroka-backend.onrender.com/users/update-password", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(originalEmail)}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, phone })
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!confirm("This will permanently delete your account. Are you sure?")) return;
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
@@ -203,7 +203,7 @@ $(document).ready(function () {
 `;
 
         try {
-            const res = await fetch(`http://localhost:3000/places?query=${encodeURIComponent(query)}`);
+            const res = await fetch(`https://teroka-backend.onrender.com/places?query=${encodeURIComponent(query)}`);
 
             if (!res.ok) {
                 cardsContainer.innerHTML = `<p>Error fetching places: ${res.status}</p>`;
@@ -234,7 +234,7 @@ $(document).ready(function () {
 
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
-                const favRes = await fetch(`http://localhost:3000/favorites?email=${userEmail}`);
+                const favRes = await fetch(`https://teroka-backend.onrender.com/favorites?email=${userEmail}`);
                 const favorites = await favRes.json();
                 const favNames = favorites.map(f => f.place_name);
 
@@ -442,7 +442,7 @@ $(document).ready(function () {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/favorites/addtofav', {
+            const response = await fetch('https://teroka-backend.onrender.com/favorites/addtofav', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -506,7 +506,7 @@ $(document).ready(function () {
         }
 
         try {
-            const res = await fetch(`http://localhost:3000/favorites?email=${userEmail}`);
+            const res = await fetch(`https://teroka-backend.onrender.com/favorites?email=${userEmail}`);
             const favorites = await res.json();
 
 
@@ -539,7 +539,7 @@ $(document).ready(function () {
         }
 
         // Call backend to delete favourite
-        fetch(`http://localhost:3000/favorites/${favid}`, {
+        fetch(`https://teroka-backend.onrender.com/favorites/${favid}`, {
             method: 'DELETE',
         })
             .then(response => {

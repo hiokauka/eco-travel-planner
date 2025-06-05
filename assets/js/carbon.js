@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Email in localStorage on main.html:", email);
 
   if (email) {
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`)
       .then(response => {
         if (!response.ok) throw new Error('Network response not ok');
         return response.json();
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch("http://localhost:3000/users/update-password", {
+    fetch("https://teroka-backend.onrender.com/users/update-password", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(originalEmail)}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, phone })
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!confirm("This will permanently delete your account. Are you sure?")) return;
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
@@ -321,7 +321,7 @@ async function calculateCarbon() {
 
   try {
     // Call backend API to get real distance
-    const response = await fetch(`http://localhost:3000/api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
+    const response = await fetch(`https://teroka-backend.onrender.com/api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
     if (!response.ok) {
       showMessageModal('Failed to fetch distance', true);
       throw new Error('Failed to fetch distance');
@@ -369,7 +369,7 @@ async function calculateCarbon() {
     $('#calculateModal').modal('show');
 
     // Now send the carbon data to your backend to save it
-    const saveResponse = await fetch('http://localhost:3000/carbonhistory', {
+    const saveResponse = await fetch('https://teroka-backend.onrender.com/carbonhistory', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -412,7 +412,7 @@ async function showCarbonHistory() {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/carbonhistory?email=${encodeURIComponent(email)}`);
+    const response = await fetch(`https://teroka-backend.onrender.com/carbonhistory?email=${encodeURIComponent(email)}`);
     console.log('Fetch response:', response);
 
     if (!response.ok) throw new Error('Failed to fetch history');

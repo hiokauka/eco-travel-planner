@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Email in localStorage on main.html:", email);
 
   if (email) {
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`)
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`)
       .then(response => {
         if (!response.ok) throw new Error('Network response not ok');
         return response.json();
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch("http://localhost:3000/users/update-password", {
+    fetch("https://teroka-backend.onrender.com/users/update-password", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(originalEmail)}`, {
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(originalEmail)}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, phone })
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!confirm("This will permanently delete your account. Are you sure?")) return;
 
-    fetch(`http://localhost:3000/users/profile?email=${encodeURIComponent(email)}`, {
+    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
