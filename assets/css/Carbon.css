@@ -50,9 +50,14 @@
 
 .join-us {
 
+  height: 36px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 24px !important;
+  display: inline-flex !important;  /* keeps vertical alignment */
+  align-items: center !important;   /* centers content vertically */
   background-color: rgb(61, 112, 80);
 }
-
 .nav-link.active {
   background-color: #28a745;
   /* Green background for the active link */

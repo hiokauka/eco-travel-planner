@@ -58,8 +58,10 @@
 
                 <ul class="nav flex-column flex-lg-row text-center my-lg-0">
                     <li class="nav-item my-1" id="joinLi">
-                        <a href="Login.html" class="btn btn-success rounded-pill join-us">
-                            <i class="bi bi-person-plus-fill" style="font-size: 24px;"></i> 
+                        <a href="Login.html" class="btn btn-success rounded-pill join-us d-flex align-items-center"
+                            style="white-space: nowrap;">
+                            <i class="bi bi-person-plus-fill" style="font-size: 24px;"></i>
+                            <span style="font-size: 14px; margin-left: 6px;">join us</span>
                         </a>
                     </li>
                     <li class="nav-item my-1" id="profileLi" style="display:none;">
@@ -109,7 +111,8 @@
 
                 <div id="day-count" class="mb-3 text-success font-weight-bold"></div>
 
-                <button type="button" class="btn btn-success custom-margin mb-3" id="see-places-btn" data-toggle="modal"
+                <div>
+                <button type="button" class="btn btn-success custom-margin  id="see-places-btn" data-toggle="modal"
                     data-target="#availableModal">
                     See available place
                 </button>
@@ -117,6 +120,7 @@
                 <button type="button" class="btn btn-success custom-margin1" id="viewItineraryBtn" data-toggle="modal"
                     data-target="#greenItineraryModal">See your
                     itinerary</button>
+                    </div>
             </form>
 
 
