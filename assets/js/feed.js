@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageFile = imageInput.files.length > 0 ? imageInput.files[0] : null;
 
         if (!text && !imageFile) {
-            showMessageModal('Please enter some text or upload an image.',true);
+            showMessageModal('Please enter some text or upload an image.', true);
             return;
         }
 
@@ -43,20 +43,42 @@ navLinks.forEach(function (link) {
 
 async function createPost(email, text, imageFile) {
     try {
-        const formData = new FormData();
-        formData.append('email', email);
-        formData.append('post', text);
+        let imageUrl = "";
+
+        // If image exists, upload to Cloudinary first
         if (imageFile) {
-            formData.append('image', imageFile);
+            const cloudData = new FormData();
+            cloudData.append('file', imageFile);
+            cloudData.append('upload_preset', 'your_unsigned_preset'); // Replace with your Cloudinary preset
+
+            const cloudinaryRes = await fetch('https://api.cloudinary.com/v1_1/ddzxa4egy/image/upload', {
+                method: 'POST',
+                body: cloudData
+            });
+
+            if (!cloudinaryRes.ok) {
+                throw new Error('Failed to upload image to Cloudinary');
+            }
+
+            const cloudinaryResult = await cloudinaryRes.json();
+            imageUrl = cloudinaryResult.secure_url; // This is the permanent public URL
         }
 
-        const response = await fetch('https://teroka-backend.onrender.com/posts', {
+        // Now send post data to your backend
+        const response = await fetch('http://localhost:3000/posts', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                post: text,
+                imageUrl // Only URL, no file
+            })
         });
 
         if (response.ok) {
-            showMessageModal('Post created successfully!',true);
+            showMessageModal('Post created successfully!', true);
             window.location.reload();
         } else if (response.status === 404) {
             alert('Email not found or not verified!');
@@ -70,9 +92,10 @@ async function createPost(email, text, imageFile) {
 }
 
 
+
 async function fetchPosts() {
     try {
-        const response = await fetch('https://teroka-backend.onrender.com/posts');
+        const response = await fetch('http://localhost:3000/posts');
         if (response.ok) {
             const posts = await response.json();
             displayPosts(posts);
