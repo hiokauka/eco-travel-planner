@@ -50,7 +50,7 @@ async function createPost(email, text, imageFile) {
             formData.append('image', imageFile);
         }
 
-        const response = await fetch('http://localhost:3000/posts', {
+        const response = await fetch('https://teroka-backend.onrender.com/posts', {
             method: 'POST',
             body: formData
         });
@@ -72,7 +72,7 @@ async function createPost(email, text, imageFile) {
 
 async function fetchPosts() {
     try {
-        const response = await fetch('http://localhost:3000/posts');
+        const response = await fetch('https://teroka-backend.onrender.com/posts');
         if (response.ok) {
             const posts = await response.json();
             displayPosts(posts);
