@@ -49,7 +49,7 @@ async function createPost(email, text, imageFile) {
         if (imageFile) {
             const cloudData = new FormData();
             cloudData.append('file', imageFile);
-            cloudData.append('upload_preset', 'your_unsigned_preset'); // Replace with your Cloudinary preset
+            cloudData.append('upload_preset', 'teroka_upload'); // Replace with your Cloudinary preset
 
             const cloudinaryRes = await fetch('https://api.cloudinary.com/v1_1/ddzxa4egy/image/upload', {
                 method: 'POST',
@@ -65,7 +65,7 @@ async function createPost(email, text, imageFile) {
         }
 
         // Now send post data to your backend
-        const response = await fetch('http://localhost:3000/posts', {
+        const response = await fetch('https://teroka-backend.onrender.com/posts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ async function createPost(email, text, imageFile) {
 
 async function fetchPosts() {
     try {
-        const response = await fetch('http://localhost:3000/posts');
+        const response = await fetch('https://teroka-backend.onrender.com/posts');
         if (response.ok) {
             const posts = await response.json();
             displayPosts(posts);
