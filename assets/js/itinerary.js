@@ -864,8 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function showMessageModal(message, isError = false) {
-  // Close other open modals
-  $('.modal.show').modal('hide');
+
 
   setTimeout(() => {
     // Set the message text
