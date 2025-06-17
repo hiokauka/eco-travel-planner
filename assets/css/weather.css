@@ -8,9 +8,7 @@
 
 .nav-link {
   font-size: 18px;
-  /* or larger like 20px */
   padding: 10px 20px;
-  /* adjust spacing */
 }
 
 .navbar-logo {
@@ -54,17 +52,18 @@
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 24px !important;
-  display: inline-flex !important;  /* keeps vertical alignment */
-  align-items: center !important;   /* centers content vertically */
+  display: inline-flex !important;
+  /* keeps vertical alignment */
+  align-items: center !important;
+  /* centers content vertically */
   background-color: rgb(61, 112, 80);
 }
 
-.nav-link.active {
-  background-color: #28a745;
-  /* Green background for the active link */
-  color: #fff;
-  /* White text */
+.custom-nav-link.active {
+  color: #28a745;
+  border-bottom: 2px solid #28a745;
 }
+
 
 footer {
   background-color: #0a4919;
@@ -120,18 +119,22 @@ body {
 
 @media (max-width: 768px) {
   .navbar-logo {
-    height: 100px;      /* smaller height */
-    margin-top: 0;      /* remove negative margins */
+    height: 100px;
+    /* smaller height */
+    margin-top: 0;
+    /* remove negative margins */
     margin-bottom: 0;
     margin-left: 0;
-    max-width: 90vw;    /* max width 90% viewport width */
+    max-width: 90vw;
+    /* max width 90% viewport width */
   }
 }
 
 /* Even smaller screens */
 @media (max-width: 480px) {
   .navbar-logo {
-    height: 70px;       /* even smaller */
+    height: 70px;
+    /* even smaller */
   }
 }
 
@@ -155,4 +158,39 @@ body {
     padding-right: 10px !important;
     /* optional */
   }
+}
+
+.custom-nav-link {
+    color: #000;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.custom-nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin: auto;
+    background: #28a745;
+    transition: width 0.3s;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.custom-nav-link:not(.active):hover {
+    color: #28a745;
+}
+
+.custom-nav-link:not(.active):hover::after {
+    width: 100%;
+}
+
+.custom-nav-link.active {
+    color: #28a745;
+    border-bottom: 2px solid #28a745;
 }

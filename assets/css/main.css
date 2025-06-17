@@ -138,3 +138,41 @@ footer {
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
+.custom-nav-link:hover {
+    color: #28a745; /* Hover color */
+}
+
+.custom-nav-link:hover::after {
+    width: 100%; /* Full underline on hover */
+}
+
+.custom-nav-link.active {
+    color: #28a745; /* Active color */
+    border-bottom: 2px solid #28a745;
+}
+
+
+.custom-nav-link {
+    color: #000;
+    /* Base color */
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.custom-nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin: auto;
+    background: #28a745;
+    /* Green underline */
+    transition: width 0.3s;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

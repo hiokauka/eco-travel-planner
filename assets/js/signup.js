@@ -32,6 +32,24 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#messageModal').modal('show');
   }
 
+  function validatePassword(password) {
+    const minLength = 6;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+
+    if (password.length < minLength) {
+      return "Password must be at least 6 characters.";
+    }
+    if (!hasUppercase) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!hasLowercase) {
+      return "Password must contain at least one lowercase letter.";
+    }
+
+    return null; // Password is valid
+  }
+
 
   signupForm.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -44,6 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (password !== confirmPassword) {
       showModal("Passwords do not match!");
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      showModal(passwordError);
       return;
     }
 

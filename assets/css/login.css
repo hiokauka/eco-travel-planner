@@ -13,16 +13,18 @@
   background: #ffffff;
   border-left: solid 2px #316b3a;
 
-  display: flex;                    /* make it a flex container */
-  justify-content: center;         /* center horizontally */
-  align-items: center;             /* center vertically */
-  height: 100%;                    /* or give it a fixed height */
+  display: flex;              /* Flex container */
+  justify-content: center;    /* Center image horizontally */
+  align-items: center;        /* Center image vertically */
+  height: 100%;               /* Full height */
 }
 
 .main-logo {
-  display: block;           /* makes it a block-level element */
-  margin-left: 250px;  
-  margin-top: 50px;      /* centers horizontally, adds vertical margin */
+  max-width: 120%;             /* Responsive image size */
+  height: auto;               /* Keep aspect ratio */
+  display: block;             /* Ensures image is treated as block */
+  margin-top: 80px;
+  margin-left: -150px;             /* Auto centers horizontally if needed */
 }
 
 /* === Login Form Card Container === */
@@ -115,5 +117,23 @@ body {
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .container-logo {
+    display: none !important; /* Force hide the image */
+  }
+
+  .col-md-5 {
+    border-left: none !important; /* Remove the left border on small screens */
+  }
+
+  .signup-card {
+    width: 100%;
+    padding: 20px;
+    box-shadow: none;
+    border: 1px solid #ddd;
   }
 }

@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      showMessageModal("User not logged in.",true);
+      showMessageModal("User not logged in.", true);
       return;
     }
 
@@ -51,12 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
     if (!currentPassword || !newPassword || !confirmNewPassword) {
-      showMessageModal("Please fill in all password fields.",true);
+      showMessageModal("Please fill in all password fields.", true);
       return;
     }
 
     if (newPassword !== confirmNewPassword) {
-      showMessageModal("New password and confirmation do not match.",true);
+      showMessageModal("New password and confirmation do not match.", true);
       return;
     }
 
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(data => {
-          showMessageModal(data.message || "Password changed successfully.");
+        showMessageModal(data.message || "Password changed successfully.");
         document.getElementById("currentPassword").value = "";
         document.getElementById("newPassword").value = "";
         document.getElementById("confirmNewPassword").value = "";
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error changing password:", err);
-        showMessageModal(err.message || "An error occurred while changing password.",true);
+        showMessageModal(err.message || "An error occurred while changing password.", true);
       });
 
   });
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
 
     if (!name || !email || !phone) {
-    showMessageModal("Please fill in all fields.",true);
+      showMessageModal("Please fill in all fields.", true);
       return;
     }
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error updating profile:", err);
-        showMessageModal("An error occurred while updating your profile.",true);
+        showMessageModal("An error occurred while updating your profile.", true);
       });
   });
 
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("deleteYesButton").addEventListener("click", function () {
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      showMessageModal("No user email found.",true);
+      showMessageModal("No user email found.", true);
       return;
     }
 
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error deleting account:", err);
-        showMessageModal("An error occurred while deleting your account.",true);
+        showMessageModal("An error occurred while deleting your account.", true);
       });
   });
 
@@ -460,7 +460,7 @@ document.getElementById('searchInput').addEventListener('input', function () {
 $('#greenItineraryModal').on('show.bs.modal', async function () {
   const userEmail = localStorage.getItem('userEmail');
   if (!userEmail) {
-    showMessageModal('Please Log in first!', true);
+   
     return;
   }
 
@@ -494,7 +494,7 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
       return;
     }
 
-    
+
 
     // Render itinerary
     daysWithPlaces.forEach(day => {
@@ -570,7 +570,7 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
 document.getElementById('downloadItineraryBtn').addEventListener('click', async () => {
   const userEmail = localStorage.getItem('userEmail');
   if (!userEmail) {
-    alert("Please Log in first!");
+    showMessageModal("Please Log in first!",true);
     return;
   }
 
@@ -863,24 +863,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-
 function showMessageModal(message, isError = false) {
-  // Set the message text
-  $('#messageModalBody').text(message);
+  // Close other open modals
+  $('.modal.show').modal('hide');
 
-  // Get the modal header
-  const header = $('#messageModal .modal-header');
+  setTimeout(() => {
+    // Set the message text
+    $('#messageModalBody').text(message);
 
-  // Remove both bg-success and bg-danger first
-  header.removeClass('bg-success bg-danger');
+    // Get modal header and OK button
+    const header = $('#messageModal .modal-header');
+    const okButton = $('#messageModalOkButton');
 
-  // Apply the correct class based on the isError flag
-  if (isError) {
-    header.addClass('bg-danger');
-  } else {
-    header.addClass('bg-success');
-  }
+    // Reset colors
+    header.removeClass('bg-success bg-danger');
+    okButton.removeClass('btn-success btn-danger');
 
-  // Show the modal
-  $('#messageModal').modal('show');
+    // Apply colors based on isError
+    if (isError) {
+      header.addClass('bg-danger');
+      okButton.addClass('btn-danger');
+    } else {
+      header.addClass('bg-success');
+      okButton.addClass('btn-success');
+    }
+
+    // Show the modal
+    $('#messageModal').modal('show');
+  }, 300); // Delay to ensure other modals fully close
 }
+

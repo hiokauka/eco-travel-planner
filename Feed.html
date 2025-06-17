@@ -2,33 +2,23 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plan your green itinerary</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teroka - Sticky Note Layout</title>
 
     <link rel="icon" type="image/png" href="assets/images/logo.svg">
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/itinerary.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/feed.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> <!-- Full jQuery -->
-    <!-- Popper.js for Bootstrap 4 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
+    <link rel="stylesheet" href="assets/css/test.css">
 </head>
 
 <body>
 
-     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;">
         <div class="container-fluid">
             <a href="index.html">
                 <img src="assets/images/logo.svg" alt="Logo" class="navbar-logo">
@@ -75,130 +65,52 @@
         </div>
     </nav>
 
-    <!-- Itinerary Form -->
-    <div class="container-itinerary my-5">
-        <div class="card shadow p-4">
-            <h4 class="mb-4 text-center">Create Your Green Itinerary</h4>
-            <form id="itineraryForm">
-                <div class="form-group">
-                    <label for="countryInput">Enter the destination</label>
-                    <input type="text" class="form-control" id="countryInput" autocomplete="off">
-                    <!-- <div id="countrySuggestions" class="autocomplete-suggestions"></div> -->
-                </div>
 
-                <div class="form-group">
-                    <label for="placeTypeSelect">Select type of places</label>
-                    <select class="form-control" id="placeTypeSelect">
-                        <option value="tourist attractions">🗽 Tourist Attractions</option>
-                        <option value="lodging">🏨 Lodging</option>
-                        <option value="bus stations">🚌 Bus Stations</option>
-                        <option value="train stations">🚆 Train Stations</option>
-                        <option value="car rental">🚗 Car Rental</option>
-                        <option value="eco-friendly attractions">🍃 Eco-Friendly Attractions</option>
-                    </select>
-                </div>
-
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="start-date">From</label>
-                        <input type="date" class="form-control" id="start-date" name="start-date">
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label for="end-date">To</label>
-                        <input type="date" class="form-control" id="end-date" name="end-date">
-                    </div>
-                </div>
-
-                <div id="day-count" class="mb-3 text-success font-weight-bold"></div>
-
-                <div>
-                <button type="button" class="btn btn-success custom-margin"  id="see-places-btn" data-toggle="modal"
-                    data-target="#availableModal">
-                    See available place
-                </button>
-
-                <button type="button" class="btn btn-success custom-margin1" id="viewItineraryBtn" data-toggle="modal"
-                    data-target="#greenItineraryModal">See your
-                    itinerary</button>
-                    </div>
-            </form>
-
-
-
+    <main class="container-home">
+        <!-- Posts Container -->
+        <div class="container-post">
+            <h3 class="mb-4 text-center">Community Feed</h3>
+            <div id="postsContainer"></div>
         </div>
-    </div>
-
-    <!-- modal for itinerary -->
-    <div class="modal fade" id="greenItineraryModal" tabindex="-1" role="dialog" aria-labelledby="greenItineraryLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">Green Itinerary</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="itineraryList">
-                    <p class="text-muted">No destinations added yet.</p>
-
-                </div>
-
-                <div class="modal-body" id="download-itinerary">
-                    <button id="downloadItineraryBtn" class="btn btn-outline-success mt-3">
-                        <i class="fas fa-download"></i> Download Itinerary
-                    </button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- modal for available places -->
-    <div class="modal fade available-modal" id="availableModal" tabindex="-1" role="dialog"
-        aria-labelledby="availableModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document"> <!-- Added modal-lg for more space -->
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="availableModalLabel">Available Places</h5>
-                    <!-- Search Icon -->
-                    <button type="button" class="btn btn-link text-white" id="searchToggleBtn">
-                        <i class="fa fa-search"></i> <!-- Search icon from Bootstrap Icons -->
-                    </button>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group" id="searchContainer" style="display: none;">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Search places...">
-                    </div>
-
-                </div>
 
 
+        <!-- New Post Button -->
+        <button id="newPostBtn" class="btn btn-success" title="Create new post" data-toggle="modal"
+            data-target="#newPostModal">
+            <i class="bi bi-plus-lg"></i>
+        </button>
 
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div id="cards-container" class="row">
-                            <!-- Dynamic cards go here -->
+        <!-- New Post Modal -->
+        <div class="modal fade" id="newPostModal" tabindex="-1" role="dialog" aria-labelledby="newPostModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="newPostForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="newPostModalLabel">Create New Post</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="postText">Post Text</label>
+                                <textarea class="form-control" id="postText" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="postImage">Upload Image (optional)</label>
+                                <input type="file" class="form-control-file" id="postImage" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-    <script src="/assets/js/itinerary.js"></script>
+    </main>
 
     <footer class=" py-4">
         <div class="container">
@@ -207,24 +119,24 @@
                 <div class="col-md-4">
                     <h5>Contact Information</h5>
                     <ul class="list-unstyled">
-                        <li><strong>Email:</strong> <a href="raufhazim07@gmail.com"
+                        <li><strong>Email:</strong> <a href="mailto:info@example.com"
                                 class="text-white">info@example.com</a></li>
-                        <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+11 6432 3349</a></li>
-                        <li><strong>GitHub :</strong> Hiokauka</li>
+                        <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-white">+123 456 7890</a></li>
+                        <li><strong>Fax:</strong> +123 456 7891</li>
                     </ul>
                 </div>
 
                 <!-- Other Contact Sections (optional) -->
                 <div class="col-md-6">
                     <h5>Address</h5>
-                    <p>University of Malaya</p>
+                    <p>123 Example Street, Example City, EX 12345</p>
                 </div>
 
                 <div class="col-md-2">
                     <h5>Social Media</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Linkedin</a></li>
-                        <li><a href="#" class="text-white">Github</a></li>
+                        <li><a href="#" class="text-white">Facebook</a></li>
+                        <li><a href="#" class="text-white">Twitter</a></li>
                         <li><a href="#" class="text-white">Instagram</a></li>
                     </ul>
                 </div>
@@ -232,9 +144,6 @@
         </div>
     </footer>
 
-    <!-- ============= -->
-    <!-- Profile modal -->
-    <!-- ============= -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -367,6 +276,7 @@
         </div>
     </div>
 
+
     <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -381,11 +291,20 @@
                     <!-- Message will go here dynamically -->
                 </div>
                 <div class="modal-footer">
-                   <button type="button" id="messageModalOkButton" class="btn btn-success" data-dismiss="modal">OK</button>
+                    <button type="button" id="messageModalOkButton" class="btn btn-success" data-dismiss="modal">OK</button>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/feed.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

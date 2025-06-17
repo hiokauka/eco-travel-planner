@@ -90,12 +90,13 @@
 
 .container-explore-v2 {
 
+
   background-color: #ffffff;
   border: 2px solid rgb(52, 129, 64);
   width: 50%;
   margin-left: auto;
   margin-right: auto;
-
+  
 }
 
 
@@ -106,13 +107,6 @@
   height: 250px;
   object-fit: cover;
   border-radius: 5px;
-}
-
-.nav-link.active {
-  background-color: #28a745;
-  /* Green background for the active link */
-  color: #fff;
-  /* White text */
 }
 
 
@@ -171,6 +165,7 @@ footer {
 
 body {
   font-family: 'Montserrat', sans-serif;
+  
 }
 
 .content-card {
@@ -284,4 +279,39 @@ body {
   .navbar-logo {
     height: 70px;       /* even smaller */
   }
+}
+
+.custom-nav-link {
+    color: #000;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.custom-nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin: auto;
+    background: #28a745;
+    transition: width 0.3s;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.custom-nav-link:not(.active):hover {
+    color: #28a745;
+}
+
+.custom-nav-link:not(.active):hover::after {
+    width: 100%;
+}
+
+.custom-nav-link.active {
+    color: #28a745;
+    border-bottom: 2px solid #28a745;
 }
