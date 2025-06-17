@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessageModal(data.message || "Account deleted.");
 
         localStorage.clear();
-        window.location.href = "home.html";
+        window.location.href = "index.html";
       })
       .catch(err => {
         console.error("Error deleting account:", err);
@@ -850,7 +850,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(data.message || "Account deleted.");
 
         localStorage.clear();
-        window.location.href = "home.html";
+        window.location.href = "index.html";
       })
       .catch(err => {
         console.error("Error deleting account:", err);

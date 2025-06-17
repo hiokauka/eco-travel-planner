@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessageModal(data.message || "Account deleted.");
 
         localStorage.clear();
-        window.location.href = "home.html";
+        window.location.href = "index.html";
       })
       .catch(err => {
         console.error("Error deleting account:", err);
@@ -340,7 +340,7 @@ async function calculateCarbon() {
 
     const accommodationEmissionFactors = {
       hotel: 20,
-      "eco-lodge": 8,
+      "eco-lodge": 5,
       hostel: 12
     };
 
@@ -407,7 +407,7 @@ async function showCarbonHistory() {
   const email = localStorage.getItem('userEmail');
   console.log('Email from localStorage:', email);
   if (!email) {
-    showModalMessage('Please Log in.');
+    showMessageModal('Please Log in.',true);
     return;
   }
 
@@ -475,45 +475,83 @@ async function showCarbonHistory() {
 
 
 function showMessageModal(message, isError = false) {
-  // Set the message text
-  $('#messageModalBody').text(message);
 
-  // Get the modal header
-  const header = $('#messageModal .modal-header');
 
-  // Remove both bg-success and bg-danger first
-  header.removeClass('bg-success bg-danger');
+  setTimeout(() => {
+    // Set the message text
+    $('#messageModalBody').text(message);
 
-  // Apply the correct class based on the isError flag
-  if (isError) {
-    header.addClass('bg-danger');
-  } else {
-    header.addClass('bg-success');
-  }
+    // Get modal header and OK button
+    const header = $('#messageModal .modal-header');
+    const okButton = $('#messageModalOkButton');
 
-  // Show the modal
-  $('#messageModal').modal('show');
+    // Reset colors
+    header.removeClass('bg-success bg-danger');
+    okButton.removeClass('btn-success btn-danger'); 
+
+    // Apply colors based on isError
+    if (isError) {
+      header.addClass('bg-danger');
+      okButton.addClass('btn-danger');
+    } else {
+      header.addClass('bg-success');
+      okButton.addClass('btn-success');
+    }
+
+    // Show the modal
+    $('#messageModal').modal('show');
+  }, 300); // Delay to ensure other modals fully close
 }
 
 
 
-const tipsSets = [
-  `- Walk or bike for short distances<br />
-   - Use public transportation<br />
-   - Offset your carbon footprint with tree planting`,
-
-  `- Choose eco-friendly accommodations<br />
-   - Bring a reusable water bottle<br />
-   - Avoid single-use plastics`,
-
-  `- Pack light to reduce flight emissions<br />
-   - Support local businesses<br />
-   - Turn off lights and unplug devices when not in use`
+// All tips in one big array
+const allTips = [
+  'Walk or bike for short distances',
+  'Use public transportation',
+  'Offset your carbon footprint with tree planting',
+  'Choose eco-friendly accommodations',
+  'Bring a reusable water bottle',
+  'Avoid single-use plastics',
+  'Pack light to reduce flight emissions',
+  'Support local businesses',
+  'Turn off lights and unplug devices when not in use',
+  'Eat more plant-based meals when traveling',
+  'Choose direct flights to reduce take-off emissions',
+  'Explore destinations closer to home to cut travel distance',
+  'Refill toiletries instead of buying travel-sized plastics',
+  'Bring your own shopping bag and utensils',
+  'Stay in places that use renewable energy',
+  'Walk or use a bicycle for local tours',
+  'Avoid fast fashion shopping while traveling',
+  'Carry a reusable coffee cup or food container',
+  'Support eco-certified tour operators',
+  'Respect wildlife and natural habitats',
+  'Minimize laundry requests to save water and energy',
+  'Travel in off-peak seasons to reduce over-tourism',
+  'Choose trains over planes for regional trips',
+  'Share transport like carpooling or ride-sharing when possible'
 ];
 
-// On modal show event
+// Shuffle function
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 $('#tipsModal').on('show.bs.modal', function () {
-  const randomIndex = Math.floor(Math.random() * tipsSets.length);
-  const tipsHtml = tipsSets[randomIndex];
+  // Shuffle the array
+  const shuffledTips = shuffle([...allTips]);
+
+  // Get at least 3 tips (you can change this number if you want more)
+  const randomTips = shuffledTips.slice(0, 3);
+
+  // Build the tips HTML
+  const tipsHtml = randomTips.map(tip => `- ${tip}<br />`).join('');
+
+  // Insert the tips into the modal
   $(this).find('.modal-body').html(tipsHtml);
 });
