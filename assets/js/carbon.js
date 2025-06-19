@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (email) {
     fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`)
       .then(response => {
-        if (!response.ok) throw new Error('Network response not ok');
+        if (!response.ok) throw new Error('Network response not ok'); 
         return response.json();
       })
       .then(userData => {
@@ -338,7 +338,7 @@ async function calculateCarbon() {
       train: 0.05
     };
 
-    const accommodationEmissionFactors = {
+    const accommodationEmissionFactors = {  
       hotel: 20,
       "eco-lodge": 5,
       hostel: 12

@@ -6,153 +6,153 @@
 let originalEmail = "";
 console.log("Email in localStorage:", localStorage.getItem("userEmail"));
 document.addEventListener("DOMContentLoaded", () => {
-  const email = localStorage.getItem("userEmail");
-  console.log("Email in localStorage on main.html:", email);
-
-  if (email) {
-    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`)
-      .then(response => {
-        if (!response.ok) throw new Error('Network response not ok');
-        return response.json();
-      })
-      .then(userData => {
-        console.log("User data received:", userData);
-
-        // Update UI
-        document.getElementById('profileName').textContent = userData.name || "No name found";
-        document.getElementById('profileEmail').textContent = userData.email || "No email found";
-        document.getElementById('profilePhone').textContent = userData.phone || "No phone found";
-
-        // Pre-fill form
-        document.getElementById("name").value = userData.name || "";
-        document.getElementById("email").value = userData.email || "";
-        document.getElementById("phone").value = userData.phone || "";
-
-        originalEmail = userData.email;
-      })
-      .catch(error => console.error('Error fetching user data:', error));
-  } else {
-    console.log("User not logged in");
-  }
-
-
-  // change password
-  document.getElementById("changePasswordForm").addEventListener("submit", e => {
-    e.preventDefault();
-
     const email = localStorage.getItem("userEmail");
-    if (!email) {
-      showMessageModal("User not logged in.",true);
-      return;
+    console.log("Email in localStorage on main.html:", email);
+
+    if (email) {
+        fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response not ok');
+                return response.json();
+            })
+            .then(userData => {
+                console.log("User data received:", userData);
+
+                // Update UI
+                document.getElementById('profileName').textContent = userData.name || "No name found";
+                document.getElementById('profileEmail').textContent = userData.email || "No email found";
+                document.getElementById('profilePhone').textContent = userData.phone || "No phone found";
+
+                // Pre-fill form
+                document.getElementById("name").value = userData.name || "";
+                document.getElementById("email").value = userData.email || "";
+                document.getElementById("phone").value = userData.phone || "";
+
+                originalEmail = userData.email;
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+    } else {
+        console.log("User not logged in");
     }
 
-    const currentPassword = document.getElementById("currentPassword").value.trim();
-    const newPassword = document.getElementById("newPassword").value.trim();
-    const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
 
-    if (!currentPassword || !newPassword || !confirmNewPassword) {
-      showMessageModal("Please fill in all password fields.",true);
-      return;
-    }
+    // change password
+    document.getElementById("changePasswordForm").addEventListener("submit", e => {
+        e.preventDefault();
 
-    if (newPassword !== confirmNewPassword) {
-      showMessageModal("New password and confirmation do not match.",true);
-      return;
-    }
-
-    fetch("https://teroka-backend.onrender.com/users/update-password", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
-    })
-      .then(res => {
-        if (!res.ok) {
-          return res.json().then(errData => {
-            throw new Error(errData.message || 'Failed to change password');
-          });
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            showMessageModal("User not logged in.", true);
+            return;
         }
-        return res.json();
-      })
-      .then(data => {
-          showMessageModal(data.message || "Password changed successfully.");
-        document.getElementById("currentPassword").value = "";
-        document.getElementById("newPassword").value = "";
-        document.getElementById("confirmNewPassword").value = "";
-        $("#changePasswordSection").collapse('hide');
-      })
-      .catch(err => {
-        console.error("Error changing password:", err);
-        showMessageModal(err.message || "An error occurred while changing password.",true);
-      });
 
-  });
+        const currentPassword = document.getElementById("currentPassword").value.trim();
+        const newPassword = document.getElementById("newPassword").value.trim();
+        const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
+
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            showMessageModal("Please fill in all password fields.", true);
+            return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            showMessageModal("New password and confirmation do not match.", true);
+            return;
+        }
+
+        fetch("https://teroka-backend.onrender.com/users/update-password", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, oldPassword: currentPassword, newPassword }),
+        })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(errData => {
+                        throw new Error(errData.message || 'Failed to change password');
+                    });
+                }
+                return res.json();
+            })
+            .then(data => {
+                showMessageModal(data.message || "Password changed successfully.");
+                document.getElementById("currentPassword").value = "";
+                document.getElementById("newPassword").value = "";
+                document.getElementById("confirmNewPassword").value = "";
+                $("#changePasswordSection").collapse('hide');
+            })
+            .catch(err => {
+                console.error("Error changing password:", err);
+                showMessageModal(err.message || "An error occurred while changing password.", true);
+            });
+
+    });
 
 
 
-  // Update profile
-  document.getElementById("updateProfileForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+    // Update profile
+    document.getElementById("updateProfileForm").addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
 
-    if (!name || !email || !phone) {
-    showMessageModal("Please fill in all fields.",true);
-      return;
-    }
+        if (!name || !email || !phone) {
+            showMessageModal("Please fill in all fields.", true);
+            return;
+        }
 
-    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(originalEmail)}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone })
-    })
-      .then(res => res.json())
-      .then(data => {
-        showMessageModal(data.message || "Profile updated successfully.");
+        fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(originalEmail)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, phone })
+        })
+            .then(res => res.json())
+            .then(data => {
+                showMessageModal(data.message || "Profile updated successfully.");
 
-        document.getElementById("profileName").textContent = name;
-        document.getElementById("profileEmail").textContent = email;
-        document.getElementById("profilePhone").textContent = phone;
+                document.getElementById("profileName").textContent = name;
+                document.getElementById("profileEmail").textContent = email;
+                document.getElementById("profilePhone").textContent = phone;
 
-        localStorage.setItem("userEmail", email);
-        originalEmail = email;
+                localStorage.setItem("userEmail", email);
+                originalEmail = email;
 
-        $("#updateprofileSection").collapse('hide');
-      })
-      .catch(err => {
-        console.error("Error updating profile:", err);
-        showMessageModal("An error occurred while updating your profile.",true);
-      });
-  });
+                $("#updateprofileSection").collapse('hide');
+            })
+            .catch(err => {
+                console.error("Error updating profile:", err);
+                showMessageModal("An error occurred while updating your profile.", true);
+            });
+    });
 
-  // Delete account
-  document.getElementById("deleteYesButton").addEventListener("click", function () {
-    const email = localStorage.getItem("userEmail");
-    if (!email) {
-      showMessageModal("No user email found.",true);
-      return;
-    }
+    // Delete account
+    document.getElementById("deleteYesButton").addEventListener("click", function () {
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            showMessageModal("No user email found.", true);
+            return;
+        }
 
-    if (!confirm("This will permanently delete your account. Are you sure?")) return;
+        if (!confirm("This will permanently delete your account. Are you sure?")) return;
 
-    fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    })
-      .then(res => res.json())
-      .then(data => {
-        showMessageModal(data.message || "Account deleted.");
+        fetch(`https://teroka-backend.onrender.com/users/profile?email=${encodeURIComponent(email)}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        })
+            .then(res => res.json())
+            .then(data => {
+                showMessageModal(data.message || "Account deleted.");
 
-        localStorage.clear();
-        window.location.href = "index.html";
-      })
-      .catch(err => {
-        console.error("Error deleting account:", err);
-        showMessageModal("An error occurred while deleting your account.",true);
-      });
-  });
+                localStorage.clear();
+                window.location.href = "index.html";
+            })
+            .catch(err => {
+                console.error("Error deleting account:", err);
+                showMessageModal("An error occurred while deleting your account.", true);
+            });
+    });
 
 
 
@@ -203,7 +203,7 @@ $(document).ready(function () {
 `;
 
         try {
-            const res = await fetch(`https://teroka-backend.onrender.com/places?query=${encodeURIComponent(query)}`);
+            const res = await fetch(`https://teroka-backend.onrender.com?query=${encodeURIComponent(query)}`);
 
             if (!res.ok) {
                 cardsContainer.innerHTML = `<p>Error fetching places: ${res.status}</p>`;
@@ -221,16 +221,20 @@ $(document).ready(function () {
             }
 
             data.places.forEach(place => {
+                const estimatedEmission = estimateCarbonByType(place.types);
+
                 const cardHTML = createCard({
                     name: place.name,
                     location: place.address || 'N/A',
-                    desc: `Rating: ⭐ ${place.rating || 'No rating'}`, // or a custom desc
+                    desc: `Rating: ⭐ ${place.rating || 'No rating'}`, // PLAIN TEXT ONLY
+                    carbon: estimatedEmission, // Pass as separate field
                     tags: place.types || [],
                     img: place.photo || 'https://via.placeholder.com/300x200?text=No+Image'
                 });
 
                 cardsContainer.insertAdjacentHTML('beforeend', cardHTML);
             });
+
 
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
@@ -253,6 +257,32 @@ $(document).ready(function () {
             console.error('Fetch failed:', error);
         }
     }
+
+  function estimateCarbonByType(types) {
+    if (types.includes('amusement_park')) return 5;
+    if (types.includes('zoo')) return 4.5;
+    if (types.includes('park') || types.includes('natural_feature')) return 1;
+    if (types.includes('museum') || types.includes('art_gallery')) return 2;
+    if (types.includes('tourist_attraction')) return 2.5;
+    if (types.includes('aquarium')) return 4;
+    if (types.includes('beach')) return 1.5;
+
+    // Additional categories
+    if (types.includes('lodging')) return 3.5; // hotel stay energy/water use
+    if (types.includes('bus_station')) return 3; // transport hub
+    if (types.includes('train_station')) return 2.5; // lower emissions per passenger
+    if (types.includes('car_rental')) return 5; // high emissions from vehicle use
+    if (
+        types.includes('eco_friendly') || 
+        types.includes('park') || 
+        types.includes('campground') ||
+        types.includes('natural_feature')
+    ) return 1; // eco-friendly spots generally low impact
+
+    return 3; // default
+}
+
+
 
 
     function getQueryParam(param) {
@@ -292,22 +322,24 @@ $(document).ready(function () {
     // Function to generate card HTML
     function createCard(place) {
         return `
-        <div class="col-md-4 mb-4">
-            <div class="card border-success" data-name="${place.name}" data-location="${place.location}" data-desc="${place.desc}" data-tags="${place.tags.join(', ')}" data-img="${place.img}" >
-                <img src="${place.img}" class=" card-img-top modal-trigger" alt="${place.name}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title modal-trigger">${place.name}</h5>
-                    <p class="card-text modal-trigger">${place.desc}</p>
-                    <p class="text-muted modal-trigger"><i class="bi bi-geo-alt-fill"></i> ${place.location}</p>
-                    ${place.tags.map(tag => `<span class="badge badge-success">${tag}</span>`).join(' ')}
-                </div>
-                <div class="card-footer text-right bg-white">
-                    <button class="btn btn-outline-success btn-sm add-to-favourite">Add to favourite</button>
-                </div>
+    <div class="col-md-4 mb-4">
+        <div class="card border-success" data-name="${place.name}" data-location="${place.location}" data-desc="${place.desc}" data-tags="${place.tags.join(', ')}" data-img="${place.img}">
+            <img src="${place.img}" class="card-img-top modal-trigger" alt="${place.name}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title modal-trigger">${place.name}</h5>
+                <p class="card-text modal-trigger">${place.desc}</p>
+                <p class="carbon-badge modal-trigger">Estimated CO₂: ${place.carbon} kg per visit</p>
+                <p class="text-muted modal-trigger"><i class="bi bi-geo-alt-fill"></i> ${place.location}</p>
+                ${place.tags.map(tag => `<span class="badge badge-success">${tag}</span>`).join(' ')}
+            </div>
+            <div class="card-footer text-right bg-white">
+                <button class="btn btn-outline-success btn-sm add-to-favourite">Add to favourite</button>
             </div>
         </div>
-        `;
+    </div>
+    `;
     }
+
 
     document.getElementById('cards-container').addEventListener('click', (e) => {
         if (e.target.classList.contains('modal-trigger')) {
@@ -464,7 +496,7 @@ $(document).ready(function () {
 
 
 
-currentQueryType = "tourist attraction";
+    currentQueryType = "tourist attraction";
 
 
     // Handle Favourite Button Click
@@ -486,7 +518,7 @@ currentQueryType = "tourist attraction";
         } else {
             // If button is not active, show all cards
             favCardContainer.hide(); // Hide favourites 
-            favCardContainer.empty();   
+            favCardContainer.empty();
             console.log(currentQueryType)
             // Resubmit search based on current location and query type
             $('#searchForm').submit();

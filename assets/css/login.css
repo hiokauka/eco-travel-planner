@@ -137,3 +137,14 @@ body {
     border: 1px solid #ddd;
   }
 }
+
+.forgot-password-link {
+  color: #0d6efd; /* Bootstrap primary color */
+  text-decoration: none; /* No underline by default */
+  margin-left: 8px; /* Extra margin if needed */
+  cursor: pointer;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline; /* Underline on hover */
+}

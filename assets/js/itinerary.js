@@ -289,16 +289,20 @@ searchPlaces = async function (query) {
     }
 
     data.places.forEach(place => {
+      const carbonEstimate = estimateCarbonByType(place.types || []);
+
       const cardHTML = createCard({
         name: place.name,
         location: place.address || 'N/A',
-        desc: `Rating: ⭐ ${place.rating || 'No rating'}`, // or a custom desc
+        desc: `Rating: ⭐ ${place.rating || 'No rating'}`,
         tags: place.types || [],
-        img: place.photo || 'https://via.placeholder.com/300x200?text=No+Image'
+        img: place.photo || 'https://via.placeholder.com/300x200?text=No+Image',
+        carbon: carbonEstimate // pass the carbon value here
       });
 
       cardsContainer.insertAdjacentHTML('beforeend', cardHTML);
     });
+
     generateDayOptions(globalDaysDiff);
 
 
@@ -310,9 +314,31 @@ searchPlaces = async function (query) {
 }
 
 
+function estimateCarbonByType(types) {
+  if (types.includes('amusement_park')) return 5;
+  if (types.includes('zoo')) return 4.5;
+  if (types.includes('park') || types.includes('natural_feature')) return 1;
+  if (types.includes('museum') || types.includes('art_gallery')) return 2;
+  if (types.includes('tourist_attraction')) return 2.5;
+  if (types.includes('aquarium')) return 4;
+  if (types.includes('beach')) return 1.5;
 
+  // Additional categories
+  if (types.includes('lodging')) return 3.5; // hotel stay energy/water use
+  if (types.includes('bus_station')) return 3; // transport hub
+  if (types.includes('train_station')) return 2.5; // lower emissions per passenger
+  if (types.includes('car_rental')) return 5; // high emissions from vehicle use
+  if (
+    types.includes('eco_friendly') ||
+    types.includes('park') ||
+    types.includes('campground') ||
+    types.includes('natural_feature')
+  ) return 1; // eco-friendly spots generally low impact
 
-function createCard({ name, location, desc, tags, img }) {
+  return 3; // default
+}
+
+function createCard({ name, location, desc, tags, img, carbon }) {
   const tagBadges = tags.map(tag => `<span class="badge badge-info mr-1">${tag}</span>`).join('');
 
   return `
@@ -323,21 +349,20 @@ function createCard({ name, location, desc, tags, img }) {
           <h5 class="card-title">${name}</h5>
           <p class="card-text">${desc}</p>
           <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> ${location}</p>
-          <div class="tags">${tagBadges}</div>
+          <div class="tags mb-2">${tagBadges}</div>
+          <span class="badge badge-success">Carbon: ${carbon} kg CO₂</span>
         </div>
         <div class="card-footer text-right bg-white">
           <button class="btn btn-outline-success btn-sm add-to-itinerary">Add to Itinerary</button>
           <div class="day-options mt-3">
-            <select class="form-control day-select">
-             
-           
-            </select>
+            <select class="form-control day-select"></select>
           </div>
         </div>
       </div>
     </div>
   `;
 }
+
 
 const container = document.getElementById('cards-container');
 
@@ -371,8 +396,11 @@ container.addEventListener('click', async (e) => {
       return;
     }
 
-    const tagElements = card.querySelectorAll('.tags .badge'); // adjust selector as per your actual HTML
+    const tagElements = card.querySelectorAll('.tags .badge');
     const placeTags = Array.from(tagElements).map(tagEl => tagEl.textContent.trim());
+
+    // 👉 Calculate carbon estimate here
+    const carbonEstimate = estimateCarbonByType(placeTags);
 
     // POST to backend
     try {
@@ -384,7 +412,7 @@ container.addEventListener('click', async (e) => {
           startDate: startDateInput,
           endDate: endDateInput,
           dayNumber: selectedDayNum,
-          place: { name: placeName, tags: placeTags }
+          place: { name: placeName, tags: placeTags, carbon: carbonEstimate }
         })
       });
 
@@ -459,10 +487,7 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
 $('#greenItineraryModal').on('show.bs.modal', async function () {
   const userEmail = localStorage.getItem('userEmail');
-  if (!userEmail) {
-   
-    return;
-  }
+  if (!userEmail) return;
 
   try {
     const res = await fetch(`https://teroka-backend.onrender.com/itineraries?userEmail=${encodeURIComponent(userEmail)}`);
@@ -478,23 +503,36 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
       return;
     }
 
-    // Check if ALL days have no places
     const allDaysEmpty = itinerary.days.every(day => !day.places || day.places.length === 0);
-
     if (allDaysEmpty) {
       itineraryList.innerHTML = `<p class="text-muted">No destinations added yet.</p>`;
       return;
     }
 
-    // Filter days that have at least one place
     const daysWithPlaces = itinerary.days.filter(day => day.places && day.places.length > 0);
-
     if (daysWithPlaces.length === 0) {
       itineraryList.innerHTML = `<p class="text-muted">No destinations added yet.</p>`;
       return;
     }
 
+    // 👉 Calculate Total Carbon
+    let totalCarbon = 0;
+    let totalCarbonDisplay = null;
+    daysWithPlaces.forEach(day => {
+      day.places.forEach(place => {
+        totalCarbon += place.carbon;
+      });
+    });
 
+    // 👉 Display Total Carbon
+    totalCarbonDisplay = document.createElement('div');
+    totalCarbonDisplay.className = "alert alert-success font-weight-bold d-flex align-items-center";
+    totalCarbonDisplay.innerHTML = `
+      <i class="fas fa-leaf mr-2"></i>
+      Total Estimated Carbon: <span class="ml-1 carbon-value">${totalCarbon} kg CO₂</span>
+    `;
+
+    itineraryList.appendChild(totalCarbonDisplay);
 
     // Render itinerary
     daysWithPlaces.forEach(day => {
@@ -514,10 +552,15 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
           const placeItem = document.createElement("p");
           placeItem.classList.add("d-flex", "justify-content-between", "align-items-center", "mb-2");
 
+          let carbonClass = 'badge-success';
+          if (place.carbon > 4) carbonClass = 'badge-danger';
+          else if (place.carbon > 2) carbonClass = 'badge-warning';
+
           placeItem.innerHTML = `
             <div>
               <strong>${place.name}</strong>
               ${place.tags?.length ? `<span class="text-muted">(${place.tags.join(', ')})</span>` : ""}
+              <br><span class="badge ${carbonClass} mt-1">Carbon: ${place.carbon} kg CO₂</span>
             </div>
             <button class="btn btn-sm btn-outline-danger delete-place" data-day="${day.day}" data-place="${place.name}">
               <i class="fas fa-trash"></i>
@@ -529,7 +572,7 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
       }
     });
 
-    // Add click event listener to delete buttons inside the modal
+    // ✅ Correct way: Attach click event to all delete buttons
     itineraryList.querySelectorAll('.delete-place').forEach(button => {
       button.addEventListener('click', async (e) => {
         const dayNumber = Number(button.dataset.day);
@@ -547,10 +590,22 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
           const deleteData = await deleteRes.json();
           if (!deleteRes.ok) throw new Error(deleteData.message || 'Failed to delete place');
 
-          // Remove place from UI
+          // ✅ Get the deleted place's carbon value
+          const deletedPlaceElement = button.parentElement.querySelector('.badge');
+          const carbonText = deletedPlaceElement.textContent;
+          const carbonMatch = carbonText.match(/([\d.]+)\s*kg/);
+          const deletedCarbon = carbonMatch ? parseFloat(carbonMatch[1]) : 0;
+
+          // ✅ Deduct from total carbon
+          totalCarbon -= deletedCarbon;
+
+          // ✅ Update total carbon display
+          const carbonValueElement = totalCarbonDisplay.querySelector('.carbon-value');
+          carbonValueElement.textContent = `${totalCarbon} kg CO₂`;
+
+          // ✅ Remove place from UI
           button.parentElement.remove();
 
-          // Optional: show success message or refresh itinerary modal
           alert(`Deleted "${placeName}" from Day ${dayNumber}`);
 
         } catch (err) {
@@ -567,10 +622,13 @@ $('#greenItineraryModal').on('show.bs.modal', async function () {
 });
 
 
+
+
+
 document.getElementById('downloadItineraryBtn').addEventListener('click', async () => {
   const userEmail = localStorage.getItem('userEmail');
   if (!userEmail) {
-    showMessageModal("Please Log in first!",true);
+    showMessageModal("Please Log in first!", true);
     return;
   }
 
@@ -593,6 +651,24 @@ document.getElementById('downloadItineraryBtn').addEventListener('click', async 
 
     let startY = 30;
 
+    // ✅ Calculate total carbon
+    let totalCarbon = 0;
+    itinerary.days.forEach(day => {
+      if (day.places && day.places.length > 0) {
+        day.places.forEach(place => {
+          totalCarbon += place.carbon || 0;
+        });
+      }
+    });
+
+    // ✅ Display total carbon at the top
+    doc.setFontSize(14);
+    doc.setTextColor(40, 180, 99); // green color
+    doc.text(`Total Estimated Carbon: ${totalCarbon} kg CO₂`, 14, startY);
+    doc.setTextColor(0, 0, 0); // reset color to black
+
+    startY += 15; // move space after total carbon
+
     itinerary.days.forEach(day => {
       doc.setFontSize(14);
       const dateStr = day.date ? new Date(day.date).toLocaleDateString() : "";
@@ -604,23 +680,22 @@ document.getElementById('downloadItineraryBtn').addEventListener('click', async 
         doc.text("No places added.", 14, startY);
         startY += 10;
       } else {
-        // Build table rows
         const rows = day.places.map(place => [
           place.name,
-          place.tags && place.tags.length ? place.tags.join(", ") : "-"
+          place.tags && place.tags.length ? place.tags.join(", ") : "-",
+          `${place.carbon || 0} KG` // 👉 Add carbon in table
         ]);
 
-        // Add autotable
         doc.autoTable({
           startY,
-          head: [['Place', 'Tags']],
+          head: [['Place', 'Tags', 'Carbon']],
           body: rows,
           theme: 'striped',
-          headStyles: { fillColor: [40, 180, 99] }, // green header
+          headStyles: { fillColor: [40, 180, 99] },
           styles: { fontSize: 11 },
           margin: { left: 14, right: 14 },
           didDrawPage: (data) => {
-            startY = data.cursor.y + 10;  // update startY for next day table
+            startY = data.cursor.y + 10;
           }
         });
       }
@@ -631,7 +706,6 @@ document.getElementById('downloadItineraryBtn').addEventListener('click', async 
     alert(`Error generating PDF: ${err.message}`);
   }
 });
-
 
 
 
