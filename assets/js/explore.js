@@ -203,7 +203,7 @@ $(document).ready(function () {
 `;
 
         try {
-            const res = await fetch(`https://teroka-backend.onrender.com?query=${encodeURIComponent(query)}`);
+            const res = await fetch(`https://teroka-backend.onrender.com/places?query=${encodeURIComponent(query)}`);
 
             if (!res.ok) {
                 cardsContainer.innerHTML = `<p>Error fetching places: ${res.status}</p>`;
