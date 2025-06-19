@@ -1,3 +1,6 @@
+fetchPosts();
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const newPostForm = document.getElementById('newPostForm');
 
@@ -23,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-fetchPosts();
 
 
 // Navbar active link handler
